@@ -66,7 +66,7 @@ Flight::update(float delta_t)
 	if(routed())
 	{
 		float goal_bearing, diff_bearing, new_w;
-
+		std::cout << "Hola" << std::endl;
 		CPpos = route.front().pos;
 		pos.angles(CPpos, goal_bearing, inclination);
 
