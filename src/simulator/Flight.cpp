@@ -90,7 +90,7 @@ Flight::update(float delta_t)
 
 		speed = speed + acc*delta_t;
 
-		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
+		
 
 	}else
 		inclination = 0.0;
