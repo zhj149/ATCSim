@@ -57,61 +57,130 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	w_speed = 0.0f;
 }
 
+float
+Flight::updateW(float ideal_w)
+{
+	float new_w;
+	if(fabs(ideal_w)>MAX_FLIFGT_W)
+	{
+		 new_w = (fabs(ideal_w)/ideal_w)*MAX_FLIFGT_W;
+	}
+	else
+	{
+		 new_w = ideal_w;
+	}
+
+return new_w;
+}
+
+float
+Flight::updateVel(float acc_inst,float speed, float delta_t)
+{
+	float new_speed,acceleration;
+	if(fabs(acc_inst)>MAX_ACELERATION)
+  {
+		acceleration = (fabs(acc_inst)/acc_inst)*MAX_ACELERATION;
+	}
+	else
+	{
+		acceleration = acc_inst;
+	}
+return new_speed = speed + acceleration*delta_t;
+}
+
+
+float
+Flight::getS(float V0, float Diferencia)
+{
+	float A, tiempo;
+	tiempo=((Diferencia)/MAX_FLIFGT_W);
+	A=tiempo*V0;
+return A;
+};
+
 void
 Flight::update(float delta_t)
 {
 	float trans;
-	Position CPpos;
+	Position CPpos, CPpos1;
 
 	if(routed())
 	{
-		float goal_bearing, diff_bearing, new_w;
+		float goal_bearing,goal_bearing1, diff_bearing,diff_bearing1, diff_diff_bearing, new_w;
+		float goal_speed, goal_speed1,diff_speed, acc_ideal;
+		float S;
 
-		CPpos = route.front().pos;
-		pos.angles(CPpos, goal_bearing, inclination);
+		if(it!=route.end()){
+
+		it=route.begin();
+		CPpos = it->pos;
+		goal_speed = it->speed;
+
+		it++;
+		CPpos1 = it->pos;
+		goal_speed1 = it->speed;
+
+		pos.angles(CPpos, goal_bearing, inclination);//Rumbo que queremos mantener
+		pos.angles(CPpos1, goal_bearing1, inclination);//Rumbo objetivo
 
 		goal_bearing = normalizePi(goal_bearing + M_PI);
+		goal_bearing1 = normalizePi(goal_bearing1 + M_PI);
+
 		diff_bearing = normalizePi(goal_bearing - bearing);
-		new_w = diff_bearing;
+		diff_bearing1 = normalizePi(goal_bearing1 - bearing);
+		diff_diff_bearing= fabs(diff_bearing1-diff_bearing);
 
-		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
+    float w = diff_bearing/delta_t;
+		new_w = updateW(w);
 
-		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
-
+		acc_ideal = (goal_speed - speed)*delta_t;
+		speed = updateVel(acc_ideal,speed, delta_t);
 		bearing = bearing + new_w*delta_t;
 
-		float goal_speed, diff_speed, acc;
-
-		goal_speed = route.front().speed;
-		acc = (goal_speed - speed);
-
-		if(fabs(acc)>MAX_ACELERATION) acc = (acc/fabs(acc))*MAX_ACELERATION;
-
-		speed = speed + acc*delta_t;
-
-		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
-
-	}else
-		inclination = 0.0;
-
-	last_pos = pos;
-
-	trans = speed * delta_t;
+		std::cout << "\nAvión ["<<id<<"]" << std::endl;
+		std::cout<<"\nBEARING ACTUAL = "<<bearing*180/pi<<std::endl;
+		std::cout<<"BEARING A SEGUIR = "<<goal_bearing*180/pi<<std::endl;
+		std::cout<<"BEARING A CAMBIAR = "<<goal_bearing1*180/pi<<std::endl;
+		std::cout<<"DIFERENCIA ENTRE BEARING QUE TENEMOS Y BEARING QUE SEGUIMOS = "<<diff_bearing*180/pi<<std::endl;///IDEAL ES QUE SEA 0
+		std::cout<<"DIFERENCIA ENTRE BEARING QUE TENEMOS Y BEARING QUE QUEREMOS CAMBIAR = "<<diff_bearing1*180/pi<<std::endl;
+		std::cout<<"Diferencia BEARINGS = "<<diff_diff_bearing*180/pi<<std::endl;
 
 
-	pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
-	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
-	pos.set_z(pos.get_z() + ( trans * sin(inclination)));
 
-//	if(pos.distance(last_pos) > pos.distance(CPpos))
-//		route.pop_front();
+		S = getS(speed, diff_diff_bearing);
+		if(pos.distance(CPpos)<S)
+		{
+			  new_w = fabs(diff_diff_bearing)/delta_t;
+				route.pop_front();
+		}
+		std::cout<<"Distancia S = "<<S<<" metros"<<std::endl;
 
-	if(pos.distance(CPpos)<DIST_POINT)
-		route.pop_front();
+		std::cout<<"\nVELOCIDAD ACTUAL = "<<speed<<std::endl;
+		std::cout<<"VELOCIDAD EN EL WAYPOINT = "<<goal_speed<<std::endl;
+		std::cout<<"VELOCIDAD EN EL WAYPOINT+1 = "<<goal_speed1<<std::endl;
 
-	points = points - delta_t;
+	}
+	else
+		std::cout << "ATERRIZANDO ["<<id<<"]" << std::endl;
+		//inclination = 0.0;
+
+		last_pos = pos;
+
+		trans = speed * delta_t;
+
+		pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
+		pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
+		pos.set_z(pos.get_z() + ( trans * sin(inclination)));
+  	if(pos.distance(last_pos) > pos.distance(CPpos))
+	  	route.pop_front();
+
+		points = points - delta_t;
+	}
 
 }
+
+
+
 //
 //void
 //Flight::draw()
