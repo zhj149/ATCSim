@@ -40,6 +40,8 @@
 
 Flight::~Flight() {
 	// TODO Auto-generated destructor stub
+	
+	
 }
 
 Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclination, float _speed)
