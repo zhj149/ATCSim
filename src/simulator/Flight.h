@@ -54,13 +54,17 @@ public:
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
+	float getS(float v, float theta0, float theta1, float w_max);
+	float getSInclination(float v, float alpha0, float alpha1, float w_max);
 
 private:
 	std::string id;
 	Position pos, last_pos;
 	float bearing, inclination;
+	float s;
 	float speed, w_speed;
 	std::list<Route> route;
+        std::list<Route>::iterator it;
 	bool focused;
 
 	float points;
