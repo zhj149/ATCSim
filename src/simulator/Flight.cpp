@@ -57,23 +57,41 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	w_speed = 0.0f;
 }
 
+float 
+Flight::getS(float v, float diffbearing, float w_max)
+{
+	float s, time, diferencia;
+	s=0.0;
+	time=0.0;
+	diferencia=fabs(diffbearing);
+
+	time =diferencia/w_max;
+	s=v*time;
+	return s;
+
+
+}
+
+
 void
 Flight::update(float delta_t)
 {
-	float trans;
+	float trans,s;
 	Position CPpos;
 
 	if(routed())
 	{
-		float goal_bearing, diff_bearing, new_w;
-
+		float goal_bearing, diff_bearing, new_w, goal_bearing2, diff_bearing2;
+		Position CP2pos;
+		Route r1, r2;
+		
 		CPpos = route.front().pos;
 		pos.angles(CPpos, goal_bearing, inclination);
 
 		goal_bearing = normalizePi(goal_bearing + M_PI);
 		diff_bearing = normalizePi(goal_bearing - bearing);
 		new_w = diff_bearing;
-
+		
 		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
 
 		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
@@ -90,8 +108,24 @@ Flight::update(float delta_t)
 		speed = speed + acc*delta_t;
 
 		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
+		std::list<Route>::iterator it;
+		it=route.begin();
+		r1=*it;
+		it++;
+		r2=*it; 
+		
+		CP2pos=r2.pos;
+		pos.angles(CP2pos, goal_bearing2, inclination);
 
+		goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
+		diff_bearing2 = normalizePi(goal_bearing2 - goal_bearing);
+
+		s=getS(speed,diff_bearing2, MAX_FLIFGT_W);
+
+		//if(pos.distance(CPpos)<s)
+		//new_w = diff_bearing2;
 	}else
+
 		inclination = 0.0;
 
 	last_pos = pos;
@@ -106,7 +140,7 @@ Flight::update(float delta_t)
 //	if(pos.distance(last_pos) > pos.distance(CPpos))
 //		route.pop_front();
 
-	if(pos.distance(CPpos)<DIST_POINT)
+	if(pos.distance(CPpos)<s)
 		route.pop_front();
 
 	points = points - delta_t;

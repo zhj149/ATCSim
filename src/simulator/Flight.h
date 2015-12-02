@@ -40,7 +40,7 @@ public:
 	Flight(std::string _id, Position _pos, float _bearing, float _inclination, float _speed);
 	virtual ~Flight();
 
-	void update(float delta_t);
+	void update(float delta_t); 
 	void draw();
 
 
@@ -54,6 +54,7 @@ public:
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
+	float getS(float v, float diffbearing, float w_max);
 
 private:
 	std::string id;
