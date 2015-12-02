@@ -50,7 +50,10 @@ public:
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
+	float getS(float v,float bear,float w_max);
 	float getPoints() {return points;};
+	float updateV(float speed1,float speed0,float t);
+	float updateW(float w);
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
@@ -62,7 +65,6 @@ private:
 	float speed, w_speed;
 	std::list<Route> route;
 	bool focused;
-
 	float points;
 };
 
