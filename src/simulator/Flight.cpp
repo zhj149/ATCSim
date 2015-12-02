@@ -22,7 +22,6 @@
  *  along with ATCSim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//RAMA MANGEL_BRANCH
 #include "Flight.h"
 
 #ifdef __APPLE__
@@ -58,22 +57,40 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	w_speed = 0.0f;
 }
 
+float
+Flight::getS(float v_0, float ang1, float ang2)
+{
+	float T, w_max,  S;
+	w_max = MAX_FLIFGT_W;
+	T = fabs(ang1-ang2)/w_max;
+	S= T*v_0;
+	return S;
+}
+
 void
 Flight::update(float delta_t)
 {
 	float trans;
-	Position CPpos;
+	Position CPpos1, CPpos2;
 
 	if(routed())
 	{
-		float goal_bearing, diff_bearing, new_w;
+		float goal_bearing1, diff_bearing1, new_w, goal_speed1;
+		float goal_bearing2;
+		it= route.begin();
+		goal_speed1 = it->speed;
+		CPpos1 = it->pos;
+		it++;
+		CPpos2 = it->pos;
 
-		CPpos = route.front().pos;
-		pos.angles(CPpos, goal_bearing, inclination);
+		pos.angles(CPpos1, goal_bearing1, inclination);
+		pos.angles(CPpos2, goal_bearing2, inclination);
 
-		goal_bearing = normalizePi(goal_bearing + M_PI);
-		diff_bearing = normalizePi(goal_bearing - bearing);
-		new_w = diff_bearing;
+		goal_bearing1 = normalizePi(goal_bearing1 + M_PI);
+		diff_bearing1 = normalizePi(goal_bearing1 - bearing);
+		new_w = diff_bearing1;
+		goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
+
 
 		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
 
@@ -81,17 +98,20 @@ Flight::update(float delta_t)
 
 		bearing = bearing + new_w*delta_t;
 
-		float goal_speed, diff_speed, acc;
+		float diff_speed, acc;
 
-		goal_speed = route.front().speed;
-		acc = (goal_speed - speed);
+		acc = (goal_speed1 - speed);
 
 		if(fabs(acc)>MAX_ACELERATION) acc = (acc/fabs(acc))*MAX_ACELERATION;
 
 		speed = speed + acc*delta_t;
 
 		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
-
+		float S = getS(speed, goal_bearing1, goal_bearing2);
+		if(pos.distance(CPpos1)<S){
+			route.pop_front();
+			new_w = fabs(goal_bearing1-goal_bearing2)/delta_t;
+		}
 	}else
 		inclination = 0.0;
 
@@ -107,8 +127,6 @@ Flight::update(float delta_t)
 //	if(pos.distance(last_pos) > pos.distance(CPpos))
 //		route.pop_front();
 
-	if(pos.distance(CPpos)<DIST_POINT)
-		route.pop_front();
 
 	points = points - delta_t;
 
