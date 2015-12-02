@@ -55,6 +55,8 @@ public:
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
 
+		std::cout<<"priviet suka"<<std::endl;
+
 private:
 	std::string id;
 	Position pos, last_pos;
