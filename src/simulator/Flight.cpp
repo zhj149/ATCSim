@@ -58,22 +58,55 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	w_speed = 0.0f;
 }
 
+float
+Flight::getS(float v, float theta0, float theta1, float wmax)
+{
+	float thetad, t, S;
+
+	thetad = fabs(theta1-theta0);
+	//std::cout<<theta0<<std::endl;
+	//std::cout<<theta1<<std::endl;
+	//std::cout<<thetad<<std::endl;
+	t = thetad/wmax;
+	//std::cout<<t<<std::endl;
+	S = t * v;
+	//std::cout<<v<<std::endl;
+	//std::cout<<S<<std::endl;
+
+	return S;
+}
+
+
 void
 Flight::update(float delta_t)
 {
 	float trans;
-	Position CPpos;
+	Position CPpos, CPpos2;
 
 	if(routed())
 	{
-		float goal_bearing, diff_bearing, new_w;
+		float theta0, theta1, goal_bearing, diff_bearing, new_w, S;
+		Route r,s;
+
+		S = 0.0;
+
+		std::list<Route>::iterator it;
+		it = route.begin();
+		it++;
+		r = *it;
 
 		CPpos = route.front().pos;
+		pos.angles(CPpos, theta0, inclination);
+		CPpos2 = r.pos;
+		pos.angles(CPpos2, theta1, inclination);
+
 		pos.angles(CPpos, goal_bearing, inclination);
 
 		goal_bearing = normalizePi(goal_bearing + M_PI);
 		diff_bearing = normalizePi(goal_bearing - bearing);
 		new_w = diff_bearing;
+
+		//std::cout<<new_w<<std::endl;
 
 		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
 
@@ -84,13 +117,31 @@ Flight::update(float delta_t)
 		float goal_speed, diff_speed, acc;
 
 		goal_speed = route.front().speed;
+
+		//if(new_w > 0.01){
+		//	acc = 0.0;
+		//}else{
 		acc = (goal_speed - speed);
+		//}
 
 		if(fabs(acc)>MAX_ACELERATION) acc = (acc/fabs(acc))*MAX_ACELERATION;
 
 		speed = speed + acc*delta_t;
 
-		
+
+		theta0 = normalizePi(theta0 + M_PI);
+		//theta0 = normalizePi(theta0 - bearing);
+		theta1 = normalizePi(theta1 + M_PI);
+		//theta1 = normalizePi(theta1 - bearing);
+
+		S = getS(speed, theta0, theta1, MAX_FLIFGT_W);
+		//std::cout<<S<<std::endl;
+
+		if(pos.distance(CPpos)<S){
+				route.pop_front();
+		}
+
+		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
 
 	}else
 		inclination = 0.0;

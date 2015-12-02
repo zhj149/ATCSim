@@ -54,6 +54,7 @@ public:
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
+  float getS(float v, float theta0, float theta1, float wmax);
 
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
