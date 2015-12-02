@@ -98,7 +98,6 @@ Flight::update(float delta_t)
 
 	trans = speed * delta_t;
 
-
 	pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
 	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
 	pos.set_z(pos.get_z() + ( trans * sin(inclination)));
