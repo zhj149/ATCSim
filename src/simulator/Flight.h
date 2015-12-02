@@ -50,6 +50,7 @@ public:
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
+	float getS(float goal_bearing2, float goal_bearing, float wmax, float speed);
 	float getPoints() {return points;};
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
