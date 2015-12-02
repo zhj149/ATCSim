@@ -51,6 +51,7 @@ public:
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
 	float getPoints() {return points;};
+	float getS(float vel, float thetai, float thetaf, float wangle);
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
@@ -65,6 +66,5 @@ private:
 
 	float points;
 };
-// he echo un cambio para ver mi branch
 
 #endif /* FLIGHT_H_ */

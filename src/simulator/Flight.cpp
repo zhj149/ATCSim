@@ -37,6 +37,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <list>
 
 Flight::~Flight() {
 	// TODO Auto-generated destructor stub
@@ -56,23 +57,53 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 
 	w_speed = 0.0f;
 }
+float Flight::getS(float vel, float thetai, float thetaf, float wangle)
+{
+	float t,s;
+
+	t = (thetai-thetaf)/wangle;
+	s = t*vel;
+
+	return fabs(s);
+}
 
 void
 Flight::update(float delta_t)
 {
 	float trans;
-	Position CPpos;
+	Position CPpos, CPPOS1;
 
 	if(routed())
 	{
-		float goal_bearing, diff_bearing, new_w;
+		float goal_bearing, diff_bearing, theta1, new_w, w_0, new_w_b;
+		float s, dist2P0, inclination1;
 
 		CPpos = route.front().pos;
 		pos.angles(CPpos, goal_bearing, inclination);
-
 		goal_bearing = normalizePi(goal_bearing + M_PI);
 		diff_bearing = normalizePi(goal_bearing - bearing);
-		new_w = diff_bearing;
+		new_w = diff_bearing/delta_t;
+               // new_w_b = new_w ;
+
+		std::list<Route>::iterator it;
+       		it = route.begin();
+		it++;
+		
+		CPPOS1 = it->pos;
+		pos.angles(CPPOS1, theta1, inclination1);
+		theta1 = normalizePi(theta1 + M_PI);
+		s = getS(route.front().speed, diff_bearing, theta1-bearing, MAX_FLIFGT_W); 			dist2P0 = pos.distance(CPpos);
+		std::cout<<s<<std::endl;
+		std::cout<<dist2P0<<std::endl;
+
+		if(dist2P0 < s)
+		{
+			w_0 = std::min(diff_bearing - theta1, MAX_FLIFGT_W);
+				route.pop_front();
+			if(fabs(theta1 - diff_bearing)<0.001)
+				route.pop_front();
+		}
+			
 
 		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
 
@@ -89,7 +120,7 @@ Flight::update(float delta_t)
 
 		speed = speed + acc*delta_t;
 
-		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
+		std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
 
 	}else
 		inclination = 0.0;
