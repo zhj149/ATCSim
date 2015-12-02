@@ -58,6 +58,8 @@ public:
 	bool getFocused() { return focused;};
 	float getS(float v, float diffbearing, float w_max);
 
+
+
 private:
 	std::string id;
 	Position pos, last_pos;
