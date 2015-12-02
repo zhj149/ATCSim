@@ -35,6 +35,8 @@ typedef struct {
 	float speed;
 } Route;
 
+
+
 class Flight {
 public:
 	Flight(std::string _id, Position _pos, float _bearing, float _inclination, float _speed);
