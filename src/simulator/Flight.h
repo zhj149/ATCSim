@@ -51,16 +51,22 @@ public:
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
 	float getPoints() {return points;};
+	float getS(float V0, float Diferencia);
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
 
+////new
+	float updateVel(float acc_ideal,float speed, float delta_t);
+	float updateW(float ideal_w);
+////new
 private:
 	std::string id;
 	Position pos, last_pos;
 	float bearing, inclination;
 	float speed, w_speed;
 	std::list<Route> route;
+	std::list<Route>::iterator it;
 	bool focused;
 
 	float points;
