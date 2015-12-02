@@ -51,6 +51,15 @@ public:
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
 	float getPoints() {return points;};
+	float getS(float velocidad, float theta_0, float theta_1, float w_max);
+	/*
+		Conseguir el cálculo del tiempo d giro con diferencia de thetas
+		entre velocidad de giro máxima, y ese tiempo dividirlo entre la
+		velodidad que lleva el avion
+	*/
+	float updateVel(float acc_buena, float speed, float delta_t);
+	float updateOmega(float w_buena);
+	float restaAngulos(float goal_bearing, float bearing);
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
@@ -62,6 +71,7 @@ private:
 	float speed, w_speed;
 	std::list<Route> route;
 	bool focused;
+	std::list <Route>::iterator it;
 
 	float points;
 };
