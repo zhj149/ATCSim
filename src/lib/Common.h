@@ -20,10 +20,10 @@
 #define CRASH_Z 20.0f
 #define CRASH_INC 25.0f
 #define CRASH_SPEED 10.0f
-#define INIT_MAX_FLIGHTS 1	//Cambiamo
+#define INIT_MAX_FLIGHTS 1
 
 #define MAX_FLIFGT_W	0.2f //12 grados/sec
-#define DIST_POINT 	200.0f //15 grados/sec
+#define DIST_POINT 	200.0 //15 grados/sec
 #define MAX_ACELERATION 	50.0 //50 m/sec2
 
 
