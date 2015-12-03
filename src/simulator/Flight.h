@@ -52,6 +52,12 @@ public:
 	float getSpeed() { return speed;};
 	float getPoints() {return points;};
 	std::string getId(){return id;};
+	float getS(float velocidad, float difangular)
+	{
+		float S;
+		S = (fabs(difangular)/MAX_FLIGHT_W)*velocidad;
+		return S;
+	};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
 
@@ -64,6 +70,7 @@ private:
 	bool focused;
 
 	float points;
+	float S;
 };
 
 #endif /* FLIGHT_H_ */

@@ -38,6 +38,7 @@
 #include <string>
 #include <math.h>
 
+
 Flight::~Flight() {
 	// TODO Auto-generated destructor stub
 }
@@ -61,20 +62,31 @@ void
 Flight::update(float delta_t)
 {
 	float trans;
-	Position CPpos;
+	Position CPpos, CPpos0, CPpos1;
 
 	if(routed())
 	{
-		float goal_bearing, diff_bearing, new_w;
+		float goal_bearing, diff_bearing, new_w, S;
+		float goal_bearing1, goal_bearing2, diff_bearing1, diff_bearing2, differencia_entre_bearing;
 
-		CPpos = route.front().pos;
-		pos.angles(CPpos, goal_bearing, inclination);
 
-		goal_bearing = normalizePi(goal_bearing + M_PI);
-		diff_bearing = normalizePi(goal_bearing - bearing);
-		new_w = diff_bearing;
+		std::list<Route>::iterator it;
+		it = route.begin();
+		CPpos0 = it->pos;
+		it++;
+		CPpos1 = it->pos;
 
-		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
+		pos.angles(CPpos0, goal_bearing1, inclination);
+		pos.angles(CPpos1, goal_bearing2, inclination);
+
+		goal_bearing1 = normalizePi(goal_bearing1 + M_PI);
+		goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
+		diff_bearing1 = normalizePi(goal_bearing1 - bearing);
+		diff_bearing2 = normalizePi(goal_bearing2 - bearing);
+		differencia_entre_bearing = (diff_bearing1-diff_bearing2);
+		new_w = diff_bearing1;
+		
+		if(fabs(new_w)>MAX_FLIGHT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIGHT_W;
 
 		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
 
@@ -90,7 +102,10 @@ Flight::update(float delta_t)
 		speed = speed + acc*delta_t;
 
 		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
+		S = getS(speed, differencia_entre_bearing);
 
+		if(pos.distance(CPpos0)<S)
+			route.pop_front();
 	}else
 		inclination = 0.0;
 
@@ -105,9 +120,6 @@ Flight::update(float delta_t)
 
 //	if(pos.distance(last_pos) > pos.distance(CPpos))
 //		route.pop_front();
-
-	if(pos.distance(CPpos)<DIST_POINT)
-		route.pop_front();
 
 	points = points - delta_t;
 
