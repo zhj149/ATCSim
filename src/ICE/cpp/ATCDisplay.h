@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef ___home_al_12_13_alvaroda_apatc2015_ATCSim_src_ICE_cpp_ATCDisplay_h__
-#define ___home_al_12_13_alvaroda_apatc2015_ATCSim_src_ICE_cpp_ATCDisplay_h__
+#ifndef ___home_throner_git_ATCSim_src_ICE_cpp_ATCDisplay_h__
+#define ___home_throner_git_ATCSim_src_ICE_cpp_ATCDisplay_h__
 
 #include <Ice/ProxyF.h>
 #include <Ice/ObjectF.h>
