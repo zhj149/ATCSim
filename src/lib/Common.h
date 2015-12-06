@@ -20,7 +20,7 @@
 #define CRASH_Z 20.0f
 #define CRASH_INC 25.0f
 #define CRASH_SPEED 10.0f
-#define INIT_MAX_FLIGHTS 1	//Cambiamo
+#define INIT_MAX_FLIGHTS 1	//Numero de aviones que estan en el aire inicialmente
 
 #define MAX_FLIFGT_W	0.2f //12 grados/sec
 #define DIST_POINT 	200.0 //15 grados/sec
