@@ -100,18 +100,9 @@ Flight::update(float delta_t)
 		CPpos2 = r.pos;
 		pos.angles(CPpos2, theta1, inclination);
 
-		pos.angles(CPpos, goal_bearing, inclination);
 
-		goal_bearing = normalizePi(goal_bearing + M_PI);
-		diff_bearing = normalizePi(goal_bearing - bearing);
-		new_w = diff_bearing;
-
-		//std::cout<<new_w<<std::endl;
-
-		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
-
-		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
-
+		//cout<<bearing<<"\t"<<goal_bearing<<"\t"<<goal_bearing2<<endl;
+		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w<<std::endl;
 		bearing = bearing + new_w*delta_t;
 
 		float goal_speed, diff_speed, acc;
@@ -134,6 +125,10 @@ Flight::update(float delta_t)
 		theta1 = normalizePi(theta1 + M_PI);
 		//theta1 = normalizePi(theta1 - bearing);
 
+
+		new_w = theta0;
+		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
+
 		S = getS(speed, theta0, theta1, MAX_FLIFGT_W);
 		//std::cout<<S<<std::endl;
 
@@ -142,6 +137,7 @@ Flight::update(float delta_t)
 		}
 
 		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
+
 
 	}else
 		inclination = 0.0;
