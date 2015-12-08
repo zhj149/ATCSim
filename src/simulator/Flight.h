@@ -55,6 +55,8 @@ public:
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
+	void setLanding(bool landing_) { landing = landing_;};
+	bool getLanding() { return landing;};
 
 private:
 	std::string id;
@@ -63,7 +65,7 @@ private:
 	float speed, w_speed;
 	std::list<Route> route;
 	bool focused;
-
+  bool landing;
 	float points;
 };
 

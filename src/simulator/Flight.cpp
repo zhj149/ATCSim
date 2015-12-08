@@ -54,6 +54,7 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	route.clear();
 
 	focused = false;
+	landing = false;
 	points = INIT_FLIGHT_POINTS;
 
 	w_speed = 0.0f;
@@ -113,6 +114,7 @@ Flight::update(float delta_t)
 
 		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
 		float wmax = MAX_FLIFGT_W;
+
 		float space_turn=getS(goal_bearing2,goal_bearing,wmax,speed);
 
 		if(pos.distance(CPpos)<space_turn){
