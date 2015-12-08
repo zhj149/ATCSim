@@ -169,14 +169,14 @@ AirController::doWork()
 			{  
 								
 											
-				if((*it)->getLanding()) {counter=counter+1;std::cout<<counter<<std::endl;}
+				if((*it)->getLanding()) {counter=counter+1;/*std::cout<<counter<<std::endl;*/}
 				else{
 				   if((*it)->getRoute()->empty()){				
 				 			
 					if((*it)->getPosition().get_z()<=1000)
 
 					{
-						std::cout<<"wait1"<<std::endl;
+						//std::cout<<"wait1"<<std::endl;
 						assignWaiting1(*it);
 
 					}
@@ -185,11 +185,11 @@ AirController::doWork()
 					{
 
 						assignWaiting2(*it);
-						std::cout<<"wait2"<<std::endl;
+						//std::cout<<"wait2"<<std::endl;
 					}
 					else if((*it)->getPosition().get_z()>3000)
 					{
-						std::cout<<"wait3"<<std::endl;
+						//std::cout<<"wait3"<<std::endl;
 						assignWaiting3(*it);			
 					}
 				   }
@@ -215,15 +215,15 @@ AirController::doWork()
 
 					if(p.get_x()==posbase1.get_x() &&
 					   p.get_y()==posbase1.get_y() &&
-					   p.get_z()==posbase1.get_z()){assignLanding(*it);std::cout<<"landing"<<std::endl;}
+					   p.get_z()==posbase1.get_z()){assignLanding(*it);/*std::cout<<"landing"<<std::endl;*/}
 	
 					if(p.get_x()==posbase2.get_x() &&
 					   p.get_y()==posbase2.get_y() &&
-					   p.get_z()==posbase2.get_z()){assignWaiting1(*it);std::cout<<"wait___1"<<std::endl;}
+					   p.get_z()==posbase2.get_z()){assignWaiting1(*it);/*std::cout<<"wait_1"<<std::endl;*/}
 
 					if(p.get_x()==posbase3.get_x() &&
 					   p.get_y()==posbase3.get_y() &&
-					   p.get_z()==posbase3.get_z()){assignWaiting2(*it);std::cout<<"wait__2"<<std::endl;}			
+					   p.get_z()==posbase3.get_z()){assignWaiting2(*it);/*std::cout<<"wait_2"<<std::endl;*/}
 				}
 		}
 }
