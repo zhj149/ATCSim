@@ -26,6 +26,8 @@
 #define AIRCONTROLLER_H_
 
 #include "Singleton.h"
+#include "Flight.h"
+#include <list>
 
 class AirController: public Singleton<AirController> {
 public:
@@ -33,6 +35,15 @@ public:
 	virtual ~AirController();
 
 	void doWork();
+	void assignLanding(Flight *f, Route r0, Route r1, Route r2, Route r3, Route r4, Route r5);
+	void assignWaiting(Flight *f, Route r0, Route r1, Route r2, Route r3);
+	bool getLanding(){return landing;};
+	void setLanding(bool landing_){landing = landing_;};
+
+private:
+	bool landing;
+
+	
 };
 
 #endif /* AIRCONTROLLER_H_ */
