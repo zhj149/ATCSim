@@ -107,10 +107,12 @@ Flight::update(float delta_t)
 	if(routed())
 	{
 		float goal_bearing,goal_bearing1, diff_bearing,diff_bearing1, diff_diff_bearing, new_w;
-		float goal_speed, goal_speed1,diff_speed, acc_ideal;
+		float goal_inclination,goal_inclination1, diff_inclination,diff_inclination1, diff_diff_inclination, new_wi;
 		float S;
+		float Si;
+		float goal_speed, goal_speed1,diff_speed, acc_ideal;
 
-		if(it!=route.end()){
+
 
 		it=route.begin();
 		CPpos = it->pos;
@@ -120,49 +122,65 @@ Flight::update(float delta_t)
 		CPpos1 = it->pos;
 		goal_speed1 = it->speed;
 
-		pos.angles(CPpos, goal_bearing, inclination);//Rumbo que queremos mantener
-		pos.angles(CPpos1, goal_bearing1, inclination);//Rumbo objetivo
+		pos.angles(CPpos, goal_bearing, goal_inclination);//Rumbo que queremos mantener
+		pos.angles(CPpos1, goal_bearing1, goal_inclination1);//Rumbo objetivo
 
 		goal_bearing = normalizePi(goal_bearing + M_PI);
 		goal_bearing1 = normalizePi(goal_bearing1 + M_PI);
 
 		diff_bearing = normalizePi(goal_bearing - bearing);
 		diff_bearing1 = normalizePi(goal_bearing1 - bearing);
+
 		diff_diff_bearing= fabs(diff_bearing1-diff_bearing);
+
+		diff_inclination = normalizePi(goal_inclination - inclination);
+		diff_inclination1 = normalizePi(goal_inclination1 - inclination);
+
+		diff_diff_inclination= fabs(diff_inclination1-diff_inclination);
+
 
     float w = diff_bearing/delta_t;
 		new_w = updateW(w);
+		bearing = bearing + new_w*delta_t;
+
+		float wi = diff_inclination/delta_t;
+		new_wi = updateW(wi);
+		inclination = inclination + new_wi*delta_t;
 
 		acc_ideal = (goal_speed - speed)*delta_t;
 		speed = updateVel(acc_ideal,speed, delta_t);
-		bearing = bearing + new_w*delta_t;
 
-		std::cout << "\nAvión ["<<id<<"]" << std::endl;
-		std::cout<<"\nBEARING ACTUAL = "<<bearing*180/pi<<std::endl;
-		std::cout<<"BEARING A SEGUIR = "<<goal_bearing*180/pi<<std::endl;
-		std::cout<<"BEARING A CAMBIAR = "<<goal_bearing1*180/pi<<std::endl;
-		std::cout<<"DIFERENCIA ENTRE BEARING QUE TENEMOS Y BEARING QUE SEGUIMOS = "<<diff_bearing*180/pi<<std::endl;///IDEAL ES QUE SEA 0
-		std::cout<<"DIFERENCIA ENTRE BEARING QUE TENEMOS Y BEARING QUE QUEREMOS CAMBIAR = "<<diff_bearing1*180/pi<<std::endl;
-		std::cout<<"Diferencia BEARINGS = "<<diff_diff_bearing*180/pi<<std::endl;
+
+		//std::cout << "\nAvión ["<<id<<"]" << std::endl;
+		//std::cout<<"\nBEARING ACTUAL = "<<bearing*180/pi<<std::endl;
+		//std::cout<<"BEARING A SEGUIR = "<<goal_bearing*180/pi<<std::endl;
+		//std::cout<<"BEARING A CAMBIAR = "<<goal_bearing1*180/pi<<std::endl;
+		//std::cout<<"DIFERENCIA ENTRE BEARING QUE TENEMOS Y BEARING QUE SEGUIMOS = "<<diff_bearing*180/pi<<std::endl;///IDEAL ES QUE SEA 0
+		//std::cout<<"DIFERENCIA ENTRE BEARING QUE TENEMOS Y BEARING QUE QUEREMOS CAMBIAR = "<<diff_bearing1*180/pi<<std::endl;
+		//std::cout<<"Diferencia BEARINGS = "<<diff_diff_bearing*180/pi<<std::endl;
 
 
 
 		S = getS(speed, diff_diff_bearing);
-		if(pos.distance(CPpos)<S)
+		Si = getS(speed, diff_diff_inclination);
+
+		if((pos.distance(CPpos)<S)||(pos.distance(CPpos)<Si))
 		{
 			  new_w = fabs(diff_diff_bearing)/delta_t;
+				new_wi = fabs(diff_diff_inclination)/delta_t;
+
 				route.pop_front();
 		}
-		std::cout<<"Distancia S = "<<S<<" metros"<<std::endl;
 
-		std::cout<<"\nVELOCIDAD ACTUAL = "<<speed<<std::endl;
-		std::cout<<"VELOCIDAD EN EL WAYPOINT = "<<goal_speed<<std::endl;
-		std::cout<<"VELOCIDAD EN EL WAYPOINT+1 = "<<goal_speed1<<std::endl;
+		//std::cout<<"Distancia S = "<<S<<" metros"<<std::endl;
 
-	}
-	else
-		std::cout << "ATERRIZANDO ["<<id<<"]" << std::endl;
-		//inclination = 0.0;
+		std::cout<<"VELOCIDAD ACTUAL = "<<speed<<std::endl;
+		//std::cout<<"VELOCIDAD EN EL WAYPOINT = "<<goal_speed<<std::endl;
+		//std::cout<<"VELOCIDAD EN EL WAYPOINT+1 = "<<goal_speed1<<std::endl;
+
+
+}else{inclination = 0.0;}
+
 
 		last_pos = pos;
 
@@ -171,12 +189,16 @@ Flight::update(float delta_t)
 		pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
 		pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
 		pos.set_z(pos.get_z() + ( trans * sin(inclination)));
-  	if(pos.distance(last_pos) > pos.distance(CPpos))
+
+
+		if(pos.distance(CPpos) < DIST_POINT){
 	  	route.pop_front();
+		}
+
+		//if(pos.distance(last_pos) > pos.distance(CPpos))
+			//route.pop_front();
 
 		points = points - delta_t;
-	}
-
 }
 
 
