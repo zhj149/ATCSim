@@ -55,6 +55,10 @@ public:
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
   float getS(float v, float theta0, float theta1, float wmax);
+	void setLanding(bool state) { landing = state;};
+	bool getLanding() { return landing;};
+
+
 
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
@@ -66,6 +70,7 @@ private:
 	float speed, w_speed;
 	std::list<Route> route;
 	bool focused;
+	bool landing;
 
 	bool inStorm;
 
