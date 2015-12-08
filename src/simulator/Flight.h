@@ -55,6 +55,10 @@ public:
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
 	float getS(float v_0, float ang1, float ang2);
+	void setLanding(bool state){landing = state;};
+	bool getLanding(){return landing;};
+
+
 
 private:
 	std::string id;
@@ -64,8 +68,9 @@ private:
 	std::list<Route> route;
 	bool focused;
 	std::list<Route>::iterator it;
-
 	float points;
+	bool landing;
+
 };
 
 #endif /* FLIGHT_H_ */

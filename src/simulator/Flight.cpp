@@ -50,7 +50,7 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	inclination = _inclination;
 	speed = _speed;
 	route.clear();
-
+	landing = false;
 	focused = false;
 	points = INIT_FLIGHT_POINTS;
 
@@ -77,26 +77,31 @@ Flight::update(float delta_t)
 	{
 		float goal_bearing1, diff_bearing1, new_w, goal_speed1;
 		float goal_bearing2;
+		float inclination1, inclination2, new_w_inclination,diff_inclination1;
 		it= route.begin();
 		goal_speed1 = it->speed;
 		CPpos1 = it->pos;
 		it++;
 		CPpos2 = it->pos;
 
-		pos.angles(CPpos1, goal_bearing1, inclination);
-		pos.angles(CPpos2, goal_bearing2, inclination);
+		pos.angles(CPpos1, goal_bearing1, inclination1);
+		pos.angles(CPpos2, goal_bearing2, inclination2);
 
 		goal_bearing1 = normalizePi(goal_bearing1 + M_PI);
 		diff_bearing1 = normalizePi(goal_bearing1 - bearing);
 		new_w = diff_bearing1;
 		goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
 
+		diff_inclination1 = normalizePi(inclination1 - inclination);
+		new_w_inclination = diff_inclination1;
+		inclination2 = normalizePi(inclination2 - M_PI);
 
 		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
 
 		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
 
 		bearing = bearing + new_w*delta_t;
+		inclination= inclination + new_w_inclination*delta_t;
 
 		float diff_speed, acc;
 
@@ -111,6 +116,7 @@ Flight::update(float delta_t)
 		if(pos.distance(CPpos1)<S){
 			route.pop_front();
 			new_w = fabs(goal_bearing1-goal_bearing2)/delta_t;
+			new_w_inclination = fabs(inclination1-inclination2)/delta_t;
 		}
 	}else
 		inclination = 0.0;
@@ -124,8 +130,12 @@ Flight::update(float delta_t)
 	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
 	pos.set_z(pos.get_z() + ( trans * sin(inclination)));
 
-//	if(pos.distance(last_pos) > pos.distance(CPpos))
-//		route.pop_front();
+	if(pos.distance(CPpos1) < DIST_POINT)
+		route.pop_front();
+
+
+	//if(pos.distance(last_pos) > pos.distance(CPpos1))
+		//route.pop_front();
 
 
 	points = points - delta_t;
