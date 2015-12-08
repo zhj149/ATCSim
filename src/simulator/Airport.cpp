@@ -254,17 +254,17 @@ Airport::checkCrashes()
 	{
 		if((*it)->getPosition().get_z()<CRASH_Z)
 		{
-			std::cerr<<"[PoZ]Crash of "<<(*it)->getId()<<std::endl;
+			std::cerr<<"[PoZ]Crash of por altura"<<(*it)->getId()<<std::endl;
 			it=removeFlight((*it)->getId());
 			points += CRASH_HEIGHT_POINTS;
 		}else if(toDegrees(fabs((*it)->getInclination())) > CRASH_INC)
 		{
-			std::cerr<<"[Inc] Crash of "<<(*it)->getId()<<std::endl;
+			std::cerr<<"[Inc] Crash of  inclinacion"<<(*it)->getId()<<std::endl;
 			it = removeFlight((*it)->getId());
 			points += CRASH_INC_POINTS;
 		}else if( (*it)->getSpeed()<CRASH_SPEED)
 		{
-			std::cerr<<"[Spd] Crash of "<<(*it)->getId()<<std::endl;
+			std::cerr<<"[Spd] Crash of velocidad"<<(*it)->getId()<<std::endl;
 			it = removeFlight((*it)->getId());
 			points += CRASH_SPEED_POINTS;
 		}else
