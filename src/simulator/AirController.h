@@ -26,13 +26,21 @@
 #define AIRCONTROLLER_H_
 
 #include "Singleton.h"
+#include "Singleton.h"
+#include "Flight.h"
 
 class AirController: public Singleton<AirController> {
 public:
 	AirController();
 	virtual ~AirController();
+	void Land(Flight *flight, Route a, Route b, Route c, Route d);
+	void Waiting(Flight *flight, Route a, Route b, Route c, Route d, Route e);
+	bool setLanding(bool indicador) {landing = indicador;};
+	bool getLanding() {return landing;};
 
 	void doWork();
+private:
+	bool landing;
 };
 
 #endif /* AIRCONTROLLER_H_ */

@@ -52,20 +52,6 @@ stdlib.h
 iostream
 -
 
-/home/usuario/git/ATCSim/src/ICE/cpp/ATCDisplay.cpp
-ATCDisplay.h
--
-Ice/LocalException.h
--
-Ice/ObjectFactory.h
--
-Ice/BasicStream.h
--
-Ice/Object.h
--
-IceUtil/Iterator.h
--
-
 /home/usuario/git/ATCSim/src/simulator/ATCSim.cpp
 stdio.h
 -
@@ -91,18 +77,10 @@ list
 /home/usuario/git/ATCSim/src/simulator/AirController.h
 Singleton.h
 /home/usuario/git/ATCSim/src/simulator/Singleton.h
-
-/home/usuario/git/ATCSim/src/simulator/Airport.cpp
-Airport.h
-/home/usuario/git/ATCSim/src/simulator/Airport.h
-sys/time.h
--
-stdio.h
--
-pthread.h
--
-cstdlib
--
+Singleton.h
+/home/usuario/git/ATCSim/src/simulator/Singleton.h
+Flight.h
+/home/usuario/git/ATCSim/src/simulator/Flight.h
 
 /home/usuario/git/ATCSim/src/simulator/Airport.h
 Singleton.h
@@ -116,26 +94,6 @@ math.h
 list
 -
 
-/home/usuario/git/ATCSim/src/simulator/Flight.cpp
-Flight.h
-/home/usuario/git/ATCSim/src/simulator/Flight.h
-OpenGL/gl.h
--
-OpenGL/glu.h
--
-GL/glu.h
--
-GL/gl.h
--
-Common.h
-/home/usuario/git/ATCSim/src/simulator/Common.h
-iostream
--
-string
--
-math.h
--
-
 /home/usuario/git/ATCSim/src/simulator/Flight.h
 string
 -
@@ -146,10 +104,6 @@ Common.h
 list
 -
 
-/home/usuario/git/ATCSim/src/simulator/IceComms.cpp
-IceComms.h
-/home/usuario/git/ATCSim/src/simulator/IceComms.h
-
 /home/usuario/git/ATCSim/src/simulator/IceComms.h
 Ice/Ice.h
 -
@@ -157,12 +111,6 @@ Singleton.h
 /home/usuario/git/ATCSim/src/simulator/Singleton.h
 Airport.h
 /home/usuario/git/ATCSim/src/simulator/Airport.h
-
-/home/usuario/git/ATCSim/src/simulator/Position.cpp
-Position.h
-/home/usuario/git/ATCSim/src/simulator/Position.h
-math.h
--
 
 /home/usuario/git/ATCSim/src/simulator/Position.h
 

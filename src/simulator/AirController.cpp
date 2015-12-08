@@ -30,11 +30,33 @@
 
 AirController::AirController() {
 	// TODO Auto-generated constructor stub
-
+	setLanding(false);
 }
 
 AirController::~AirController() {
 	// TODO Auto-generated destructor stub
+}
+void AirController::Land(Flight *flight, Route a, Route b, Route c, Route d)
+{
+	setLanding(true);
+
+	flight->getRoute()->clear();
+	flight->getRoute()->push_back(d);
+	flight->getRoute()->push_front(c);
+	flight->getRoute()->push_front(b);
+	flight->getRoute()->push_front(a);
+
+}
+void AirController::Waiting(Flight *flight, Route a, Route b, Route c, Route d, Route e)
+{
+	setLanding(false);
+	flight->getRoute()->clear();
+	flight->getRoute()->push_front(e);
+	flight->getRoute()->push_front(d);
+	flight->getRoute()->push_front(c);
+	flight->getRoute()->push_front(b);
+	flight->getRoute()->push_front(a);
+
 }
 
 void
@@ -142,7 +164,7 @@ AirController::doWork()
 				*/
 
 				//Realiza rutas de espera y luego aterriza sin criterio
-				if((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty())
+				/*if((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty())
 				{
 					(*it)->getRoute()->push_back(r3);
 					(*it)->getRoute()->push_front(r2);
@@ -182,7 +204,7 @@ AirController::doWork()
 					(*it)->getRoute()->push_front(r16);
 					(*it)->getRoute()->push_front(r15);
 					(*it)->getRoute()->push_front(r14);
-				}
+				}*/
 
 				/*
 				//Entrada de izquierda, derecha y centro sin rutas de espera
@@ -209,6 +231,33 @@ AirController::doWork()
 					(*it)->getRoute()->push_front(r0);
 				}
 				*/
+				//Intento bastante convicente
+
+				if(getLanding()==true){
+					while ((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty()) {
+						Waiting(*it, r7, r9, r6, r8, r7);
+					}
+					while((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty()){
+						Waiting(*it, r13, r10, r12, r11, r13);
+					}
+					while((*it)->getPosition().get_y()<500 && (*it)->getPosition().get_x()>-500 && (*it)->getRoute()->empty()){
+						Waiting(*it, r17, r16, r15, r14, r17);
+					}
+				}
+				else if(getLanding()==false){
+					if((*it)->getPosition().get_y()<-500 && (*it)->getRoute()->empty())
+					{
+						Land(*it, r4, r0, r1, r2);
+					}
+					else if((*it)->getPosition().get_y()>500 && (*it)->getRoute()->empty())
+					{
+						Land(*it, r5, r1, r2, r3);
+					}
+					else if((*it)->getPosition().get_y()<500 && (*it)->getPosition().get_x()>-500 && (*it)->getRoute()->empty())
+					{
+						Land(*it, r0, r1, r2, r3);
+					}
+				}
 			}
 
 }
