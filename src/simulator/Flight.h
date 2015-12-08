@@ -47,12 +47,18 @@ public:
 	std::list<Route> *getRoute() { return &route;};
 	bool routed() { return !route.empty();};
 	Position getPosition() { return pos;};
+
+	//bool setLanding(bool state) { landing = state;};
+	//bool getLanding() {return landing;};
+
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
 	float getPoints() {return points;};
 	std::string getId(){return id;};
+
 	void setFocused(bool state) { focused = state;};
+
 	bool getFocused() { return focused;};
 	float getS(float v, float theta0, float theta1, float w_max);
 
