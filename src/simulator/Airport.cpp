@@ -254,17 +254,17 @@ Airport::checkCrashes()
 	{
 		if((*it)->getPosition().get_z()<CRASH_Z)
 		{
-			std::cerr<<"[PoZ]Crash of "<<(*it)->getId()<<std::endl;
+			std::cerr<<"[PoZ] CRAAAAAAAAAAAAAAAAAAAAAAASH of "<<(*it)->getId()<<std::endl;
 			it=removeFlight((*it)->getId());
 			points += CRASH_HEIGHT_POINTS;
 		}else if(toDegrees(fabs((*it)->getInclination())) > CRASH_INC)
 		{
-			std::cerr<<"[Inc] Crash of "<<(*it)->getId()<<std::endl;
+			std::cerr<<"[Inc] CRAAAAAAAAAAAAAAAAAAAAAAASH of "<<(*it)->getId()<<std::endl;
 			it = removeFlight((*it)->getId());
 			points += CRASH_INC_POINTS;
 		}else if( (*it)->getSpeed()<CRASH_SPEED)
 		{
-			std::cerr<<"[Spd] Crash of "<<(*it)->getId()<<std::endl;
+			std::cerr<<"[Spd] CRAAAAAAAAAAAAAAAAAAAAAAASH of "<<(*it)->getId()<<std::endl;
 			it = removeFlight((*it)->getId());
 			points += CRASH_SPEED_POINTS;
 		}else
@@ -290,12 +290,14 @@ Airport::checkLandings()
 				((*it)->getSpeed()<LANDING_SPEED))
 		{
 
-			std::cerr<<"Flight "<<(*it)->getId()<<" landed"<<std::endl;
+			std::cerr<<"Flight "<<(*it)->getId()<<" LANDEEEEEEEEEEEEEEED"<<std::endl;
+			points += (int)(*it)->getPoints();
+			
 			it = removeFlight((*it)->getId());
 
 			std::cerr<<"*";
 
-			points += (int)(*it)->getPoints();
+
 
 			return;
 		}else
