@@ -55,7 +55,12 @@
 #define INC_DIFF		30000000 //30 sec
 #define INC_PEN			1 	 	//fligts/inc
 
+#define NUM_FLIGHT_LV	5
+
 #define INC_SIMTIME			0.1
+
+#define DIST_DECISION	8333.3f //Distancia relativa al centro de la pantalla, para cuadrantes
+#define DIST_UMBRAL		400.0f	//Distancia relativa al centro de la pantalla, para el principio de la pista
 
 /**
 * defines the sign of a (-1, 0 or 1)

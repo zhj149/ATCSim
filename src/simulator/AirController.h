@@ -26,13 +26,33 @@
 #define AIRCONTROLLER_H_
 
 #include "Singleton.h"
+#include "Flight.h"
 
 class AirController: public Singleton<AirController> {
 public:
 	AirController();
 	virtual ~AirController();
 
+	void creaRuta(std::list<Route> ruta, Route wp_1, Route wp_2, Route wp_3, Route wp_4);
+
 	void doWork();
+
+	void assignWaiting(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3, Route wait_4);
+	void assignLanding(Flight* vuelo, Route wp_land);
+	void setWhere_I (bool ocupado, int index) {where_i[index] = ocupado;};
+	bool getWhere_I (int index) {return where_i[index];};
+	void setWhere_C (bool ocupado, int index) {where_c[index] = ocupado;};
+	bool getWhere_C (int index) {return where_c[index];};
+	void setWhere_D (bool ocupado, int index) {where_d[index] = ocupado;};
+	bool getWhere_D (int index) {return where_d[index];};
+
+
+private:
+	//Variables privadas que son los vectores de niveles
+	bool where_i[NUM_FLIGHT_LV];
+	bool where_c[NUM_FLIGHT_LV];
+	bool where_d[NUM_FLIGHT_LV];
+
 };
 
 #endif /* AIRCONTROLLER_H_ */

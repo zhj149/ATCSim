@@ -43,9 +43,10 @@ public:
 	void update(float delta_t);
 	void draw();
 
+	std::list<Route> *getRoute() { return route;};
+	void setRoute(std::list<Route> *ruta) { route = ruta;};
 
-	std::list<Route> *getRoute() { return &route;};
-	bool routed() { return !route.empty();};
+	bool routed() { return route != NULL;};
 	Position getPosition() { return pos;};
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
@@ -64,14 +65,31 @@ public:
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
 
+	void setLanding (bool land) {aterriza_ = land;};
+	bool getLanding () {return aterriza_;};
+
+	void setNivel (int nivel) {nivelVuelo_ = nivel;};
+	int getNivel () {return nivelVuelo_;};
+
+/*
+	void setWaiting_1 (bool wait1) {espera1_ = wait1;};
+	bool getWaiting_1 () {return espera1_;};
+	void setWaiting_2 (bool wait2) {espera2_ = wait2;};
+	bool getWaiting_2 () {return espera2_;};
+*/
+
 private:
 	std::string id;
 	Position pos, last_pos;
 	float bearing, inclination;
 	float speed, w_speed;
-	std::list<Route> route;
+	std::list<Route> *route; //Esto pasa de ser una lista de puntos de ruta, a ser una lista de punteros a ruta
 	bool focused;
-	std::list <Route>::iterator it;
+	std::list<Route>::iterator it;
+	int desfase;  //Variable de prueba para manejar it y su comportamiento en la lista
+
+	bool aterriza_;
+	int nivelVuelo_;
 
 	float points;
 };

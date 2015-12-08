@@ -51,10 +51,14 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	bearing = _bearing;
 	inclination = _inclination;
 	speed = _speed;
-	route.clear();
+	route = NULL;
 
 	focused = false;
 	points = INIT_FLIGHT_POINTS;
+
+	aterriza_ = false;
+	nivelVuelo_ = 0;
+	desfase = 0; // Inicialización de la variable de prueba
 
 	w_speed = 0.0f;
 }
@@ -119,20 +123,24 @@ Flight::update(float delta_t)
 	float goal_bearing_0, goal_bearing_1;
 	float acc_buena, S, goal_speed_0;
 	
+	it = route->begin();
+
 	if(routed())
 	{
-		
-	   if (it!=route.end()) 
+	   std::list<Route>::iterator aux = it;
+	   for (int j=0; j<desfase; j++)
+	   {
+		   aux++;
+	   }
+	   if (aux!=route->end())
 	   {	
 	   	   Position CPpos_0, CPpos_1;
-	   	   
-		   it = route.begin();
-		   
-		   CPpos_0 = it->pos;
-		   goal_speed_0 = it->speed;
+
+		   CPpos_0 = aux->pos;
+		   goal_speed_0 = aux->speed;
 		
-		   it++;
-		   CPpos_1 = it->pos;
+		   aux++;
+		   CPpos_1 = aux->pos;
 		   
 		   pos.angles(CPpos_0, goal_bearing_0, inclination);
 		   pos.angles(CPpos_1, goal_bearing_1, inclination);
@@ -140,7 +148,7 @@ Flight::update(float delta_t)
 		   goal_bearing_0 = normalizePi(goal_bearing_0 + M_PI);
 		   goal_bearing_1 = normalizePi(goal_bearing_1 + M_PI);
 		   
-	           float resta_rumbo_0 = restaAngulos(goal_bearing_0, bearing);
+	       float resta_rumbo_0 = restaAngulos(goal_bearing_0, bearing);
 		   float resta_rumbo_1 = restaAngulos(goal_bearing_1, bearing);
 		   
 		   float w_buena = resta_rumbo_0/delta_t;
@@ -160,24 +168,32 @@ Flight::update(float delta_t)
 		   if (pos.distance(CPpos_0) < S)
 		   {
 		   	new_w = fabs(resta_rumbo_0 - resta_rumbo_1)/delta_t;
-			route.pop_front();
+//			route->pop_front();
+		   	desfase++;
 		   } 
 		   
 		   
 	   }
+	   else
+	   {
+		   desfase = 0;
+	   }
 		
 
-	} else
+	}
+	else
 	{
 		inclination = 0.0;
 		
-		it = route.begin();
+		it = route->begin();
 		
 		goal_speed_0 = it->speed;
 		
 		acc_buena = (goal_speed_0 - speed);
 		   
 		speed = updateVel(acc_buena, speed, delta_t);
+
+		desfase = 0;
 
 	}
 	

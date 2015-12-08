@@ -24,7 +24,6 @@
 
 #include "AirController.h"
 #include "Airport.h"
-#include "Flight.h"
 #include "Position.h"
 #include <list>
 
@@ -37,42 +36,466 @@ AirController::~AirController() {
 	// TODO Auto-generated destructor stub
 }
 
+/*
+void
+AirController::assignWaiting(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3, Route wait_4)
+{
+	vuelo->getRoute()->push_front(wait_4);
+	vuelo->getRoute()->push_front(wait_3);
+	vuelo->getRoute()->push_front(wait_2);
+	vuelo->getRoute()->push_front(wait_1);
+
+//	vuelo->setWaiting(true);
+}
+
+void
+AirController::assignLanding(Flight* vuelo, Route wp_land)
+{
+	vuelo->getRoute()->push_front(wp_land);
+	vuelo->setLanding(false);
+}*/
+
+void
+AirController::creaRuta(std::list<Route> ruta, Route wp_1, Route wp_2, Route wp_3, Route wp_4)
+{
+	ruta.push_front(wp_1);
+	ruta.push_back(wp_2);
+	ruta.push_back(wp_3);
+	ruta.push_back(wp_4);
+}
+
+
+
 void
 AirController::doWork()
 {
-			std::list<Flight*> flights = Airport::getInstance()->getFlights();
-			std::list<Flight*>::iterator it;
+	std::list<Flight*> flights = Airport::getInstance()->getFlights();
+	std::list<Flight*>::iterator it;
 
-			Position pos0(3500.0, 0.0, 100.0);
-			Position pos1(1500.0, 0.0, 100.0);
-			Position pos2(200.0, 0.0, 100.0);
-			Position pos3(-750.0, 0.0, 100.0);
-			Position pos4(8000.0, 1000, 100.0);
+	Position pos0(3500.0, 0.0, 100.0);
+	Position pos1(1500.0, 0.0, 50.0);
+	Position pos2(200.0, 0.0, 25.0);
+	Position pos3(-750.0, 0.0, 0.0);
 
-			Route r0, r1, r2, r3, r4;
+	Position pos_der(10000.0, 10000.0, 100.0);
+	Position pos_izq(10000.0, -10000.0, 100.0);
+	Position pos_cen(13000.0, 0.0, 100.0);
 
-			r0.pos = pos0;
-			r0.speed = 500.0;
-			r1.pos = pos1;
-			r1.speed = 100.0;
-			r2.pos = pos2;
-			r2.speed = 19.0;
-			r3.pos = pos3;
-			r3.speed = 15.0;
-			r4.pos = pos4;
-			r4.speed = 540.0;
 
-			for(it = flights.begin(); it!=flights.end(); ++it)
+	Position wp1_wder(14000.0, 10000.0, 100.0);
+	Position wp2_wder(14000.0, 16000.0, 100.0);
+	Position wp3_wder(10000.0, 16000.0, 100.0);
+	Position wp4_wder(10000.0, 10000.0, 100.0);
+
+	Position wp1_wizq(14000.0, -10000.0, 100.0);
+	Position wp2_wizq(14000.0, -16000.0, 100.0);
+	Position wp3_wizq(10000.0, -16000.0, 100.0);
+	Position wp4_wizq(10000.0, -10000.0, 100.0);
+
+	Position wp1_wcen(16000.0, 8000.0, 100.0);
+	Position wp2_wcen(16000.0, -8000.0, 100.0);
+	Position wp3_wcen(12000.0, -8000.0, 100.0);
+	Position wp4_wcen(12000.0, 8000.0, 100.0);
+
+	Position wp1_w2_der(14000.0, 10000.0, 200.0);
+	Position wp2_w2_der(14000.0, 16000.0, 200.0);
+	Position wp3_w2_der(10000.0, 16000.0, 200.0);
+	Position wp4_w2_der(10000.0, 10000.0, 200.0);
+
+	Position wp1_w2_izq(14000.0, -10000.0, 200.0);
+	Position wp2_w2_izq(14000.0, -16000.0, 200.0);
+	Position wp3_w2_izq(10000.0, -16000.0, 200.0);
+	Position wp4_w2_izq(10000.0, -10000.0, 200.0);
+
+	Position wp1_w2_cen(16000.0, 8000.0, 200.0);
+	Position wp2_w2_cen(16000.0, -8000.0, 200.0);
+	Position wp3_w2_cen(12000.0, -8000.0, 200.0);
+	Position wp4_w2_cen(12000.0, 8000.0, 200.0);
+
+	// Inicialización de vectores de niveles
+	for (int i=0; i<NUM_FLIGHT_LV; i++)
+	{
+		setWhere_I(false, i);
+		setWhere_C(false, i);
+		setWhere_D(false, i);
+	}
+
+	Route r0, r1, r2, r3, r_der, r_izq, r_cen;
+
+	Route r1_d, r2_d, r3_d, r4_d, r1_i, r2_i, r3_i, r4_i, r1_c, r2_c, r3_c, r4_c;
+	Route r1_2_d, r2_2_d, r3_2_d, r4_2_d, r1_2_i, r2_2_i, r3_2_i, r4_2_i, r1_2_c, r2_2_c, r3_2_c, r4_2_c;
+
+	r0.pos = pos0;
+	r0.speed = 500.0;
+	r1.pos = pos1;
+	r1.speed = 100.0;
+	r2.pos = pos2;
+	r2.speed = 19.0;
+	r3.pos = pos3;
+	r3.speed = 15.0;
+/*
+	r_der.pos = pos_der;
+	r_der.speed = 500.0;
+	r_izq.pos = pos_izq;
+	r_izq.speed = 500.0;
+	r_cen.pos = pos_cen;
+	r_cen.speed = 500.0;
+*/
+
+	r1_d.pos = wp1_wder;
+	r1_d.speed = 500.0;
+	r2_d.pos = wp2_wder;
+	r2_d.speed = 500.0;
+	r3_d.pos = wp3_wder;
+	r3_d.speed = 500.0;
+	r4_d.pos = wp4_wder;
+	r4_d.speed = 500.0;
+
+	r1_i.pos = wp1_wizq;
+	r1_i.speed = 500.0;
+	r2_i.pos = wp2_wizq;
+	r2_i.speed = 500.0;
+	r3_i.pos = wp3_wizq;
+	r3_i.speed = 500.0;
+	r4_i.pos = wp4_wizq;
+	r4_i.speed = 500.0;
+
+	r1_c.pos = wp1_wcen;
+	r1_c.speed = 500.0;
+	r2_c.pos = wp2_wcen;
+	r2_c.speed = 500.0;
+	r3_c.pos = wp3_wcen;
+	r3_c.speed = 500.0;
+	r4_c.pos = wp4_wcen;
+	r4_c.speed = 500.0;
+
+
+	r1_2_d.pos = wp1_w2_der;
+	r1_2_d.speed = 500.0;
+	r2_2_d.pos = wp2_w2_der;
+	r2_2_d.speed = 500.0;
+	r3_2_d.pos = wp3_w2_der;
+	r3_2_d.speed = 500.0;
+	r4_2_d.pos = wp4_w2_der;
+	r4_2_d.speed = 500.0;
+
+	r1_2_i.pos = wp1_w2_izq;
+	r1_2_i.speed = 500.0;
+	r2_2_i.pos = wp2_w2_izq;
+	r2_2_i.speed = 500.0;
+	r3_2_i.pos = wp3_w2_izq;
+	r3_2_i.speed = 500.0;
+	r4_2_i.pos = wp4_w2_izq;
+	r4_2_i.speed = 500.0;
+
+	r1_2_c.pos = wp1_w2_cen;
+	r1_2_c.speed = 500.0;
+	r2_2_c.pos = wp2_w2_cen;
+	r2_2_c.speed = 500.0;
+	r3_2_c.pos = wp3_w2_cen;
+	r3_2_c.speed = 500.0;
+	r4_2_c.pos = wp4_w2_cen;
+	r4_2_c.speed = 500.0;
+
+	std::list<Route> ruta_land, ruta_w1_d, ruta_w1_c, ruta_w1_i, ruta_w2_d, ruta_w2_c, ruta_w2_i;
+
+	creaRuta(ruta_land, r0, r1, r2, r3);
+
+	creaRuta(ruta_w1_d, r1_d, r2_d, r3_d, r4_d);
+	creaRuta(ruta_w1_c, r1_c, r2_c, r3_c, r4_c);
+	creaRuta(ruta_w1_i, r1_i, r2_i, r3_i, r4_i);
+
+	creaRuta(ruta_w2_d, r1_2_d, r2_2_d, r3_2_d, r4_2_d);
+	creaRuta(ruta_w2_c, r1_2_c, r2_2_c, r3_2_c, r4_2_c);
+	creaRuta(ruta_w2_i, r1_2_i, r2_2_i, r3_2_i, r4_2_i);
+
+
+	for(it = flights.begin(); it!=flights.end(); ++it)
+	{
+		if((*it)->getRoute() == NULL)
+		{
+			if ( it == flights.begin() )
 			{
-				if((*it)->getRoute()->empty())
+				(*it)->setRoute(&ruta_land);
+				(*it)->setLanding(true);
+			}
+			else
+			{
+				if ( (*it)->getPosition().get_y() > DIST_DECISION )
 				{
-					(*it)->getRoute()->push_back(r3);
-					(*it)->getRoute()->push_front(r2);
-					(*it)->getRoute()->push_front(r1);
-					(*it)->getRoute()->push_front(r0);
-					(*it)->getRoute()->push_front(r4);
-
+					if ( getWhere_D(0) == false )
+					{
+						(*it)->setRoute(&ruta_w1_d);
+//						(*it)->setNivel(j);
+						setWhere_D(true, 0);
+					}
+					else
+					{
+						(*it)->setRoute(&ruta_w2_d);
+						setWhere_D(true, 1);
+					}
+				}
+				else if (  (*it)->getPosition().get_y() < -DIST_DECISION )
+				{
+					if ( getWhere_I(0) == false )
+					{
+						(*it)->setRoute(&ruta_w1_i);
+						setWhere_I(true, 0);
+					}
+					else
+					{
+						(*it)->setRoute(&ruta_w2_i);
+						setWhere_I(true, 1);
+					}
+				}
+				else
+				{
+					if ( getWhere_C(0) == false )
+					{
+						(*it)->setRoute(&ruta_w1_c);
+						setWhere_C(true, 0);
+					}
+					else
+					{
+						(*it)->setRoute(&ruta_w2_c);
+						setWhere_C(true, 1);
+					}
 				}
 			}
 
+		}
+
+
+	}	//	fin del for de vuelos
+
+
+
+	do {
+		it = flights.begin();
+		std::list<Flight*>::iterator aux = it;
+		aux++;
+
+		if ( ( (*it)->getLanding() == true) && ( (*it)->getPosition().get_x() < DIST_UMBRAL) )
+		{
+			( *aux )->setRoute(&ruta_land);
+			( *aux )->setLanding(true);
+
+			if ( (*aux)->getPosition().get_y() > DIST_DECISION )
+			{
+				if ( getWhere_D(0)==true ) setWhere_D(false, 0);
+
+				else if ( getWhere_D(1)==true ) setWhere_D(false, 1);
+			}
+			else if ( (*aux)->getPosition().get_y() < -DIST_DECISION )
+			{
+				if ( getWhere_I(0)==true ) setWhere_I(false, 0);
+
+				else if ( getWhere_I(1)==true ) setWhere_I(false, 1);
+			}
+			else
+			{
+				if ( getWhere_C(0)==true ) setWhere_C(false, 0);
+
+				else if ( getWhere_C(1)==true ) setWhere_C(false, 1);
+			}
+		}
+		else if (( (*it)->getLanding() == false))
+		{
+			(*it)->setRoute(&ruta_land);
+			(*it)->setLanding(true);
+		}
+
+	} while (it != flights.end());
+
 }
+
+
+// Borrador de posible uso de las rutas de forma genérica en función del nivel de vuelo
+/*
+(*it)->setRoute(&ruta_w1_d);
+bool final = false;
+int j=0;
+do {
+	if ( getWhere_D(j) == false )
+	{
+		(*it)->setNivel(j);
+		setWhere_D(true, j);
+		final = true;
+	}
+	else
+	{
+		j++;
+//							(*it)->setRoute(&())
+		//Aquí habra que gestionar la subida de altura
+	}
+
+} while ( (final == false) && (j<NUM_FLIGHT_LV)) ;
+*/
+
+
+/*
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	for(it = flights.begin(); it!=flights.end(); ++it)
+	{
+		if((*it)->getRoute() == NULL)
+		{
+			(*it)->setRoute(&ruta_land);
+		}
+
+		if ( ( (*it)->getPosition().get_y() > DIST_DECISION) && ((*it)->getLanding() == false) )
+		{
+
+			if ( (*it)->getWaiting_1() == false )
+			{
+				(*it)->setRoute(&ruta_w1_d);
+				(*it)->setWaiting_1(true);
+			}
+			//else
+			//{
+				//(*it)->setRoute(&ruta_w1_d);
+				//(*it)->setWaiting_2(true);
+			//}
+		}
+		else if ( ( (*it)->getPosition().get_y() < -DIST_DECISION) && ((*it)->getLanding() == false) )
+		{
+			if ( (*it)->getWaiting_1() == false )
+			{
+				(*it)->setRoute(&ruta_w1_i);
+				(*it)->setWaiting_1(true);
+			}
+			//else
+			//{
+				//assignWaiting(*it, r1_2_i, r2_2_i, r3_2_i, r4_2_i);
+				//(*it)->setWaiting_2(true);
+			//}
+		}
+		else
+		{
+			if ( (*it)->getWaiting_1() == false )
+			{
+				(*it)->setRoute(&ruta_w1_c);
+				(*it)->setWaiting_1(true);
+			}
+			//else
+			//{
+				//assignWaiting(*it, r1_2_c, r2_2_c, r3_2_c, r4_2_c);
+				//(*it)->setWaiting_2(true);
+			//}
+		}
+
+		if ( it != flights.begin() )
+		{
+			(*it)->setLanding(false);
+		}
+
+	}
+
+}
+*/
+
+/*
+void
+AirController::assignWaiting(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3)
+{
+	if ( vuelo->getPosition().get_y() > DIST_DECISION )
+	{
+		vuelo->getRoute()->push_front(pt_1);
+	}
+	else if ( vuelo->getPosition().get_y() < -DIST_DECISION )
+	{
+		vuelo->getRoute()->push_front(pt_2);
+	}
+	else
+	{
+		vuelo->getRoute()->push_front(pt_3);
+	}
+
+
+}
+
+
+void
+AirController::assignLanding(Flight* vuelo, Route pt_1, Route pt_2, Route pt_3)
+{
+	if ( vuelo->getPosition().get_y() > DIST_DECISION )
+	{
+		vuelo->getRoute()->push_front(pt_1);
+	}
+	else if ( vuelo->getPosition().get_y() < -DIST_DECISION )
+	{
+		vuelo->getRoute()->push_front(pt_2);
+	}
+	else
+	{
+		vuelo->getRoute()->push_front(pt_3);
+	}
+	vuelo->setLanding(false);
+}*/
+
+
+//Anterior versión del código, exceso de memoria utilizada, mas o menos correcta
+/*
+if ( (*it)->getPosition().get_y() > DIST_DECISION )
+{
+	if( (*it)->getLanding() == true)
+	{
+		assignLanding(*it, r_der);
+	}
+	else
+	{
+		if ( (*it)->getWaiting_1() == false )
+		{
+			assignWaiting(*it, r1_d, r2_d, r3_d, r4_d);
+			(*it)->setWaiting_1(true);
+		}
+		else
+		{
+			assignWaiting(*it, r1_2_d, r2_2_d, r3_2_d, r4_2_d);
+			(*it)->setWaiting_2(true);
+		}
+	}
+}
+else if ( (*it)->getPosition().get_y() < -DIST_DECISION )
+{
+	if( (*it)->getLanding() == true)
+	{
+		assignLanding(*it, r_izq);
+	}
+	else
+	{
+		if ( (*it)->getWaiting_1() == false )
+		{
+			assignWaiting(*it, r1_i, r2_i, r3_i, r4_i);
+			(*it)->setWaiting_1(true);
+		}
+		else
+		{
+			assignWaiting(*it, r1_2_i, r2_2_i, r3_2_i, r4_2_i);
+			(*it)->setWaiting_2(true);
+		}
+	}
+
+}
+else
+{
+	if( (*it)->getLanding() == true)
+	{
+		assignLanding(*it, r_cen);
+	}
+	else
+	{
+		if ( (*it)->getWaiting_1() == false )
+		{
+			assignWaiting(*it, r1_c, r2_c, r3_c, r4_c);
+			(*it)->setWaiting_1(true);
+		}
+		else
+		{
+			assignWaiting(*it, r1_2_c, r2_2_c, r3_2_c, r4_2_c);
+			(*it)->setWaiting_2(true);
+		}
+	}
+
+}
+*/
+
