@@ -57,17 +57,18 @@ public:
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
 	float getS(float v, float diffbearing, float w_max);
-
+	bool getLanding() { return landing;}; //me dice si le puedo enviar a aterrizar
+	void setLanding(bool state) { landing = state;};//me asigna aterrizaje 
 
 
 private:
 	std::string id;
 	Position pos, last_pos;
-	float bearing, inclination;
+	float bearing, inclination;	
 	float speed, w_speed;
 	std::list<Route> route;
 	bool focused;
-
+	bool landing;
 	float points;
 };
 

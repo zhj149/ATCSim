@@ -76,14 +76,12 @@ Flight::getS(float v, float diffbearing, float w_max)
 void
 Flight::update(float delta_t)
 {
-	float trans,s;
-	Position CPpos;
+	float trans,s_turn;
+	Position CPpos, CPpos2;
 
 	if(routed())
 	{
-		float goal_bearing, diff_bearing, new_w, goal_bearing2, diff_bearing2;
-		Position CP2pos;
-		Route r1, r2;
+		float goal_bearing, diff_bearing, new_w;
 		
 		CPpos = route.front().pos;
 		pos.angles(CPpos, goal_bearing, inclination);
@@ -108,23 +106,32 @@ Flight::update(float delta_t)
 		speed = speed + acc*delta_t;
 
 		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
+
+		float goal_bearing2, diff_bearing2, inclination2, diff_inclination;
+		Route r1, r2;
+
 		std::list<Route>::iterator it;
 		it=route.begin();
 		r1=*it;
 		it++;
 		r2=*it; 
 		
-		CP2pos=r2.pos;
-		pos.angles(CP2pos, goal_bearing2, inclination);
+		CPpos2=r2.pos;
+		pos.angles(CPpos2, goal_bearing2, inclination2);
 
 		goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
 		diff_bearing2 = normalizePi(goal_bearing2 - goal_bearing);
+		new_w = diff_bearing*delta_t;
 
-		s=getS(speed,diff_bearing2, MAX_FLIFGT_W);
+		
 
-		//if(pos.distance(CPpos)<s)
-		//new_w = diff_bearing2;
-	}else
+
+		s_turn=getS(speed,diff_bearing2, MAX_FLIFGT_W);
+
+		if(pos.distance(CPpos)<s_turn)
+		route.pop_front();
+
+		}else
 
 		inclination = 0.0;
 
@@ -140,8 +147,7 @@ Flight::update(float delta_t)
 //	if(pos.distance(last_pos) > pos.distance(CPpos))
 //		route.pop_front();
 
-	if(pos.distance(CPpos)<s)
-		route.pop_front();
+	
 
 	points = points - delta_t;
 
