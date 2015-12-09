@@ -167,6 +167,7 @@ AirController::doWork()
 
 			for(it = flights.begin(); it!=flights.end(); ++it)
 			{
+
 				float angulo=(atan((*it)->getPosition().get_x()/(*it)->getPosition().get_y()));
 				float anguloGrados= angulo/pi*180;
 
@@ -244,6 +245,14 @@ AirController::doWork()
 						(*it)->getRoute()->push_front(r7);
 
 					}
+/*
+				if((*it)->getRoute()->empty())
+				{
+					(*it)->getRoute()->push_back(r3);
+					(*it)->getRoute()->push_front(r2);
+					(*it)->getRoute()->push_front(r1);
+					(*it)->getRoute()->push_front(r0);
+*/
 				}
 			}
 }
