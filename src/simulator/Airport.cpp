@@ -332,9 +332,6 @@ Airport::checkFlightsInStorm()
 
 
 		in = dist < storm->getRadious() && fabs(zs-zf)<storm->getHeight();
-		float dist = (*it)->getPosition().distance(storm->getPosition());
-
-		in = dist < storm->getRadious();
 		(*it)->setInStorm(in);
 
 
