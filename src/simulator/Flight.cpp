@@ -187,7 +187,7 @@ Flight::update(float delta_t)
 			//std::cout<<"INCLINACION="<<goal_inclination1<<"	S inclinacion="<<s_inclination<<"		z=   "<<pos.get_z()<<std::endl;
 			
 			//std::cout<<"x: "<<pos.get_x() <<"  y= "<<pos.get_y()<<"   z=   "<<pos.get_z()<<std::endl;		
-********************************TRAZAS PARA COMPROBAR RESULTADOS*************************************/
+*****************************************************************************************************/
 
 
 			if((pos.distance(CPpos1)<s)||(pos.distance(CPpos1)<s_inclination))
@@ -196,10 +196,8 @@ Flight::update(float delta_t)
 				new_w_inclination = fabs(alpha2-alpha1)/delta_t;
 				route.pop_front();				
 			}
-			
-	
 
-	}else	
+	}else
 		inclination = 0.0;
 
 	last_pos = pos;

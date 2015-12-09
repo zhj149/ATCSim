@@ -317,6 +317,7 @@ Airport::checkFlightsInStorm()
 	for(it = flights.begin(); it != flights.end(); ++it)
 	{
 		bool in=false;
+
 		float xf,yf, zf, xs, ys, zs;
 		float dist;
 
@@ -331,6 +332,9 @@ Airport::checkFlightsInStorm()
 
 
 		in = dist < storm->getRadious() && fabs(zs-zf)<storm->getHeight();
+		float dist = (*it)->getPosition().distance(storm->getPosition());
+
+		in = dist < storm->getRadious();
 		(*it)->setInStorm(in);
 
 

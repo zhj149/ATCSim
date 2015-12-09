@@ -65,6 +65,9 @@ public:
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
 
+	bool getInStorm() {return inStorm;};
+	void setInStorm(bool in) {inStorm=in;};
+
 private:
 	std::string id;
 	Position pos, last_pos;
