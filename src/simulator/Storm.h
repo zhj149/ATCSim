@@ -1,5 +1,5 @@
 /*
- * Flight.h
+ * Storm.h
  *
  *  Created on: 15/07/2014
  *      Author: paco
@@ -23,59 +23,32 @@
  */
 #include <string>
 
-#ifndef FLIGHT_H_
-#define FLIGHT_H_
+#ifndef STORM_H_
+#define STORM_H_
 
 #include "Position.h"
 #include "Common.h"
-#include <list>
 
-typedef struct {
-	Position pos;
-	float speed;
-} Route;
-
-class Flight {
+class Storm {
 public:
-	Flight(std::string _id, Position _pos, float _bearing, float _inclination, float _speed);
-	virtual ~Flight();
+	Storm(Position _pos, float _bearing, float _speed, float _radious, float _height);
+	virtual ~Storm();
 
 	void update(float delta_t);
 	void draw();
 
 
-	std::list<Route> *getRoute() { return &route;};
-	bool routed() { return !route.empty();};
 	Position getPosition() { return pos;};
-	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
-	float getPoints() {return points;};
-	std::string getId(){return id;};
-	float getS(float velocidad, float difangular)
-	{
-		float S;
-		S = (fabs(difangular)/MAX_FLIGHT_W)*velocidad;
-		return S;
-	};
-	void setFocused(bool state) { focused = state;};
-	bool getFocused() { return focused;};
-
-	bool getInStorm() {return inStorm;};
-	void setInStorm(bool in) {inStorm=in;};
+	float getRadious() { return radious;};
+	float getHeight() { return height;};
 
 private:
-	std::string id;
 	Position pos, last_pos;
-	float bearing, inclination;
-	float speed, w_speed;
-	std::list<Route> route;
-	bool focused;
-
-	bool inStorm;
-
-	float points;
-	float S;
+	float bearing;
+	float radious, height;
+	float speed;
 };
 
-#endif /* FLIGHT_H_ */
+#endif /* STORM_H_ */
