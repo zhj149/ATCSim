@@ -136,6 +136,7 @@ AirController::doWork()
 
 			for(it = flights.begin(); it!=flights.end(); ++it)
 			{
+
 				ruta_ocupada = false;
 
 				if((*it)->getRoute()->empty()){
@@ -160,6 +161,7 @@ AirController::doWork()
 					if(ruta_ocupada == false){
 						AssignLanding(*it, r1,r2,r3);
 					}
+
 				}
 			}
 }
