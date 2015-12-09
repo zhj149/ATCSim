@@ -175,6 +175,7 @@ AirController::doWork()
 				 			
 					if((*it)->getPosition().get_z()<=1000)
 
+
 					{
 						//std::cout<<"wait1"<<std::endl;
 						assignWaiting1(*it);
@@ -196,6 +197,7 @@ AirController::doWork()
 
 				}		
 			    
+
 
 				if (counter==0){
 					

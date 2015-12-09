@@ -61,6 +61,9 @@ public:
 	void setLanding(bool state) { landing = state;};//me asigna aterrizaje 
 
 
+	bool getInStorm() {return inStorm;};
+	void setInStorm(bool in) {inStorm=in;};
+
 private:
 	std::string id;
 	Position pos, last_pos;
@@ -68,7 +71,12 @@ private:
 	float speed, w_speed;
 	std::list<Route> route;
 	bool focused;
+
 	bool landing;
+
+
+	bool inStorm;
+
 	float points;
 };
 
