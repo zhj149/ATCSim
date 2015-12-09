@@ -154,7 +154,6 @@ IceProxy::ATCDisplay::AirportInterface::end_getFlights(const ::Ice::AsyncResultP
     }
 }
 
-
 ::ATCDisplay::ATCDStorm
 IceProxy::ATCDisplay::AirportInterface::getStorm(const ::Ice::Context* __ctx)
 {
@@ -983,6 +982,7 @@ IceDelegateD::ATCDisplay::AirportInterface::getFlights(const ::Ice::Context* __c
     return __result;
 }
 
+::ATCDisplay::ATCDStorm
 IceDelegateD::ATCDisplay::AirportInterface::getStorm(const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
 {
     class _DirectI : public ::IceInternal::Direct
