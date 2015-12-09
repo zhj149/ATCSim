@@ -63,6 +63,9 @@ public:
 	float diffInclination(float goal_inclination1, float inclination);
 		
 
+	bool getInStorm() {return inStorm;};
+	void setInStorm(bool in) {inStorm=in;};
+
 private:
 	std::string id;
 	Position pos, last_pos;
@@ -72,6 +75,8 @@ private:
 	std::list<Route> route;
 	std::list<Route>::iterator it;
 	bool focused;
+
+	bool inStorm;
 
 	float points;
 };

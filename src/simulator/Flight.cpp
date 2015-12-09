@@ -51,6 +51,7 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	speed = _speed;
 	
 	route.clear();
+	inStorm = false;
 
 	focused = false;
 
@@ -214,7 +215,15 @@ Flight::update(float delta_t)
 		route.pop_front();
 	}
 
-	points = points - delta_t;
+	if(inStorm)
+	{
+		//std::cout<<"["<<id<<"]In Storm"<<std::endl;
+		points = points - 2*delta_t;
+	}
+	else
+		points = points - delta_t;
+
+
 
 }
 		
