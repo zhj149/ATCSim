@@ -110,7 +110,6 @@ AirController::doWork()
 			{
 				if((*it)->getRoute()->empty())
 				{
-
 					if((*it)->getPosition().get_y() < 0.0)
 					{
 						if((*it)->getLanding()){

@@ -98,7 +98,6 @@ Flight::update(float delta_t)
 		CPpos2 = r.pos;
 		pos.angles(CPpos2, theta1, inclination);
 
-
 		pos.angles(CPpos, goal_bearing, inclination);
 
 		goal_bearing = normalizePi(goal_bearing + M_PI);
@@ -127,10 +126,8 @@ Flight::update(float delta_t)
 
 		speed = speed + acc*delta_t;
 
-
 		theta0 = normalizePi(theta0 + M_PI);
 		theta1 = normalizePi(theta1 + M_PI);
-
 
 		S = getS(speed, theta0, theta1, MAX_FLIFGT_W);
 
@@ -158,7 +155,6 @@ Flight::update(float delta_t)
 	if(pos.distance(CPpos)<DIST_POINT)
 		route.pop_front();
 
-
 	if(inStorm)
 	{
 		//std::cout<<"["<<id<<"]In Storm"<<std::endl;
@@ -167,6 +163,8 @@ Flight::update(float delta_t)
 	else
 		points = points - delta_t;
 
+
+	points = points - delta_t;
 
 }
 //
