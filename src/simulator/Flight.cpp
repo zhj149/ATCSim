@@ -33,8 +33,9 @@
 #endif
 
 #include "Common.h"
-
+#include <ostream>
 #include <iostream>
+
 #include <string>
 #include <math.h>
 #include <list>
@@ -88,7 +89,6 @@ Flight::update(float delta_t)
 		std::list<Route>::iterator it;
        		it = route.begin();
 		it++;
-		
 		CPPOS1 = it->pos;
 		pos.angles(CPPOS1, theta1, inclination1);
 		theta1 = normalizePi(theta1 + M_PI);
@@ -98,12 +98,13 @@ Flight::update(float delta_t)
 
 		if(dist2P0 < s)
 		{
+			std::cerr<<route.size()<<std::endl;
 			w_0 = std::min(diff_bearing - theta1, MAX_FLIFGT_W);
-				route.pop_front();
-			if(fabs(theta1 - diff_bearing)<0.001)
-				route.pop_front();
+			route.pop_front();
+			std::cout<<"entro "<<std::endl;		
 		}
-			
+		if(fabs(theta1 - diff_bearing)<0.000000000001)
+			route.pop_front();	
 
 		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
 

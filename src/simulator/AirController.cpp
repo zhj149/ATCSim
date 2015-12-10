@@ -43,13 +43,22 @@ AirController::doWork()
 			std::list<Flight*> flights = Airport::getInstance()->getFlights();
 			std::list<Flight*>::iterator it;
 
+			Position pos01(4000.0, 0.0, 200.0);
+			Position pos02(4000.0, 9000.0, 200.0);
+			Position pos03(4000.0, -9000.0, 200.0);
 			Position pos0(3500.0, 0.0, 100.0);
 			Position pos1(1500.0, 0.0, 50.0);
 			Position pos2(200.0, 0.0, 25.0);
 			Position pos3(-750.0, 0.0, 25.0);
 
-			Route r0, r1, r2, r3;
+			Route r0, r1, r2, r3, r01, r02, r03;
 
+			r01.pos = pos01;
+			r01.speed = 510.0;
+			r02.pos = pos02;
+			r02.speed = 700.0;
+			r03.pos = pos03;
+			r03.speed = 700.0;
 			r0.pos = pos0;
 			r0.speed = 500.0;
 			r1.pos = pos1;
@@ -63,11 +72,27 @@ AirController::doWork()
 			{
 				if((*it)->getRoute()->empty())
 				{
-					(*it)->getRoute()->push_back(r3);
-					(*it)->getRoute()->push_front(r2);
-					(*it)->getRoute()->push_front(r1);
-					(*it)->getRoute()->push_front(r0);
+					if((*it)->getPosition().get_y()<= -2500.0){
+						(*it)->getRoute()->push_back(r3);
+						(*it)->getRoute()->push_front(r2);
+						(*it)->getRoute()->push_front(r1);
+						(*it)->getRoute()->push_front(r0);
+						(*it)->getRoute()->push_front(r03);
 
+					}else if((*it)->getPosition().get_y() >= 2500.0){
+						(*it)->getRoute()->push_back(r3);
+						(*it)->getRoute()->push_front(r2);
+						(*it)->getRoute()->push_front(r1);
+						(*it)->getRoute()->push_front(r0);
+						(*it)->getRoute()->push_front(r02);
+					}else {
+
+						(*it)->getRoute()->push_back(r3);
+						(*it)->getRoute()->push_front(r2);
+						(*it)->getRoute()->push_front(r1);
+						(*it)->getRoute()->push_front(r0);	
+						(*it)->getRoute()->push_front(r01);
+					}
 				}
 			}
 
