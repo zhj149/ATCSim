@@ -60,6 +60,8 @@ public:
 ////new
 	float updateVel(float acc_ideal,float speed, float delta_t);
 	float updateW(float ideal_w);
+	float subtractionPI(float resta1, float resta2);
+	float subtraction(float resta1, float resta2);
 ////new
 
 	bool getInStorm() {return inStorm;};
