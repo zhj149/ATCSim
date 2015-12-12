@@ -295,7 +295,7 @@ Airport::checkCollisions()
 		{
 			if( (*i)->getPosition().distance((*j)->getPosition()) < COLLISION_DISTANCE)
 			{
-				std::cerr<<"Collision between "<<(*i)->getId()<<" and "<<(*j)->getId()<<std::endl;
+				std::cerr<<"COLLISIOOOOOON between "<<(*i)->getId()<<" and "<<(*j)->getId()<<std::endl;
 				i = removeFlight((*i)->getId());
 				j = removeFlight((*j)->getId());
 				points += COLLISION_POINTS;
@@ -390,6 +390,7 @@ Airport::checkLandings()
 
 
 			std::cerr<<"Flight "<<(*it)->getId()<<" LANDEEEEEEEEEEEEEEED"<<std::endl;
+			std::cout<<"	FELIZ NAVIDAD VUELO: "<<"["<<(*it)->getId()<<"]"<<std::endl;
 			points += (int)(*it)->getPoints();
 
 
