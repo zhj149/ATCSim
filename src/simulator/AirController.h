@@ -44,8 +44,7 @@ public:
 
 
 	void doWork();
-/*private:
-bool ruta_ocupada;*/
+
 };
 
 #endif /* AIRCONTROLLER_H_ */
