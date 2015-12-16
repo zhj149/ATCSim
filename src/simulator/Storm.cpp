@@ -1,5 +1,5 @@
 /*
- * Flight.cpp
+ * Storm.cpp
  *
  *  Created on: 15/07/2014
  *      Author: paco
@@ -22,7 +22,7 @@
  *  along with ATCSim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Flight.h"
+#include "Storm.h"
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
@@ -38,138 +38,35 @@
 #include <string>
 #include <math.h>
 
-Flight::~Flight() {
+Storm::~Storm() {
 	// TODO Auto-generated destructor stub
 }
 
-Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclination, float _speed)
+Storm::Storm(Position _pos, float _bearing, float _speed, float _radious, float _height)
 {
-	id = _id;
+
 	pos = _pos;
 	bearing = _bearing;
-	inclination = _inclination;
 	speed = _speed;
-	route.clear();
-	inStorm = false;
-
-	focused = false;
-	//landing = true;
-	points = INIT_FLIGHT_POINTS;
-
-	w_speed = 0.0f;
+	radious = _radious;
+	height = _height;
 }
-
-float
-Flight::getS(float v, float theta0, float theta1, float w_max)
-{
-	float t,s;
-
-	 t = abs((theta1-theta0)/w_max);
-  	 s = v*t;
-
-	return s;	
-}
-
 
 void
-Flight::update(float delta_t)
+Storm::update(float delta_t)
 {
 	float trans;
-	Position CPpos0, CPpos1;
-	Route r1,r2;
-
-	it = route.begin();
-	r1 = *it;
-	it++;
-	r2 =*it;
-
-	if(routed())
-	{
-		float goal_bearing0, goal_bearing1, diff_bearing0, diff_bearing1, new_w, goal_inclination0, goal_inclination1;
-		float diff_speed, acc, goal_speed, sgiro, sincl, diff_inclination0, diff_inclination1, new_w_incl;
-
-		CPpos0 = r1.pos;
-		it++;
-		CPpos1 = r2.pos;
-
-		pos.angles(CPpos0, goal_bearing0, goal_inclination0);
-		pos.angles(CPpos1, goal_bearing1, goal_inclination1);
-
-		goal_bearing0 = normalizePi(goal_bearing0 + M_PI);
-		goal_bearing1 = normalizePi(goal_bearing1 + M_PI);
-
-		diff_bearing0 = normalizePi(goal_bearing0 - bearing);
-		diff_bearing1 = normalizePi(goal_bearing1 - bearing);
-
-		new_w = diff_bearing0;
-
-		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
-
-		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
-
-		bearing = bearing + new_w*delta_t;
-
-		goal_speed = route.front().speed;
-		
-		acc = (goal_speed - speed);
-
-		if(fabs(acc)>MAX_ACELERATION) acc = (acc/fabs(acc))*MAX_ACELERATION;
-
-		speed = speed + acc*delta_t;
-		
-		sgiro = getS(speed, diff_bearing0,diff_bearing1,MAX_FLIFGT_W);
-
-		//inclinacion
-
-		diff_inclination0 = normalizePi(goal_inclination0 - inclination);
-		diff_inclination1 = normalizePi(goal_inclination1 - inclination);
-
-		new_w_incl= diff_inclination0; 
-		
-		if(fabs(new_w_incl)>MAX_FLIFGT_W) {new_w_incl = (fabs(new_w_incl)/new_w_incl) * MAX_FLIFGT_W; }
-		inclination = inclination + new_w_incl*delta_t;
-
-		sincl = getS(speed, diff_inclination0, diff_inclination1 ,MAX_FLIFGT_W);  
-
-		if(pos.distance(CPpos0)<sgiro||(pos.distance(CPpos0)<sincl))
-		{
-			new_w = fabs((diff_bearing0-diff_bearing1)/delta_t);			
-			route.pop_front();				
-		}
-
-	}else
-	
-		inclination = 0.0;
-
-	last_pos = pos;
 
 	trans = speed * delta_t;
 
-
-	pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
-	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
-	pos.set_z(pos.get_z() + ( trans * sin(inclination)));
-
-//	if(pos.distance(last_pos) > pos.distance(CPpos))
-//		route.pop_front();
-
-	if(pos.distance(CPpos0)<DIST_POINT)
-		route.pop_front();
-
-	if(inStorm)
-	{
-		//std::cout<<"["<<id<<"]In Storm"<<std::endl;
-		points = points - 2*delta_t;
-	}
-	else
-		points = points - delta_t;
-
-
+	pos.set_x(pos.get_x() + trans * cos(bearing) * cos(0.0));
+	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(0.0));
+	pos.set_z(pos.get_z() + ( trans * sin(0.0)));
 
 }
 //
 //void
-//Flight::draw()
+//Storm::draw()
 //{
 //
 //

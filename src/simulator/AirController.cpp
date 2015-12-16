@@ -221,6 +221,7 @@ AirController::doWork()
 						assignLanding((*it), r12, r11, r10);
 						assignRoute((*it), r14, r13, r15, r9,r8, r17);
 
+
 					}else if(getLanding() == true){
 					    	assignWaiting((*it),r0,r3,r2,r1,r5,r6,r4,r7,r18,r19,r20,r16,r24,r21,r23,r22);
 						
