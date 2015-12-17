@@ -67,8 +67,9 @@ Flight::update(float delta_t)
 
 	if(routed())
 	{
-		float goal_bearing, diff_bearing, new_w, S;
-		float goal_bearing1, goal_bearing2, diff_bearing1, diff_bearing2, differencia_entre_bearing;
+		float goal_bearing, diff_bearing, new_w, S, new_winc;
+		float goal_bearing1, goal_bearing2, diff_bearing1, diff_bearing2, differencia_entre_bearing, inclination1, inclination2, diff_inclination1, diff_inclination2, differencia_entre_inclination;
+
 
 
 		std::list<Route>::iterator it;
@@ -87,11 +88,21 @@ Flight::update(float delta_t)
 		differencia_entre_bearing = (diff_bearing1-diff_bearing2);
 		new_w = diff_bearing1;
 
+		//Inclination
+    inclination1 = normalizePi(inclination1);
+    inclination2 = normalizePi(inclination2);
+    diff_inclination1 = normalizePi(inclination1 - inclination);
+    diff_inclination2 = normalizePi(inclination2 - inclination);
+    differencia_entre_inclination = (diff_inclination1-diff_inclination2);
+    new_winc = diff_inclination1;
+
+
 		if(fabs(new_w)>MAX_FLIGHT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIGHT_W;
 
 		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
 
 		bearing = bearing + new_w*delta_t;
+		inclination = inclination + new_winc*delta_t;
 
 		float goal_speed, diff_speed, acc;
 
@@ -125,7 +136,7 @@ Flight::update(float delta_t)
 
 
 
-	if(pos.distance(CPpos)<DIST_POINT)
+	if(pos.distance(CPpos0)<DIST_POINT)
 		route.pop_front();
 
 	if(inStorm)

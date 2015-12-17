@@ -240,20 +240,20 @@ AirController::doWork()
 					while((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty()){
 						Waiting(*it, r13, r10, r12, r11, r13);
 					}
-					while((*it)->getPosition().get_y()<500 && (*it)->getPosition().get_x()>-500 && (*it)->getRoute()->empty()){
+					while((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500 && (*it)->getRoute()->empty()){
 						Waiting(*it, r17, r16, r15, r14, r17);
 					}
 				}
 				else if(getLanding()==false){
-					if((*it)->getPosition().get_y()<-500 && (*it)->getRoute()->empty())
+					if((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty())
 					{
-						Land(*it, r4, r0, r1, r2);
+						Land(*it, r0, r1, r2, r3);
 					}
-					else if((*it)->getPosition().get_y()>500 && (*it)->getRoute()->empty())
+					else if((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty())
 					{
 						Land(*it, r5, r1, r2, r3);
 					}
-					else if((*it)->getPosition().get_y()<500 && (*it)->getPosition().get_x()>-500 && (*it)->getRoute()->empty())
+					else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500 && (*it)->getRoute()->empty())
 					{
 						Land(*it, r0, r1, r2, r3);
 					}
