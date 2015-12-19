@@ -398,11 +398,18 @@ AirController::doWork()
 			{
 				if((*it)->getPosition().get_y()<=0)
 				{
+<<<<<<< HEAD
 			    		assignLanding ((*it), r0,r1, r2, r3,r4_l,r5_l);
 
 				}else if ((*it)->getPosition().get_y()>0) {
 
 					assignLanding ((*it), r0,r1, r2, r3,r4_r,r5_r);
+=======
+					(*it)->getRoute()->push_back(r3);
+					(*it)->getRoute()->push_front(r2);
+					(*it)->getRoute()->push_front(r1);
+					(*it)->getRoute()->push_front(r0);
+>>>>>>> common original
 				}
 			}
 		
