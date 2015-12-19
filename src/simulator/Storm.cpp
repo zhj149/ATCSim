@@ -38,10 +38,6 @@
 #include <string>
 #include <math.h>
 
-Storm::~Storm() {
-	// TODO Auto-generated destructor stub
-}
-
 Storm::Storm(Position _pos, float _bearing, float _speed, float _radious, float _height)
 {
 
@@ -50,6 +46,10 @@ Storm::Storm(Position _pos, float _bearing, float _speed, float _radious, float 
 	speed = _speed;
 	radious = _radious;
 	height = _height;
+}
+
+Storm::~Storm() {
+	// TODO Auto-generated destructor stub
 }
 
 void

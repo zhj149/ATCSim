@@ -52,11 +52,12 @@ public:
 	float getSpeed() { return speed;};
 	float getS(float v,float bear,float w_max);
 	float getPoints() {return points;};
-	float updateV(float speed1,float speed0,float t);
-	float updateW(float w);
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
+
+	void setLanding(bool land) {landing_ = land; };
+	bool getLanding() { return landing_;};
 
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
@@ -67,14 +68,11 @@ private:
 	float bearing, inclination;
 	float speed, w_speed;
 	std::list<Route> route;
+	std::list<Route>::iterator it;
 	bool focused;
-<<<<<<< HEAD
-=======
-
-	bool inStorm;
-
->>>>>>> master
 	float points;
+	bool inStorm;
+	bool landing_;
 };
 
 #endif /* FLIGHT_H_ */

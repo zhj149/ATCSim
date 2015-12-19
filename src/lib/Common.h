@@ -22,7 +22,7 @@
 #define CRASH_SPEED 10.0f
 #define INIT_MAX_FLIGHTS 1
 
-#define MAX_FLIFGT_W	0.4f //12 grados/sec
+#define MAX_FLIFGT_W	0.2f //12 grados/sec
 #define DIST_POINT 	200.0 //15 grados/sec
 #define MAX_ACELERATION 	50.0 //50 m/sec2
 
@@ -62,11 +62,7 @@
 #define CRASH_INC_POINTS	(-25)
 #define CRASH_SPEED_POINTS 	(-25)
 
-<<<<<<< HEAD
-#define INC_DIFF		250000000000 //30 sec
-=======
 #define INC_DIFF		30000000//30 sec 
->>>>>>> master
 #define INC_PEN			1 	 	//fligts/inc
 
 #define INC_SIMTIME			0.1

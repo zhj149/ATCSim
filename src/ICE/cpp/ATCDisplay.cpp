@@ -42,6 +42,8 @@ namespace
 
 const ::std::string __ATCDisplay__AirportInterface__getFlights_name = "getFlights";
 
+const ::std::string __ATCDisplay__AirportInterface__getStorm_name = "getStorm";
+
 const ::std::string __ATCDisplay__AirportInterface__getAirportInfo_name = "getAirportInfo";
 
 const ::std::string __ATCDisplay__AirportInterface__UpdateSimT_name = "UpdateSimT";
@@ -126,6 +128,81 @@ IceProxy::ATCDisplay::AirportInterface::end_getFlights(const ::Ice::AsyncResultP
 {
     ::Ice::AsyncResult::__check(__result, this, __ATCDisplay__AirportInterface__getFlights_name);
     ::ATCDisplay::ATCDFlights __ret;
+    bool __ok = __result->__wait();
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __result->__throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+            }
+        }
+        ::IceInternal::BasicStream* __is = __result->__startReadParams();
+        __is->read(__ret);
+        __result->__endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& ex)
+    {
+        __result->__getObserver().failed(ex.ice_name());
+        throw;
+    }
+}
+
+::ATCDisplay::ATCDStorm
+IceProxy::ATCDisplay::AirportInterface::getStorm(const ::Ice::Context* __ctx)
+{
+    ::IceInternal::InvocationObserver __observer(this, __ATCDisplay__AirportInterface__getStorm_name, __ctx);
+    int __cnt = 0;
+    while(true)
+    {
+        ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
+        try
+        {
+            __checkTwowayOnly(__ATCDisplay__AirportInterface__getStorm_name);
+            __delBase = __getDelegate(false);
+            ::IceDelegate::ATCDisplay::AirportInterface* __del = dynamic_cast< ::IceDelegate::ATCDisplay::AirportInterface*>(__delBase.get());
+            return __del->getStorm(__ctx, __observer);
+        }
+        catch(const ::IceInternal::LocalExceptionWrapper& __ex)
+        {
+            __handleExceptionWrapperRelaxed(__delBase, __ex, true, __cnt, __observer);
+        }
+        catch(const ::Ice::LocalException& __ex)
+        {
+            __handleException(__delBase, __ex, true, __cnt, __observer);
+        }
+    }
+}
+
+::Ice::AsyncResultPtr
+IceProxy::ATCDisplay::AirportInterface::begin_getStorm(const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__ATCDisplay__AirportInterface__getStorm_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __ATCDisplay__AirportInterface__getStorm_name, __del, __cookie);
+    try
+    {
+        __result->__prepare(__ATCDisplay__AirportInterface__getStorm_name, ::Ice::Idempotent, __ctx);
+        __result->__writeEmptyParams();
+        __result->__send(true);
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __result->__exceptionAsync(__ex);
+    }
+    return __result;
+}
+
+::ATCDisplay::ATCDStorm
+IceProxy::ATCDisplay::AirportInterface::end_getStorm(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __ATCDisplay__AirportInterface__getStorm_name);
+    ::ATCDisplay::ATCDStorm __ret;
     bool __ok = __result->__wait();
     try
     {
@@ -608,6 +685,38 @@ IceDelegateM::ATCDisplay::AirportInterface::getFlights(const ::Ice::Context* __c
     }
 }
 
+::ATCDisplay::ATCDStorm
+IceDelegateM::ATCDisplay::AirportInterface::getStorm(const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+{
+    ::IceInternal::Outgoing __og(__handler.get(), __ATCDisplay__AirportInterface__getStorm_name, ::Ice::Idempotent, __context, __observer);
+    __og.writeEmptyParams();
+    bool __ok = __og.invoke();
+    ::ATCDisplay::ATCDStorm __ret;
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __og.throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+                throw __uue;
+            }
+        }
+        ::IceInternal::BasicStream* __is = __og.startReadParams();
+        __is->read(__ret);
+        __og.endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(__ex, false);
+    }
+}
+
 ::ATCDisplay::ATCDAirport
 IceDelegateM::ATCDisplay::AirportInterface::getAirportInfo(const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
 {
@@ -840,6 +949,72 @@ IceDelegateD::ATCDisplay::AirportInterface::getFlights(const ::Ice::Context* __c
     ::Ice::Current __current;
     __initCurrent(__current, __ATCDisplay__AirportInterface__getFlights_name, ::Ice::Idempotent, __context);
     ::ATCDisplay::ATCDFlights __result;
+    try
+    {
+        _DirectI __direct(__result, __current);
+        try
+        {
+            __direct.getServant()->__collocDispatch(__direct);
+        }
+        catch(...)
+        {
+            __direct.destroy();
+            throw;
+        }
+        __direct.destroy();
+    }
+    catch(const ::Ice::SystemException&)
+    {
+        throw;
+    }
+    catch(const ::IceInternal::LocalExceptionWrapper&)
+    {
+        throw;
+    }
+    catch(const ::std::exception& __ex)
+    {
+        ::IceInternal::LocalExceptionWrapper::throwWrapper(__ex);
+    }
+    catch(...)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(::Ice::UnknownException(__FILE__, __LINE__, "unknown c++ exception"), false);
+    }
+    return __result;
+}
+
+::ATCDisplay::ATCDStorm
+IceDelegateD::ATCDisplay::AirportInterface::getStorm(const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+{
+    class _DirectI : public ::IceInternal::Direct
+    {
+    public:
+
+        _DirectI(::ATCDisplay::ATCDStorm& __result, const ::Ice::Current& __current) : 
+            ::IceInternal::Direct(__current),
+            _result(__result)
+        {
+        }
+        
+        virtual ::Ice::DispatchStatus
+        run(::Ice::Object* object)
+        {
+            ::ATCDisplay::AirportInterface* servant = dynamic_cast< ::ATCDisplay::AirportInterface*>(object);
+            if(!servant)
+            {
+                throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
+            }
+            _result = servant->getStorm(_current);
+            return ::Ice::DispatchOK;
+        }
+        
+    private:
+        
+        ::ATCDisplay::ATCDStorm& _result;
+    };
+    
+    ::Ice::Current __current;
+    __initCurrent(__current, __ATCDisplay__AirportInterface__getStorm_name, ::Ice::Idempotent, __context);
+    ::ATCDisplay::ATCDStorm __result;
     try
     {
         _DirectI __direct(__result, __current);
@@ -1312,6 +1487,18 @@ ATCDisplay::AirportInterface::___getFlights(::IceInternal::Incoming& __inS, cons
 }
 
 ::Ice::DispatchStatus
+ATCDisplay::AirportInterface::___getStorm(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Idempotent, __current.mode);
+    __inS.readEmptyParams();
+    ::ATCDisplay::ATCDStorm __ret = getStorm(__current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
 ATCDisplay::AirportInterface::___getAirportInfo(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Idempotent, __current.mode);
@@ -1393,6 +1580,7 @@ const ::std::string __ATCDisplay__AirportInterface_all[] =
     "getMaxFlights",
     "getPoints",
     "getSimT",
+    "getStorm",
     "ice_id",
     "ice_ids",
     "ice_isA",
@@ -1404,7 +1592,7 @@ const ::std::string __ATCDisplay__AirportInterface_all[] =
 ::Ice::DispatchStatus
 ATCDisplay::AirportInterface::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__ATCDisplay__AirportInterface_all, __ATCDisplay__AirportInterface_all + 11, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__ATCDisplay__AirportInterface_all, __ATCDisplay__AirportInterface_all + 12, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -1442,17 +1630,21 @@ ATCDisplay::AirportInterface::__dispatch(::IceInternal::Incoming& in, const ::Ic
         }
         case 7:
         {
-            return ___ice_id(in, current);
+            return ___getStorm(in, current);
         }
         case 8:
         {
-            return ___ice_ids(in, current);
+            return ___ice_id(in, current);
         }
         case 9:
         {
-            return ___ice_isA(in, current);
+            return ___ice_ids(in, current);
         }
         case 10:
+        {
+            return ___ice_isA(in, current);
+        }
+        case 11:
         {
             return ___ice_ping(in, current);
         }

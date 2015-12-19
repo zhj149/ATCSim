@@ -226,6 +226,7 @@ Airport::step()
 	else
 	{
 		storm->update(SimTimeMod * delta_t);
+		std::cout<<"Radio tormenta = "<<storm->getRadious()<<std::endl;
 		checkFlightsInStorm();
 		checkFinishStorm();
 	}
@@ -330,7 +331,7 @@ Airport::checkFlightsInStorm()
 		dist = sqrt((xf-xs)*(xf-xs)+(yf-ys)*(yf-ys));
 
 
-		in = dist < storm->getRadious() && fabs(zs-zf)<storm->getHeight();
+		in = dist < storm->getRadious() && fabs(zs-zf) < storm->getHeight();
 		(*it)->setInStorm(in);
 
 

@@ -45,11 +45,11 @@ public:
 	//void draw();
 
     void NextFocus();
-    
+
 	std::list<Flight*> getFlights() {return flights;};
-	Storm* getStorm() {return storm;};
     Flight* getFocused(){return (*focus);};
-    void UpdateSimTime(float inc);
+		Storm* getStorm() {return storm;};
+		void UpdateSimTime(float inc);
 
 	virtual ATCDisplay::ATCDFlights getFlights(const Ice::Current&);
 	virtual ATCDisplay::ATCDStorm getStorm(const Ice::Current&);
@@ -62,7 +62,7 @@ public:
 
 
 private:
-    
+
 	void checkLandings();
 	void checkCollisions();
 	void checkCrashes();

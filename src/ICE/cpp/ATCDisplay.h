@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef ___home_mduran_git_ATCSim_src_ICE_cpp_ATCDisplay_h__
-#define ___home_mduran_git_ATCSim_src_ICE_cpp_ATCDisplay_h__
+#ifndef ___home_mduran_git_ATCSim2_src_ICE_cpp_ATCDisplay_h__
+#define ___home_mduran_git_ATCSim2_src_ICE_cpp_ATCDisplay_h__
 
 #include <Ice/ProxyF.h>
 #include <Ice/ObjectF.h>
@@ -88,6 +88,16 @@ struct ATCDPosition
 
 typedef ::std::vector< ::ATCDisplay::ATCDPosition> ATCDRoute;
 
+struct ATCDStorm
+{
+    bool valid;
+    ::Ice::Float speed;
+    ::ATCDisplay::ATCDPosition pos;
+    ::Ice::Float bearing;
+    ::Ice::Float radious;
+    ::Ice::Float height;
+};
+
 struct ATCDFlight
 {
     ::Ice::Float points;
@@ -150,6 +160,42 @@ struct StreamReader< ::ATCDisplay::ATCDPosition, S>
         __is->read(v.x);
         __is->read(v.y);
         __is->read(v.z);
+    }
+};
+
+template<>
+struct StreamableTraits< ::ATCDisplay::ATCDStorm>
+{
+    static const StreamHelperCategory helper = StreamHelperCategoryStruct;
+    static const int minWireSize = 29;
+    static const bool fixedLength = true;
+};
+
+template<class S>
+struct StreamWriter< ::ATCDisplay::ATCDStorm, S>
+{
+    static void write(S* __os, const ::ATCDisplay::ATCDStorm& v)
+    {
+        __os->write(v.valid);
+        __os->write(v.speed);
+        __os->write(v.pos);
+        __os->write(v.bearing);
+        __os->write(v.radious);
+        __os->write(v.height);
+    }
+};
+
+template<class S>
+struct StreamReader< ::ATCDisplay::ATCDStorm, S>
+{
+    static void read(S* __is, ::ATCDisplay::ATCDStorm& v)
+    {
+        __is->read(v.valid);
+        __is->read(v.speed);
+        __is->read(v.pos);
+        __is->read(v.bearing);
+        __is->read(v.radious);
+        __is->read(v.height);
     }
 };
 
@@ -262,6 +308,9 @@ namespace ATCDisplay
 
 class Callback_AirportInterface_getFlights_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_AirportInterface_getFlights_Base> Callback_AirportInterface_getFlightsPtr;
+
+class Callback_AirportInterface_getStorm_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_AirportInterface_getStorm_Base> Callback_AirportInterface_getStormPtr;
 
 class Callback_AirportInterface_getAirportInfo_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_AirportInterface_getAirportInfo_Base> Callback_AirportInterface_getAirportInfoPtr;
@@ -403,6 +452,119 @@ private:
 
     ::ATCDisplay::ATCDFlights getFlights(const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_getFlights(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::ATCDisplay::ATCDStorm getStorm()
+    {
+        return getStorm(0);
+    }
+    ::ATCDisplay::ATCDStorm getStorm(const ::Ice::Context& __ctx)
+    {
+        return getStorm(&__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_getStorm(const ::IceInternal::Function<void (const ::ATCDisplay::ATCDStorm&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_getStorm(0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_getStorm(const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_getStorm(0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_getStorm(const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::ATCDisplay::ATCDStorm&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_getStorm(&__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_getStorm(const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_getStorm(&__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_getStorm(const ::Ice::Context* __ctx, const ::IceInternal::Function<void (const ::ATCDisplay::ATCDStorm&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+    {
+        class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+        {
+        public:
+
+            Cpp11CB(const ::std::function<void (const ::ATCDisplay::ATCDStorm&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+                ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+                _response(responseFunc)
+            {
+                CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+            }
+
+            virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+            {
+                ::ATCDisplay::AirportInterfacePrx __proxy = ::ATCDisplay::AirportInterfacePrx::uncheckedCast(__result->getProxy());
+                ::ATCDisplay::ATCDStorm __ret;
+                try
+                {
+                    __ret = __proxy->end_getStorm(__result);
+                }
+                catch(::Ice::Exception& ex)
+                {
+                    Cpp11FnCallbackNC::__exception(__result, ex);
+                    return;
+                }
+                if(_response != nullptr)
+                {
+                    _response(__ret);
+                }
+            }
+        
+        private:
+            
+            ::std::function<void (const ::ATCDisplay::ATCDStorm&)> _response;
+        };
+        return begin_getStorm(__ctx, new Cpp11CB(__response, __exception, __sent));
+    }
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_getStorm()
+    {
+        return begin_getStorm(0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getStorm(const ::Ice::Context& __ctx)
+    {
+        return begin_getStorm(&__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_getStorm(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getStorm(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getStorm(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getStorm(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getStorm(const ::ATCDisplay::Callback_AirportInterface_getStormPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getStorm(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_getStorm(const ::Ice::Context& __ctx, const ::ATCDisplay::Callback_AirportInterface_getStormPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_getStorm(&__ctx, __del, __cookie);
+    }
+
+    ::ATCDisplay::ATCDStorm end_getStorm(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::ATCDisplay::ATCDStorm getStorm(const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_getStorm(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -1123,6 +1285,8 @@ public:
 
     virtual ::ATCDisplay::ATCDFlights getFlights(const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
+    virtual ::ATCDisplay::ATCDStorm getStorm(const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
     virtual ::ATCDisplay::ATCDAirport getAirportInfo(const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
     virtual void UpdateSimT(::Ice::Float, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
@@ -1153,6 +1317,8 @@ public:
 
     virtual ::ATCDisplay::ATCDFlights getFlights(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
+    virtual ::ATCDisplay::ATCDStorm getStorm(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
     virtual ::ATCDisplay::ATCDAirport getAirportInfo(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual void UpdateSimT(::Ice::Float, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
@@ -1182,6 +1348,8 @@ class AirportInterface : virtual public ::IceDelegate::ATCDisplay::AirportInterf
 public:
 
     virtual ::ATCDisplay::ATCDFlights getFlights(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::ATCDisplay::ATCDStorm getStorm(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual ::ATCDisplay::ATCDAirport getAirportInfo(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
@@ -1217,6 +1385,9 @@ public:
 
     virtual ::ATCDisplay::ATCDFlights getFlights(const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___getFlights(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::ATCDisplay::ATCDStorm getStorm(const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___getStorm(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::ATCDisplay::ATCDAirport getAirportInfo(const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___getAirportInfo(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -1360,6 +1531,106 @@ template<class T, typename CT> Callback_AirportInterface_getFlightsPtr
 newCallback_AirportInterface_getFlights(T* instance, void (T::*cb)(const ::ATCDisplay::ATCDFlights&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_AirportInterface_getFlights<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_AirportInterface_getStorm : public Callback_AirportInterface_getStorm_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::ATCDisplay::ATCDStorm&);
+
+    CallbackNC_AirportInterface_getStorm(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::ATCDisplay::AirportInterfacePrx __proxy = ::ATCDisplay::AirportInterfacePrx::uncheckedCast(__result->getProxy());
+        ::ATCDisplay::ATCDStorm __ret;
+        try
+        {
+            __ret = __proxy->end_getStorm(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_AirportInterface_getStormPtr
+newCallback_AirportInterface_getStorm(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::ATCDisplay::ATCDStorm&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_AirportInterface_getStorm<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_AirportInterface_getStormPtr
+newCallback_AirportInterface_getStorm(T* instance, void (T::*cb)(const ::ATCDisplay::ATCDStorm&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_AirportInterface_getStorm<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_AirportInterface_getStorm : public Callback_AirportInterface_getStorm_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::ATCDisplay::ATCDStorm&, const CT&);
+
+    Callback_AirportInterface_getStorm(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::ATCDisplay::AirportInterfacePrx __proxy = ::ATCDisplay::AirportInterfacePrx::uncheckedCast(__result->getProxy());
+        ::ATCDisplay::ATCDStorm __ret;
+        try
+        {
+            __ret = __proxy->end_getStorm(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_AirportInterface_getStormPtr
+newCallback_AirportInterface_getStorm(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::ATCDisplay::ATCDStorm&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_AirportInterface_getStorm<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_AirportInterface_getStormPtr
+newCallback_AirportInterface_getStorm(T* instance, void (T::*cb)(const ::ATCDisplay::ATCDStorm&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_AirportInterface_getStorm<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T>

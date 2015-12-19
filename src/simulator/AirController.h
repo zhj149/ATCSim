@@ -22,17 +22,27 @@
  *  along with ATCSim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AIRCONTROLLER_H_
-#define AIRCONTROLLER_H_
 
-#include "Singleton.h"
+ #ifndef AIRCONTROLLER_H_
+ #define AIRCONTROLLER_H_
 
-class AirController: public Singleton<AirController> {
-public:
-	AirController();
-	virtual ~AirController();
+ #include "Singleton.h"
 
-	void doWork();
-};
+ class AirController: public Singleton<AirController> {
+
+ public:
+ 	AirController();
+ 	virtual ~AirController();
+
+ 	void AssignWaiting(Flight *f, Route r1, Route r2, Route r3, Route r4);
+   void AssignLanding(Flight *f, Route p1, Route p2, Route p3, Route p4);
+ 	void doWork();
+
+ private:
+
+ 	bool busy_route;
+
+ };
+
 
 #endif /* AIRCONTROLLER_H_ */
