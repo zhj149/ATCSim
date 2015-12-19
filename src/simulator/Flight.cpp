@@ -84,9 +84,8 @@ Flight::update(float delta_t)
 		
 		new_w = diff_bearing;
 		
-
-
 		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
+
 		//cout<<bearing<<"\t"<<goal_bearing<<"\t"<<goal_bearing2<<endl;
 		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w<<std::endl;
 
