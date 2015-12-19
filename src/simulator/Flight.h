@@ -30,6 +30,8 @@
 #include "Common.h"
 #include <list>
 
+#include <iostream>
+#include <sys/time.h>
 typedef struct {
 	Position pos;
 	float speed;
@@ -57,12 +59,13 @@ public:
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
 	float getS(float v, float diffbearing, float w_max);
-	bool getLanding() { return landing;}; //me dice si le puedo enviar a aterrizar
-	void setLanding(bool state) { landing = state;};//me asigna aterrizaje 
 
+	bool getLanding() { return landing;}; 
+	void setLanding(bool state) { landing = state;};
 
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
+
 
 private:
 	std::string id;
@@ -73,7 +76,6 @@ private:
 	bool focused;
 
 	bool landing;
-
 
 	bool inStorm;
 

@@ -50,13 +50,18 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	inclination = _inclination;
 	speed = _speed;
 	route.clear();
+	landing=0;
+	
+
 	inStorm = false;
 
 	focused = false;
 	points = INIT_FLIGHT_POINTS;
 
 	w_speed = 0.0f;
+
 }
+
 
 float 
 Flight::getS(float v, float diffbearing, float w_max)
@@ -79,6 +84,7 @@ Flight::update(float delta_t)
 {
 	float trans,s_turn;
 	Position CPpos, CPpos2;
+
 
 	if(routed())
 	{
@@ -122,15 +128,10 @@ Flight::update(float delta_t)
 
 		goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
 		diff_bearing2 = normalizePi(goal_bearing2 - goal_bearing);
-		new_w = diff_bearing*delta_t;
+		new_w = diff_bearing2;
 
 		
-
-
 		s_turn=getS(speed,diff_bearing2, MAX_FLIFGT_W);
-
-		if(pos.distance(CPpos)<s_turn)
-		route.pop_front();
 
 		}else
 
@@ -150,6 +151,9 @@ Flight::update(float delta_t)
 
 	
 
+		if(pos.distance(CPpos)<s_turn)
+		route.pop_front();
+
 	if(inStorm)
 	{
 		//std::cout<<"["<<id<<"]In Storm"<<std::endl;
@@ -157,7 +161,6 @@ Flight::update(float delta_t)
 	}
 	else
 		points = points - delta_t;
-
 
 
 }

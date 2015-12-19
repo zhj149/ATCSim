@@ -39,6 +39,7 @@ public:
 	void assignWaiting1(Flight* f);
 	void assignWaiting2(Flight* f);
 	void assignWaiting3(Flight* f);
+	void assignWaiting4(Flight* f);
 	void assignLanding(Flight* f);
 
 	
