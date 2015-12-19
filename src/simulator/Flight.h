@@ -21,6 +21,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with ATCSim.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+ //Archivo final
+
 #include <string>
 
 #ifndef FLIGHT_H_
