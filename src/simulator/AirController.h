@@ -33,12 +33,12 @@ public:
 	AirController();
 	virtual ~AirController();
 
-	void creaRuta(std::list<Route> ruta, Route wp_1, Route wp_2, Route wp_3, Route wp_4);
+//	void creaRuta(std::list<Route> ruta, Route wp_1, Route wp_2, Route wp_3, Route wp_4);
 
 	void doWork();
 
-	void assignWaiting(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3, Route wait_4);
-	void assignLanding(Flight* vuelo, Route wp_land);
+	void assignRuta(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3, Route wait_4);
+//	void assignLanding(Flight* vuelo, Route wp_land);
 	void setWhere_I (bool ocupado, int index) {where_i[index] = ocupado;};
 	bool getWhere_I (int index) {return where_i[index];};
 	void setWhere_C (bool ocupado, int index) {where_c[index] = ocupado;};

@@ -43,10 +43,10 @@ public:
 	void update(float delta_t);
 	void draw();
 
-	std::list<Route> *getRoute() { return route;};
-	void setRoute(std::list<Route> *ruta) { route = ruta;};
+	std::list<Route> *getRoute() { return &route;};
+//	void setRoute(std::list<Route> ruta) { route = ruta;};
 
-	bool routed() { return route != NULL;};
+	bool routed() { return !route.empty();};
 	Position getPosition() { return pos;};
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
@@ -78,18 +78,23 @@ public:
 	bool getWaiting_2 () {return espera2_;};
 */
 
+	bool getInStorm() {return inStorm;};
+	void setInStorm(bool in) {inStorm=in;};
+
 private:
 	std::string id;
 	Position pos, last_pos;
 	float bearing, inclination;
 	float speed, w_speed;
-	std::list<Route> *route; //Esto pasa de ser una lista de puntos de ruta, a ser una lista de punteros a ruta
+	std::list<Route> route; //Nuevo cambio, puntero a ruta pasa a ser ruta
 	bool focused;
 	std::list<Route>::iterator it;
 	int desfase;  //Variable de prueba para manejar it y su comportamiento en la lista
 
 	bool aterriza_;
 	int nivelVuelo_;
+
+	bool inStorm;
 
 	float points;
 };

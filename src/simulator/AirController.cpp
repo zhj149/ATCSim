@@ -36,24 +36,28 @@ AirController::~AirController() {
 	// TODO Auto-generated destructor stub
 }
 
-/*
+
 void
-AirController::assignWaiting(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3, Route wait_4)
+AirController::assignRuta(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3, Route wait_4)
 {
-	vuelo->getRoute()->push_front(wait_4);
-	vuelo->getRoute()->push_front(wait_3);
-	vuelo->getRoute()->push_front(wait_2);
+	vuelo->getRoute()->clear();
 	vuelo->getRoute()->push_front(wait_1);
+	vuelo->getRoute()->push_back(wait_2);
+	vuelo->getRoute()->push_back(wait_3);
+	vuelo->getRoute()->push_back(wait_4);
 
 //	vuelo->setWaiting(true);
 }
 
+/*
 void
 AirController::assignLanding(Flight* vuelo, Route wp_land)
 {
 	vuelo->getRoute()->push_front(wp_land);
 	vuelo->setLanding(false);
-}*/
+}
+*/
+/*
 
 void
 AirController::creaRuta(std::list<Route> ruta, Route wp_1, Route wp_2, Route wp_3, Route wp_4)
@@ -63,7 +67,7 @@ AirController::creaRuta(std::list<Route> ruta, Route wp_1, Route wp_2, Route wp_
 	ruta.push_back(wp_3);
 	ruta.push_back(wp_4);
 }
-
+*/
 
 
 void
@@ -126,7 +130,7 @@ AirController::doWork()
 	Route r1_2_d, r2_2_d, r3_2_d, r4_2_d, r1_2_i, r2_2_i, r3_2_i, r4_2_i, r1_2_c, r2_2_c, r3_2_c, r4_2_c;
 
 	r0.pos = pos0;
-	r0.speed = 500.0;
+	r0.speed = 300.0;
 	r1.pos = pos1;
 	r1.speed = 100.0;
 	r2.pos = pos2;
@@ -197,6 +201,7 @@ AirController::doWork()
 	r4_2_c.pos = wp4_w2_cen;
 	r4_2_c.speed = 500.0;
 
+	/*
 	std::list<Route> ruta_land, ruta_w1_d, ruta_w1_c, ruta_w1_i, ruta_w2_d, ruta_w2_c, ruta_w2_i;
 
 	creaRuta(ruta_land, r0, r1, r2, r3);
@@ -208,15 +213,21 @@ AirController::doWork()
 	creaRuta(ruta_w2_d, r1_2_d, r2_2_d, r3_2_d, r4_2_d);
 	creaRuta(ruta_w2_c, r1_2_c, r2_2_c, r3_2_c, r4_2_c);
 	creaRuta(ruta_w2_i, r1_2_i, r2_2_i, r3_2_i, r4_2_i);
-
+*/
+	std::list<Flight*>::iterator aux = it;
+//	aux++;
 
 	for(it = flights.begin(); it!=flights.end(); ++it)
 	{
-		if((*it)->getRoute() == NULL)
+		std::list<Flight*>::iterator aux = it;
+		aux++;
+		if((*it)->getRoute()->empty())
 		{
 			if ( it == flights.begin() )
 			{
-				(*it)->setRoute(&ruta_land);
+//				(*it)->getRoute()->clear();
+//				(*it)->setRoute(ruta_land);
+				assignRuta(*it, r0, r1, r2, r3);
 				(*it)->setLanding(true);
 			}
 			else
@@ -225,13 +236,17 @@ AirController::doWork()
 				{
 					if ( getWhere_D(0) == false )
 					{
-						(*it)->setRoute(&ruta_w1_d);
+//						(*it)->getRoute()->clear();
+//						(*it)->setRoute(ruta_w1_d);
 //						(*it)->setNivel(j);
+						assignRuta(*it, r1_d, r2_d, r3_d, r4_d);
 						setWhere_D(true, 0);
 					}
 					else
 					{
-						(*it)->setRoute(&ruta_w2_d);
+//						(*it)->getRoute()->clear();
+//						(*it)->setRoute(ruta_w2_d);
+						assignRuta(*it, r1_2_d, r2_2_d, r3_2_d, r4_2_d);
 						setWhere_D(true, 1);
 					}
 				}
@@ -239,12 +254,16 @@ AirController::doWork()
 				{
 					if ( getWhere_I(0) == false )
 					{
-						(*it)->setRoute(&ruta_w1_i);
+//						(*it)->getRoute()->clear();
+//						(*it)->setRoute(ruta_w1_i);
+						assignRuta(*it, r1_i, r2_i, r3_i, r4_i);
 						setWhere_I(true, 0);
 					}
 					else
 					{
-						(*it)->setRoute(&ruta_w2_i);
+//						(*it)->getRoute()->clear();
+//						(*it)->setRoute(ruta_w2_i);
+						assignRuta(*it, r1_2_i, r2_2_i, r3_2_i, r4_2_i);
 						setWhere_I(true, 1);
 					}
 				}
@@ -252,16 +271,59 @@ AirController::doWork()
 				{
 					if ( getWhere_C(0) == false )
 					{
-						(*it)->setRoute(&ruta_w1_c);
+//						(*it)->getRoute()->clear();
+//						(*it)->setRoute(ruta_w1_c);
+						assignRuta(*it, r1_c, r2_c, r3_c, r4_c);
 						setWhere_C(true, 0);
 					}
 					else
 					{
-						(*it)->setRoute(&ruta_w2_c);
+//						(*it)->getRoute()->clear();
+//						(*it)->setRoute(ruta_w2_c);
+						assignRuta(*it, r1_2_c, r2_2_c, r3_2_c, r4_2_c);
 						setWhere_C(true, 1);
 					}
 				}
 			}
+
+		} else //if (!(*it)->getRoute()->empty())
+		{
+			std::cout<<"Empieza reorganización de rutas"<<std::endl;
+			if ( ( (*it)->getLanding() == true) && ( (*it)->getPosition().get_x() < DIST_UMBRAL) )
+			{
+	//				(*it)->getRoute()->clear();
+	//				( *it )->setRoute(ruta_land);
+				assignRuta(*aux, r0, r1, r2, r3);
+				(*aux)->setLanding(true);
+
+				if ( (*aux)->getPosition().get_y() > DIST_DECISION )
+				{
+					if ( getWhere_D(0)==true ) setWhere_D(false, 0);
+
+					else if ( getWhere_D(1)==true ) setWhere_D(false, 1);
+				}
+				else if ( (*aux)->getPosition().get_y() < -DIST_DECISION )
+				{
+					if ( getWhere_I(0)==true ) setWhere_I(false, 0);
+
+					else if ( getWhere_I(1)==true ) setWhere_I(false, 1);
+				}
+				else
+				{
+					if ( getWhere_C(0)==true ) setWhere_C(false, 0);
+
+					else if ( getWhere_C(1)==true ) setWhere_C(false, 1);
+				}
+			}
+			else if (( (*it)->getLanding() == false))
+			{
+	//				(*it)->setRoute(ruta_land);
+				assignRuta(*it, r0, r1, r2, r3);
+				(*it)->setLanding(true);
+			}
+
+			std::cout<<"Termina reorganización de rutas";
+			std::cout<<"======================================"<<std::endl;
 
 		}
 
@@ -269,16 +331,22 @@ AirController::doWork()
 	}	//	fin del for de vuelos
 
 
+//	do {
 
-	do {
-		it = flights.begin();
-		std::list<Flight*>::iterator aux = it;
-		aux++;
-
+// A partir de aquí, el cambio realizado es que los aux pasar a ser it; añadido el clear de las rutas
+//	for(it == flights.begin() ; it!=flights.end(); ++it)
+//	{
+//		it = flights.begin();
+//		std::list<Flight*>::iterator aux = it;
+//		aux++;
+/*
+		std::cout<<"Empieza reorganización de rutas"<<std::endl;
 		if ( ( (*it)->getLanding() == true) && ( (*it)->getPosition().get_x() < DIST_UMBRAL) )
 		{
-			( *aux )->setRoute(&ruta_land);
-			( *aux )->setLanding(true);
+//				(*it)->getRoute()->clear();
+//				( *it )->setRoute(ruta_land);
+			assignRuta(*aux, r0, r1, r2, r3);
+			(*aux)->setLanding(true);
 
 			if ( (*aux)->getPosition().get_y() > DIST_DECISION )
 			{
@@ -301,11 +369,19 @@ AirController::doWork()
 		}
 		else if (( (*it)->getLanding() == false))
 		{
-			(*it)->setRoute(&ruta_land);
+//				(*it)->setRoute(ruta_land);
+			assignRuta(*it, r0, r1, r2, r3);
 			(*it)->setLanding(true);
 		}
 
-	} while (it != flights.end());
+		std::cout<<"Termina reorganización de rutas";
+		std::cout<<"======================================"<<std::endl;*/
+//	}
+
+//	} while (it != flights.end());
+
+//	std::cerr<<"S";
+	std::cout<<"Termina un segundo de tiempo"<<std::endl;
 
 }
 
