@@ -1,5 +1,5 @@
 /*
- * Flight.cpp
+ * Storm.cpp
  *
  *  Created on: 15/07/2014
  *      Author: paco
@@ -22,7 +22,7 @@
  *  along with ATCSim.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Flight.h"
+#include "Storm.h"
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
@@ -38,180 +38,35 @@
 #include <string>
 #include <math.h>
 
-Flight::~Flight() {
+Storm::~Storm() {
 	// TODO Auto-generated destructor stub
 }
 
-Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclination, float _speed)
+Storm::Storm(Position _pos, float _bearing, float _speed, float _radious, float _height)
 {
-	id = _id;
+
 	pos = _pos;
 	bearing = _bearing;
-	inclination = _inclination;
 	speed = _speed;
-	route.clear();
-	inStorm = false;
-
-	focused = false;
-	points = INIT_FLIGHT_POINTS;
-
-	w_speed = 0.0f;
-}
-
-float Flight::getS(float v,float bear,float w_max)
-{
-	float T;
-	float A;
-	T = fabs(bear)/w_max;
-	A = T*v;
-	return A;
-}
-
-float Flight::updateV(float speed1,float speed0,float t)
-{
-	float new_speed,diff_speed,acc;
-
-	diff_speed = speed1-speed0;
-	acc = diff_speed;
-
-	if(fabs(acc) > MAX_ACELERATION)
-		acc = (acc/fabs(acc))*MAX_ACELERATION;
-	else{
-		acc = acc;
-	}
-	return new_speed = speed + acc*t;
-}
-
-float Flight::updateW(float w)
-{
-	float new_w;
-
-	if(fabs(w) > MAX_FLIFGT_W)
-			new_w = (fabs(w)/w)*MAX_FLIFGT_W;
-	else{
-			new_w = w;
-	}
-	return new_w;
+	radious = _radious;
+	height = _height;
 }
 
 void
-Flight::update(float delta_t)
+Storm::update(float delta_t)
 {
 	float trans;
-	Position CPpos;
-	float s;
-	float new_bearing,new_speed;
-
-	if(routed())
-	{
-	float goal_bearing, diff_bearing, new_w;
-
-	CPpos = route.front().pos;
-	pos.angles(CPpos, goal_bearing, inclination);
-
-	goal_bearing = normalizePi(goal_bearing + M_PI);
-	diff_bearing = normalizePi(goal_bearing - bearing);
-	new_w = diff_bearing;
-	if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
-	new_bearing = new_w;
-	//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
-
-	bearing = bearing + new_w*delta_t;
-
-	float goal_speed, diff_speed, acc;
-
-	goal_speed = route.front().speed;
-	acc = (goal_speed - speed);
-
-	if(fabs(acc)>MAX_ACELERATION) acc = (acc/fabs(acc))*MAX_ACELERATION;
-
-	speed = speed + acc*delta_t;
-	new_speed = speed;
-	//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
-
-}else
-	inclination = 0.0;
-
-last_pos = pos;
-
-trans = speed * delta_t;
-
-
-pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
-pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
-pos.set_z(pos.get_z() + ( trans * sin(inclination)));
-
-s = getS(new_speed,new_bearing,MAX_FLIFGT_W);
-//std::cout<<"pos ="<< s << std::endl;
-if(pos.distance(CPpos)< s)
-	route.pop_front();
-
-points = points - delta_t;
-
-}
-/*	if(routed())
-	{
-		float w_0,acc,diff_bear,bear1,bear2,inc1,inc2;
-		std::list<Route>::iterator it;
-		Route r1,r2;
-		it = route.begin();
-		r1 = *it;
-		pos.angles(r1.pos, bear1, inc1);
-		it++;
-		r2 = *it;
-		r1.pos.angles(r2.pos, bear2 , inc2);
-		diff_bear = normalizePi(bear2-bear1);
-		float omega = diff_bear;
-		float new_w = updateW(omega);
-
-		s = getS(speed,diff_bear,MAX_FLIFGT_W);
-	//std::cout<<"position =  "<< s << std::endl;
-		if(pos.distance(r1.pos) < s)
-		{
-			route.pop_front();
-			w_0 = std::min(omega,MAX_FLIFGT_W);
-		}
-		if(fabs(omega) > 0.001)
-			acc = 0;
-
-	}else
-
-	last_pos = pos;
 
 	trans = speed * delta_t;
 
+	pos.set_x(pos.get_x() + trans * cos(bearing) * cos(0.0));
+	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(0.0));
+	pos.set_z(pos.get_z() + ( trans * sin(0.0)));
 
-	pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
-	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
-	pos.set_z(pos.get_z() + ( trans * sin(inclination)));
-
-	speed0 = getSpeed();
-	speed1 = route.front().speed;
-	updateV(speed1,speed0,delta_t);
-
-
-<<<<<<< HEAD
-//std::cout <<"angle = "<< diff_bear << std::endl;
-=======
-	if(inStorm)
-	{
-		//std::cout<<"["<<id<<"]In Storm"<<std::endl;
-		points = points - 2*delta_t;
-	}
-	else
-		points = points - delta_t;
-
-
->>>>>>> master
-
-
-	points = points - delta_t;
 }
-*/
-
 //
 //void
-//Flight::draw()
+//Storm::draw()
 //{
 //
 //

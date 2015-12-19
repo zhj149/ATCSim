@@ -32,6 +32,16 @@
 #define LANDING_STRIP_L	 		750.0f
 #define LANDING_STRIP_W	 		80.0f
 
+#define STORM_MAX_RAD				5000.0f
+#define STORM_MIN_RAD				2000.0f
+#define STORM_MAX_HEIGHT				2000.0f
+#define STORM_MIN_HEIGHT				500.0f
+#define STORM_MAX_ELEVATION				2000.0f
+#define STORM_MIN_ELEVATION				500.0f
+#define STORM_MAX_SPEED				500.0f
+#define STORM_MIN_SPEED				30.0f
+
+
 //Conditions for landing
 
 #define LANDING_POS_X		0.0f
@@ -52,7 +62,11 @@
 #define CRASH_INC_POINTS	(-25)
 #define CRASH_SPEED_POINTS 	(-25)
 
+<<<<<<< HEAD
 #define INC_DIFF		250000000000 //30 sec
+=======
+#define INC_DIFF		30000000//30 sec 
+>>>>>>> master
 #define INC_PEN			1 	 	//fligts/inc
 
 #define INC_SIMTIME			0.1
