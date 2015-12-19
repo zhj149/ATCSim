@@ -61,7 +61,9 @@ public:
 	float updateW(float ideal_w,float w_max );
 	float diffBearing(float goal_bearing,float bearing);
 	float diffInclination(float goal_inclination1, float inclination);
-		
+
+	bool getInStorm() {return inStorm;};
+	void setInStorm(bool in) {inStorm=in;};
 
 private:
 	std::string id;
@@ -72,6 +74,8 @@ private:
 	std::list<Route> route;
 	std::list<Route>::iterator it;
 	bool focused;
+
+	bool inStorm;
 
 	float points;
 };

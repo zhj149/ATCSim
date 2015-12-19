@@ -46,8 +46,6 @@ AirController::assignWaiting(Flight *f, Route r0, Route r1, Route r2, Route r3)
 	setLanding(false);
 	f->getRoute()->clear();
 
-	
-
 	f->getRoute()->push_back(r3);
 	f->getRoute()->push_front(r2);
 	f->getRoute()->push_front(r1);
@@ -61,7 +59,6 @@ AirController::assignLanding(Flight *f, Route r0, Route r1, Route r2, Route r3, 
 	setLanding(true);
 	f->getRoute()->clear();
 
-	
 	f->getRoute()->push_back(r3);
 	f->getRoute()->push_front(r2);
 	f->getRoute()->push_front(r1);
@@ -124,7 +121,7 @@ AirController::doWork()
 	r4_r.speed = 400.0;
 
 /**********************WAITING ROUTE 1**************************************/
-	
+
 	Route r11, r12, r13, r14;
 
 	float x_w1 = -8000;
@@ -134,7 +131,7 @@ AirController::doWork()
 	Position pos12(x_w1, y_w1+1000, z);
 	Position pos13(x_w1-1000, y_w1, z);
 	Position pos14(x_w1, y_w1-1000, z);
-			
+
 	r11.pos = pos11;
 	r11.speed = 200.0;
 	r12.pos = pos12;
@@ -153,7 +150,7 @@ AirController::doWork()
 	Position pos22(x_w2, y_w2+1000, z);
 	Position pos23(x_w2-1000, y_w2, z);
 	Position pos24(x_w2, y_w2-1000, z);
-			
+
 	r21.pos = pos21;
 	r21.speed = 200.0;
 	r22.pos = pos22;
@@ -172,7 +169,7 @@ AirController::doWork()
 	Position pos32(x_w3, y_w3+1000, z);
 	Position pos33(x_w3-1000, y_w3, z);
 	Position pos34(x_w3, y_w3-1000, z);
-			
+
 	r31.pos = pos31;
 	r31.speed = 200.0;
 	r32.pos = pos32;
@@ -191,7 +188,7 @@ AirController::doWork()
 	Position pos42(x_w4, y_w4+1000, z);
 	Position pos43(x_w4-1000, y_w4, z);
 	Position pos44(x_w4, y_w4-1000, z);
-			
+
 	r41.pos = pos41;
 	r41.speed = 200.0;
 	r42.pos = pos42;
@@ -217,12 +214,12 @@ AirController::doWork()
 
 				assignLanding ((*it), r0,r1, r2, r3,r4_r,r5_r);
 			}
-		
+
 		}else if(((*it)->getRoute()->empty())&&(getLanding() == true)){
-					
+
 			float x_avion = (*it)->getPosition().get_x();
 			float y_avion = (*it)->getPosition().get_y();
-				            
+
 			if (y_avion <=-5000)//SECTOR1
 			{
 				float z=(*it)->getPosition().get_z()-1000.0;
@@ -230,27 +227,27 @@ AirController::doWork()
 				assignWaiting((*it), r11,  r12, r13, r14);
 
 			}else if((-5000< y_avion)&&(y_avion < 0)){//SECTOR 2
-					
+
 				float z=(*it)->getPosition().get_z()-1000.0;
-				
+
 				assignWaiting((*it), r21, r22, r23, r24);
 
 			}else if((0<= y_avion)&&(y_avion < 5000)){//SECTOR 3
-			
+
 				float z=(*it)->getPosition().get_z()-1000.0;
-				
+
 				assignWaiting((*it), r31, r32, r33, r34);
 
 			}else if(y_avion >=5000){//SECTOR 4
 
  				float z=(*it)->getPosition().get_z()-1000.0;
-				
+
 				assignWaiting((*it), r41, r42, r43, r44);
 
 			}//ultimo elseif
 		}//1º else
-	}//1º for		
 
+	}//1º for
 }
 
 
@@ -312,7 +309,7 @@ AirController::doWork()
 	r4_r.speed = 400.0;
 
 //**********************WAITING ROUTE 1*********************************************
-	
+
 	Route r11, r12, r13, r14;
 
 	float x_w1 = -4000;
@@ -322,7 +319,7 @@ AirController::doWork()
 	Position pos12(x_w1, y_w1+1000, z);
 	Position pos13(x_w1-1000, y_w1, z);
 	Position pos14(x_w1, y_w1-1000, z);
-			
+
 	r11.pos = pos11;
 	r11.speed = 200.0;
 	r12.pos = pos12;
@@ -341,7 +338,7 @@ AirController::doWork()
 	Position pos22(x_w2, y_w2+1000, z);
 	Position pos23(x_w2-1000, y_w2, z);
 	Position pos24(x_w2, y_w2-1000, z);
-			
+
 	r21.pos = pos21;
 	r21.speed = 200.0;
 	r22.pos = pos22;
@@ -360,7 +357,7 @@ AirController::doWork()
 	Position pos32(x_w3, y_w3+1000, z);
 	Position pos33(x_w3-1000, y_w3, z);
 	Position pos34(x_w3, y_w3-1000, z);
-			
+
 	r31.pos = pos31;
 	r31.speed = 200.0;
 	r32.pos = pos32;
@@ -379,7 +376,7 @@ AirController::doWork()
 	Position pos42(x_w4, y_w4+1000, z);
 	Position pos43(x_w4-1000, y_w4, z);
 	Position pos44(x_w4, y_w4-1000, z);
-			
+
 	r41.pos = pos41;
 	r41.speed = 200.0;
 	r42.pos = pos42;
@@ -391,25 +388,24 @@ AirController::doWork()
 
 	for(it = flights.begin(); it!=flights.end(); ++it)
 	{
-		
+
 		if (it == flights.begin()){
 
 			if(((*it)->getRoute()->empty()))
 			{
 				if((*it)->getPosition().get_y()<=0)
 				{
-<<<<<<< HEAD
 			    		assignLanding ((*it), r0,r1, r2, r3,r4_l,r5_l);
 
 				}else if ((*it)->getPosition().get_y()>0) {
 
 					assignLanding ((*it), r0,r1, r2, r3,r4_r,r5_r);
-=======
+
 					(*it)->getRoute()->push_back(r3);
 					(*it)->getRoute()->push_front(r2);
 					(*it)->getRoute()->push_front(r1);
 					(*it)->getRoute()->push_front(r0);
->>>>>>> common original
+
 				}
 			}
 		
@@ -451,6 +447,45 @@ AirController::doWork()
 		}//1º else
 	
 	}//1º for		
+
+		}else{
+
+			if(((*it)->getRoute()->empty()))
+			{
+
+				float x_avion = (*it)->getPosition().get_x();
+				float y_avion = (*it)->getPosition().get_y();
+
+				if (y_avion <=-5000)//SECTOR1
+				{
+					float z=(*it)->getPosition().get_z()-1000.0;
+
+					assignWaiting((*it), r11,  r12, r13, r14);
+
+				}else if((-5000< y_avion)&&(y_avion < 0)){//SECTOR 2
+
+					float z=(*it)->getPosition().get_z()-1000.0;
+
+					assignWaiting((*it), r21, r22, r23, r24);
+
+				}else if((0<= y_avion)&&(y_avion < 5000)){//SECTOR 3
+
+					float z=(*it)->getPosition().get_z()-1000.0;
+
+					assignWaiting((*it), r31, r32, r33, r34);
+
+				}else if(y_avion >=5000){//SECTOR 4
+
+ 					float z=(*it)->getPosition().get_z()-1000.0;
+
+					assignWaiting((*it), r41, r42, r43, r44);
+
+				}//ultimo elseif
+			}
+
+		}//1º else
+
+	}//1º for
 
 }
 */
