@@ -28,19 +28,15 @@
 #include "Singleton.h"
 #include "Singleton.h"
 #include "Flight.h"
+#include "Storm.h"
 
 class AirController: public Singleton<AirController> {
 public:
 	AirController();
 	virtual ~AirController();
 	void Land(Flight *flight, Route a, Route b, Route c, Route d);
-	void Waiting(Flight *flight, Route a, Route b, Route c, Route d, Route e);
-	bool setLanding(bool indicador) {landing = indicador;};
-	bool getLanding() {return landing;};
-
+	void Waiting(Flight *flight, Route a, Route b, Route c, Route d, Route e, Route f, Route g, Route h, Route k, Route l, Route m, Route n);
 	void doWork();
-private:
-	bool landing;
 };
 
 #endif /* AIRCONTROLLER_H_ */

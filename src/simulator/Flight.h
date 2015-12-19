@@ -63,6 +63,8 @@ public:
 
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
+	bool setLanding(bool aux) {landing = aux;};
+	bool getLanding() {return landing;};
 
 private:
 	std::string id;
@@ -76,6 +78,8 @@ private:
 
 	float points;
 	float S;
+
+	bool landing;
 };
 
 #endif /* FLIGHT_H_ */

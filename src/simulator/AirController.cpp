@@ -27,10 +27,13 @@
 #include "Flight.h"
 #include "Position.h"
 #include <list>
+#include "Storm.h"
+#include <math.h>
+#include <stdio.h>
 
 AirController::AirController() {
 	// TODO Auto-generated constructor stub
-	setLanding(false);
+	//setLanding(false);
 }
 
 AirController::~AirController() {
@@ -38,19 +41,27 @@ AirController::~AirController() {
 }
 void AirController::Land(Flight *flight, Route a, Route b, Route c, Route d)
 {
-	setLanding(true);
 
+	flight->setLanding(true);
 	flight->getRoute()->clear();
-	flight->getRoute()->push_back(d);
+	flight->getRoute()->push_front(d);
 	flight->getRoute()->push_front(c);
 	flight->getRoute()->push_front(b);
 	flight->getRoute()->push_front(a);
 
 }
-void AirController::Waiting(Flight *flight, Route a, Route b, Route c, Route d, Route e)
+void AirController::Waiting(Flight *flight, Route a, Route b, Route c, Route d, Route e, Route f, Route g, Route h, Route k, Route l, Route m, Route n)
 {
-	setLanding(false);
+
+	flight->setLanding(false);
 	flight->getRoute()->clear();
+	flight->getRoute()->push_front(n);
+	flight->getRoute()->push_front(m);
+	flight->getRoute()->push_front(l);
+	flight->getRoute()->push_front(k);
+	flight->getRoute()->push_front(h);
+	flight->getRoute()->push_front(g);
+	flight->getRoute()->push_front(f);
 	flight->getRoute()->push_front(e);
 	flight->getRoute()->push_front(d);
 	flight->getRoute()->push_front(c);
@@ -64,201 +75,253 @@ AirController::doWork()
 {
 			std::list<Flight*> flights = Airport::getInstance()->getFlights();
 			std::list<Flight*>::iterator it;
+			//Storm* storm;
+			//float diferenciangulartorav;
+			//float distanciatorav;
+			//float radio;
+
+			bool vacia = true;
 
 			Position pos0(3500.0, 0.0, 100.0);
 			Position pos1(1500.0, 0.0, 50.0);
 			Position pos2(200.0, 0.0, 25.0);
 			Position pos3(-750.0, 0.0, 25.0);
-			//Puntos de entrada al aeropuerto
-			Position pos4(4500.0, -400.0, 150.0);
-			Position pos5(3000.0, 400.0, 150.0);
+
+			//Rutas nuevas
+
+			//Puntos de entrada
+			Position pos18(3500.0, -1000.0, 50.0); //izq
+			Position pos19(3500.0, 1000.0, 50.0); //derecha
+			Position pos20(3500.0, 0.0, 50.0); //centro
+
+			//Ruta de espera izquierda
+			Position pos21(4000.0, -8000.0, 75.0);
+			Position pos22(3000.0, -7000.0, 75.0);
+			Position pos23(4000.0, -6000.0, 75.0);
+			Position pos24(5000.0, -6000.0, 75.0);
+			Position pos25(7500.0, -6000.0, 75.0);
+			Position pos26(9000.0, -6000.0, 75.0);
+			Position pos27(10500.0, -7000.0, 75.0);
+			Position pos28(9000.0, -8000.0, 75.0);
+			Position pos29(7500.0, -8000.0, 75.0);
+			Position pos54(6000.0, -9000.0, 75.0);
+			Position pos30(5000.0, -8000.0, 75.0);
+			Position pos31(4500.0, -8000.0, 75.0);
+
+			//Ruta de espera derecha
+			Position pos32(4000.0, 8000.0, 75.0);
+			Position pos33(3000.0, 7000.0, 75.0);
+			Position pos34(4000.0, 6000.0, 75.0);
+			Position pos35(5000.0, 6000.0, 75.0);
+			Position pos36(7500.0, 6000.0, 75.0);
+			Position pos37(9000.0, 6000.0, 75.0);
+			Position pos38(10500.0, 7000.0, 75.0);
+			Position pos39(9000.0, 8000.0, 75.0);
+			Position pos40(7500.0, 8000.0, 75.0);
+			Position pos55(6000.0, 9000.0, 75.0);
+			Position pos41(5000.0, 8000.0, 75.0);
+			Position pos42(4500.0, 8000.0, 75.0);
+
+			//Ruta de espera centro
+			Position pos56(11000.0, 1450.0, 75.0);
+			Position pos43(4000.0, -1400.0, 75.0);
+			Position pos44(3000.0, 0.0, 75.0);
+			Position pos45(4000.0, 1400.0, 75.0);
+			Position pos46(5000.0, 1400.0, 75.0);
+			Position pos47(7500.0, 1400.0, 75.0);
+			Position pos48(9000.0, 1400.0, 75.0);
+			Position pos49(10500.0, 0.0, 75.0);
+			Position pos50(9000.0, -1400.0, 75.0);
+			Position pos51(7500.0, -1400.0, 75.0);
+			Position pos52(5000.0, -1400.0, 75.0);
+			Position pos53(4500.0, -1400.0, 75.0);
 
 
-			//Ruta de espera 1
-			Position pos6(6000.0, -2000.0, 200.0);
-			Position pos7(6000.0, -7000.0, 200.0);
-			Position pos8(4000.0, -3500.0, 200.0);
-			Position pos9(8000.0, -3500.0, 200.0);
-			//Ruta de espera 2
-			Position pos10(6000.0, 2000.0, 200.0);
-			Position pos11(6000.0, 7000.0, 200.0);
-			Position pos12(4000.0, 3500.0, 200.0);
-			Position pos13(8000.0, 3500.0, 200.0);
-			//Ruta de espera 3
-			Position pos14(12000.0, 0.0, 200.0);
-			Position pos15(10000.0, 1000.0, 200.0);
-			Position pos16(8000.0, 0.0, 200.0);
-			Position pos17(10000.0, -1000.0, 200.0);
 
 
 			Route r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17;
+			Route r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, r32, r33, r34, r35, r36, r37, r38, r39, r40, r41, r42, r43, r44, r45, r46, r47, r48, r49, r50, r51, r52, r53, r54, r55, r56;
 
 			r0.pos = pos0;
 			r0.speed = 500.0;
 			r1.pos = pos1;
-			r1.speed = 100.0;
+			//r1.speed = 100.0;
 			r2.pos = pos2;
-			r2.speed = 19.0;
+			//r2.speed = 19.0;
 			r3.pos = pos3;
 			r3.speed = 15.0;
 
-			//Velocidad y posición de las entradas al aeropuerto
-			r4.pos = pos4;
-			r4.speed = 500;
-			r5.pos = pos5;
-			r5.speed = 300;
+			r1.speed = 300;
+			r2.speed = 30.0;
 
-			//Velocidad y posición de las rutas de espera
-			r6.pos = pos6;
-			r6.speed = 200;
-			r7.pos = pos7;
-			r7.speed = 200;
-			r8.pos = pos8;
-			r8.speed = 200;
-			r9.pos = pos9;
-			r9.speed = 200;
-			r10.pos = pos10;
-			r10.speed = 200;
-			r11.pos = pos11;
-			r11.speed = 200;
-			r12.pos = pos12;
-			r12.speed = 200;
-			r13.pos = pos13;
-			r13.speed = 200;
-			r14.pos = pos14;
-			r14.speed = 200;
-			r15.pos = pos15;
-			r15.speed = 200;
-			r16.pos = pos16;
-			r16.speed = 200;
-			r17.pos = pos17;
-			r17.speed = 200;
+			//Rutas nuevas, velocidades
 
+			//Puntos de entrada
 
-			for(it = flights.begin(); it!=flights.end(); ++it)
-			{/*
-				//Original
-				if((*it)->getRoute()->empty())
-				{
-					(*it)->getRoute()->push_back(r3);
-					(*it)->getRoute()->push_front(r2);
-					(*it)->getRoute()->push_front(r1);
-					(*it)->getRoute()->push_front(r0);
+			r18.speed = 500;
+			r18.pos = pos18;
+			r19.speed = 500;
+			r19.pos = pos19;
+			r20.speed = 500;
+			r20.pos = pos20;
 
-				}*/
-				//Gira sin parar en la ruta de espera
-				/*while ((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty()) {
-					(*it)->getRoute()->push_front(r7);
-					(*it)->getRoute()->push_front(r8);
-					(*it)->getRoute()->push_front(r6);
-					(*it)->getRoute()->push_front(r9);
-					(*it)->getRoute()->push_front(r7);
-				}
-				while((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty()){
-					(*it)->getRoute()->push_front(r13);
-					(*it)->getRoute()->push_front(r11);
-					(*it)->getRoute()->push_front(r12);
-					(*it)->getRoute()->push_front(r10);
-					(*it)->getRoute()->push_front(r13);
-				}
-				*/
+			//Rutas de espera
 
-				//Realiza rutas de espera y luego aterriza sin criterio
-				/*if((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty())
+			r21.pos = pos21;
+			r21.speed = 200;
+			r22.pos = pos22;
+			r22.speed = 200;
+			r23.pos = pos23;
+			r23.speed = 200;
+			r24.pos = pos24;
+			r24.speed = 200;
+			r25.pos = pos25;
+			r25.speed = 200;
+			r26.pos = pos26;
+			r26.speed = 200;
+			r27.pos = pos27;
+			r27.speed = 200;
+			r28.pos = pos28;
+			r28.speed = 200;
+			r29.pos = pos29;
+			r29.speed = 200;
+			r30.pos = pos30;
+			r30.speed = 200;
+			r31.pos = pos31;
+			r31.speed = 200;
+			r32.pos = pos32;
+			r32.speed = 200;
+			r33.pos = pos33;
+			r33.speed = 200;
+			r34.pos = pos34;
+			r34.speed = 200;
+			r35.pos = pos35;
+			r35.speed = 200;
+			r36.pos = pos36;
+			r36.speed = 200;
+			r37.pos = pos37;
+			r37.speed = 200;
+			r38.pos = pos38;
+			r38.speed = 200;
+			r39.pos = pos39;
+			r39.speed = 200;
+			r40.pos = pos40;
+			r40.speed = 200;
+			r41.pos = pos41;
+			r41.speed = 200;
+			r42.pos = pos42;
+			r42.speed = 200;
+			r43.pos = pos43;
+			r43.speed = 200;
+			r44.pos = pos44;
+			r44.speed = 200;
+			r45.pos = pos45;
+			r45.speed = 200;
+			r46.pos = pos46;
+			r46.speed = 200;
+			r47.pos = pos47;
+			r47.speed = 200;
+			r48.pos = pos48;
+			r48.speed = 200;
+			r49.pos = pos49;
+			r49.speed = 200;
+			r50.pos = pos50;
+			r50.speed = 200;
+			r51.pos = pos51;
+			r51.speed = 200;
+			r52.pos = pos52;
+			r52.speed = 200;
+			r53.pos = pos53;
+			r53.speed = 200;
+			r54.pos = pos54;
+			r54.speed = 200;
+			r55.pos = pos55;
+			r55.speed = 200;
+			r56.pos = pos56;
+			r56.speed = 200;
+/*
+				for(it = flights.begin(); it!=flights.end(); ++it)
 				{
-					(*it)->getRoute()->push_back(r3);
-					(*it)->getRoute()->push_front(r2);
-					(*it)->getRoute()->push_front(r1);
-					(*it)->getRoute()->push_front(r0);
-					(*it)->getRoute()->push_front(r4);
-					(*it)->getRoute()->push_front(r6);
-					(*it)->getRoute()->push_front(r9);
-					(*it)->getRoute()->push_front(r7);
-					(*it)->getRoute()->push_front(r8);
-					(*it)->getRoute()->push_front(r6);
-					(*it)->getRoute()->push_front(r9);
-					(*it)->getRoute()->push_front(r7);
+						if((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty()) {
+							Waiting(*it, r54, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31);
+						}
+						else if((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty()){
+							Waiting(*it, r55, r32, r33, r34, r35, r36, r37, r38, r39, r40, r41, r42);
+						}
+						else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500 && (*it)->getRoute()->empty()){
+							Waiting(*it, r56, r43, r44, r45, r46, r47, r48, r49, r50, r51, r52, r53);
+						}
 				}
-				else if((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty())
-				{
-					(*it)->getRoute()->push_back(r3);
-					(*it)->getRoute()->push_front(r2);
-					(*it)->getRoute()->push_front(r1);
-					(*it)->getRoute()->push_front(r5);
-					(*it)->getRoute()->push_front(r10);
-					(*it)->getRoute()->push_front(r13);
-					(*it)->getRoute()->push_front(r11);
-					(*it)->getRoute()->push_front(r12);
-					(*it)->getRoute()->push_front(r10);
-					(*it)->getRoute()->push_front(r13);
-				}
-				else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500 && (*it)->getRoute()->empty())
-				{
-					(*it)->getRoute()->push_back(r3);
-					(*it)->getRoute()->push_front(r2);
-					(*it)->getRoute()->push_front(r1);
-					(*it)->getRoute()->push_front(r0);
-					(*it)->getRoute()->push_front(r15);
-					(*it)->getRoute()->push_front(r14);
-					(*it)->getRoute()->push_front(r17);
-					(*it)->getRoute()->push_front(r16);
-					(*it)->getRoute()->push_front(r15);
-					(*it)->getRoute()->push_front(r14);
-				}*/
 
-				/*
-				//Entrada de izquierda, derecha y centro sin rutas de espera
-				if((*it)->getPosition().get_y()<-500 && (*it)->getRoute()->empty())
+				for(it = flights.begin(); it!=flights.end(); ++it)
 				{
-					(*it)->getRoute()->push_back(r3);
-					(*it)->getRoute()->push_front(r2);
-					(*it)->getRoute()->push_front(r1);
-					(*it)->getRoute()->push_front(r0);
-					(*it)->getRoute()->push_front(r4);
+					if((*it)->getLanding())
+						vacia = false;
 				}
-				else if((*it)->getPosition().get_y()>500 && (*it)->getRoute()->empty())
-				{
-					(*it)->getRoute()->push_back(r3);
-					(*it)->getRoute()->push_front(r2);
-					(*it)->getRoute()->push_front(r1);
-					(*it)->getRoute()->push_front(r5);
-				}
-				else if((*it)->getPosition().get_y()<500 && (*it)->getPosition().get_x()>-500 && (*it)->getRoute()->empty())
-				{
-					(*it)->getRoute()->push_back(r3);
-					(*it)->getRoute()->push_front(r2);
-					(*it)->getRoute()->push_front(r1);
-					(*it)->getRoute()->push_front(r0);
-				}
-				*/
-				//Intento bastante convicente
 
-				if(getLanding()==true){
-					while ((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty()) {
-						Waiting(*it, r7, r9, r6, r8, r7);
-					}
-					while((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty()){
-						Waiting(*it, r13, r10, r12, r11, r13);
-					}
-					while((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500 && (*it)->getRoute()->empty()){
-						Waiting(*it, r17, r16, r15, r14, r17);
-					}
-				}
-				else if(getLanding()==false){
-					if((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty())
+				for(it = flights.begin(); it!=flights.end(); ++it)
+				{
+					if(vacia)
 					{
-						Land(*it, r0, r1, r2, r3);
+						if((*it)->getPosition().get_y()<-1500)
+						{
+							Land(*it, r18, r1, r2, r3);
+						}
+						else if((*it)->getPosition().get_y()>1500)
+						{
+							Land(*it, r19, r1, r2, r3);
+						}
+						else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500)
+						{
+							Land(*it, r20, r1, r2, r3);
+						}
+						vacia = false;
 					}
-					else if((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty())
-					{
-						Land(*it, r5, r1, r2, r3);
-					}
-					else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500 && (*it)->getRoute()->empty())
-					{
-						Land(*it, r0, r1, r2, r3);
-					}
-
 				}
-			}
+*/
+				//Prueba tormenta
+
+				//diferenciangulartorav = atan((storm->getPosition().get_y()-(*it)->getPosition().get_y())/(storm->getPosition().get_x()-(*it)->getPosition().get_x()));
+				//distanciatorav = sqrt((storm->getPosition().get_y()-(*it)->getPosition().get_y())*(storm->getPosition().get_y()-(*it)->getPosition().get_y())+(storm->getPosition().get_x()-(*it)->getPosition().get_x())*(storm->getPosition().get_x()-(*it)->getPosition().get_x()));
+
+				for(it = flights.begin(); it!=flights.end(); ++it)
+				{
+						if((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty()) {
+							Waiting(*it, r54, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31);
+						}
+						else if((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty()){
+							Waiting(*it, r55, r32, r33, r34, r35, r36, r37, r38, r39, r40, r41, r42);
+						}
+						else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500 && (*it)->getRoute()->empty()){
+							Waiting(*it, r56, r43, r44, r45, r46, r47, r48, r49, r50, r51, r52, r53);
+						}
+				}
+
+				for(it = flights.begin(); it!=flights.end(); ++it)
+				{
+					if((*it)->getLanding())
+						vacia = false;
+				}
+
+				for(it = flights.begin(); it!=flights.end(); ++it)
+				{
+					if(vacia)
+					{
+						if((*it)->getPosition().get_y()<-1500)
+						{
+							Land(*it, r18, r1, r2, r3);
+						}
+						else if((*it)->getPosition().get_y()>1500)
+						{
+							Land(*it, r19, r1, r2, r3);
+						}
+						else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500)
+						{
+							Land(*it, r20, r1, r2, r3);
+						}
+						vacia = false;
+					}
+				}
+
 
 }
