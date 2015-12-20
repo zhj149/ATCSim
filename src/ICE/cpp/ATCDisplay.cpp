@@ -923,12 +923,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getFlights(const ::Ice::Context* __c
     {
     public:
 
-        _DirectI(::ATCDisplay::ATCDFlights& __result, const ::Ice::Current& __current) :
+        _DirectI(::ATCDisplay::ATCDFlights& __result, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result)
         {
         }
-
+        
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
@@ -940,12 +940,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getFlights(const ::Ice::Context* __c
             _result = servant->getFlights(_current);
             return ::Ice::DispatchOK;
         }
-
+        
     private:
-
+        
         ::ATCDisplay::ATCDFlights& _result;
     };
-
+    
     ::Ice::Current __current;
     __initCurrent(__current, __ATCDisplay__AirportInterface__getFlights_name, ::Ice::Idempotent, __context);
     ::ATCDisplay::ATCDFlights __result;
@@ -989,12 +989,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getStorm(const ::Ice::Context* __con
     {
     public:
 
-        _DirectI(::ATCDisplay::ATCDStorm& __result, const ::Ice::Current& __current) :
+        _DirectI(::ATCDisplay::ATCDStorm& __result, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result)
         {
         }
-
+        
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
@@ -1006,12 +1006,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getStorm(const ::Ice::Context* __con
             _result = servant->getStorm(_current);
             return ::Ice::DispatchOK;
         }
-
+        
     private:
-
+        
         ::ATCDisplay::ATCDStorm& _result;
     };
-
+    
     ::Ice::Current __current;
     __initCurrent(__current, __ATCDisplay__AirportInterface__getStorm_name, ::Ice::Idempotent, __context);
     ::ATCDisplay::ATCDStorm __result;
@@ -1055,12 +1055,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getAirportInfo(const ::Ice::Context*
     {
     public:
 
-        _DirectI(::ATCDisplay::ATCDAirport& __result, const ::Ice::Current& __current) :
+        _DirectI(::ATCDisplay::ATCDAirport& __result, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result)
         {
         }
-
+        
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
@@ -1072,12 +1072,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getAirportInfo(const ::Ice::Context*
             _result = servant->getAirportInfo(_current);
             return ::Ice::DispatchOK;
         }
-
+        
     private:
-
+        
         ::ATCDisplay::ATCDAirport& _result;
     };
-
+    
     ::Ice::Current __current;
     __initCurrent(__current, __ATCDisplay__AirportInterface__getAirportInfo_name, ::Ice::Idempotent, __context);
     ::ATCDisplay::ATCDAirport __result;
@@ -1121,12 +1121,12 @@ IceDelegateD::ATCDisplay::AirportInterface::UpdateSimT(::Ice::Float inc, const :
     {
     public:
 
-        _DirectI(::Ice::Float __p_inc, const ::Ice::Current& __current) :
+        _DirectI(::Ice::Float __p_inc, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _m_inc(__p_inc)
         {
         }
-
+        
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
@@ -1138,12 +1138,12 @@ IceDelegateD::ATCDisplay::AirportInterface::UpdateSimT(::Ice::Float inc, const :
             servant->UpdateSimT(_m_inc, _current);
             return ::Ice::DispatchOK;
         }
-
+        
     private:
-
+        
         ::Ice::Float _m_inc;
     };
-
+    
     ::Ice::Current __current;
     __initCurrent(__current, __ATCDisplay__AirportInterface__UpdateSimT_name, ::Ice::Normal, __context);
     try
@@ -1185,11 +1185,11 @@ IceDelegateD::ATCDisplay::AirportInterface::NextFocus(const ::Ice::Context* __co
     {
     public:
 
-        _DirectI(const ::Ice::Current& __current) :
+        _DirectI(const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current)
         {
         }
-
+        
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
@@ -1201,11 +1201,11 @@ IceDelegateD::ATCDisplay::AirportInterface::NextFocus(const ::Ice::Context* __co
             servant->NextFocus(_current);
             return ::Ice::DispatchOK;
         }
-
+        
     private:
-
+        
     };
-
+    
     ::Ice::Current __current;
     __initCurrent(__current, __ATCDisplay__AirportInterface__NextFocus_name, ::Ice::Normal, __context);
     try
@@ -1247,12 +1247,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getSimT(const ::Ice::Context* __cont
     {
     public:
 
-        _DirectI(::Ice::Float& __result, const ::Ice::Current& __current) :
+        _DirectI(::Ice::Float& __result, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result)
         {
         }
-
+        
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
@@ -1264,12 +1264,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getSimT(const ::Ice::Context* __cont
             _result = servant->getSimT(_current);
             return ::Ice::DispatchOK;
         }
-
+        
     private:
-
+        
         ::Ice::Float& _result;
     };
-
+    
     ::Ice::Current __current;
     __initCurrent(__current, __ATCDisplay__AirportInterface__getSimT_name, ::Ice::Idempotent, __context);
     ::Ice::Float __result;
@@ -1313,12 +1313,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getMaxFlights(const ::Ice::Context* 
     {
     public:
 
-        _DirectI(::Ice::Int& __result, const ::Ice::Current& __current) :
+        _DirectI(::Ice::Int& __result, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result)
         {
         }
-
+        
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
@@ -1330,12 +1330,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getMaxFlights(const ::Ice::Context* 
             _result = servant->getMaxFlights(_current);
             return ::Ice::DispatchOK;
         }
-
+        
     private:
-
+        
         ::Ice::Int& _result;
     };
-
+    
     ::Ice::Current __current;
     __initCurrent(__current, __ATCDisplay__AirportInterface__getMaxFlights_name, ::Ice::Idempotent, __context);
     ::Ice::Int __result;
@@ -1379,12 +1379,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getPoints(const ::Ice::Context* __co
     {
     public:
 
-        _DirectI(::Ice::Int& __result, const ::Ice::Current& __current) :
+        _DirectI(::Ice::Int& __result, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result)
         {
         }
-
+        
         virtual ::Ice::DispatchStatus
         run(::Ice::Object* object)
         {
@@ -1396,12 +1396,12 @@ IceDelegateD::ATCDisplay::AirportInterface::getPoints(const ::Ice::Context* __co
             _result = servant->getPoints(_current);
             return ::Ice::DispatchOK;
         }
-
+        
     private:
-
+        
         ::Ice::Int& _result;
     };
-
+    
     ::Ice::Current __current;
     __initCurrent(__current, __ATCDisplay__AirportInterface__getPoints_name, ::Ice::Idempotent, __context);
     ::Ice::Int __result;
@@ -1592,7 +1592,7 @@ const ::std::string __ATCDisplay__AirportInterface_all[] =
 ::Ice::DispatchStatus
 ATCDisplay::AirportInterface::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__ATCDisplay__AirportInterface_all, __ATCDisplay__AirportInterface_all + 11, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__ATCDisplay__AirportInterface_all, __ATCDisplay__AirportInterface_all + 12, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -1630,17 +1630,21 @@ ATCDisplay::AirportInterface::__dispatch(::IceInternal::Incoming& in, const ::Ic
         }
         case 7:
         {
-            return ___ice_id(in, current);
+            return ___getStorm(in, current);
         }
         case 8:
         {
-            return ___ice_ids(in, current);
+            return ___ice_id(in, current);
         }
         case 9:
         {
-            return ___ice_isA(in, current);
+            return ___ice_ids(in, current);
         }
         case 10:
+        {
+            return ___ice_isA(in, current);
+        }
+        case 11:
         {
             return ___ice_ping(in, current);
         }
@@ -1664,7 +1668,7 @@ ATCDisplay::AirportInterface::__readImpl(::IceInternal::BasicStream* __is)
     __is->endReadSlice();
 }
 
-void
+void 
 ATCDisplay::__patch(AirportInterfacePtr& handle, const ::Ice::ObjectPtr& v)
 {
     handle = ::ATCDisplay::AirportInterfacePtr::dynamicCast(v);
