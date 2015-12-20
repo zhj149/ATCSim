@@ -17,14 +17,13 @@
 #include <stdlib.h>
 
 #define COLLISION_DISTANCE 1000.0f
+#define COLLISION_STORM 2000.0f
 #define CRASH_Z 20.0f
 #define CRASH_INC 25.0f
 #define CRASH_SPEED 10.0f
-<<<<<<< HEAD
-#define INIT_MAX_FLIGHTS 2//2
-=======
-#define INIT_MAX_FLIGHTS 1
->>>>>>> master
+
+#define INIT_MAX_FLIGHTS 7//2
+
 
 #define MAX_FLIFGT_W	0.2f //12 grados/sec
 #define DIST_POINT 	200.0 //15 grados/sec
@@ -60,7 +59,7 @@
 
 #define INIT_FLIGHT_POINTS  200
 #define INIT_POINTS 0
-#define LANDING_POINTS 	 	(10)
+#define LANDING_POINTS 	 	(10)//10
 #define COLLISION_POINTS 	(-50)
 #define CRASH_HEIGHT_POINTS	(-25)
 #define CRASH_INC_POINTS	(-25)

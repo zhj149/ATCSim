@@ -213,7 +213,6 @@ Flight::update(float delta_t)
 		pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
 		pos.set_z(pos.get_z() + ( trans * sin(inclination)));
 
-
 		if(pos.distance(CPpos) < DIST_POINT){
 	  	route.pop_front();
 		}
