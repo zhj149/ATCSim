@@ -53,7 +53,7 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	speed = _speed;
 	route.clear();
 	inStorm = false;
-
+	danger = false;
 	focused = false;
 	landing = false;
 	points = INIT_FLIGHT_POINTS;

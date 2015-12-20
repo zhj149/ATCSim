@@ -45,8 +45,9 @@ public:
 	//void draw();
 
     void NextFocus();
-    
+
 	std::list<Flight*> getFlights() {return flights;};
+	  Storm* getStorm(){return storm;};
     Flight* getFocused(){return (*focus);};
     void UpdateSimTime(float inc);
 
@@ -61,7 +62,7 @@ public:
 
 
 private:
-    
+
 	void checkLandings();
 	void checkCollisions();
 	void checkCrashes();
@@ -87,7 +88,6 @@ private:
     float SimTimeMod;
 
     pthread_mutex_t mutex;
-
 
 };
 

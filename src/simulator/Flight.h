@@ -58,6 +58,9 @@ public:
 	void setLanding(bool landing_) { landing = landing_;};
 	bool getLanding() { return landing;};
 
+	void setDanger(bool danger_) { danger = danger_;};
+	bool getDanger() { return danger;};
+
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
 
@@ -68,13 +71,9 @@ private:
 	float speed, w_speed;
 	std::list<Route> route;
 	bool focused;
-
+	bool danger;
   bool landing;
-
-
 	bool inStorm;
-
-
 	float points;
 };
 
