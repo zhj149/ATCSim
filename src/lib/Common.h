@@ -53,6 +53,7 @@
 #define LANDING_BEAR  			-180.0f
 #define LANDING_BEAR_MAX_ERROR	20.0f
 #define LANDING_DIST  			50.0f
+#define LAND_VEL				200.0f
 
 #define INIT_FLIGHT_POINTS  200
 #define INIT_POINTS 0

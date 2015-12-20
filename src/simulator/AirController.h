@@ -37,7 +37,8 @@ public:
 
 	void doWork();
 
-	void assignRuta(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3, Route wait_4);
+	void assignRuta(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3, Route wait_4, Route wait_5, Route wait_5, Route wait_7);
+	void assignRuta(Flight* vuelo, Route wait_1, Route wait_2, Route wait_3, Route wait_4, Route wait_5);
 //	void assignLanding(Flight* vuelo, Route wp_land);
 	void setWhere_I (bool ocupado, int index) {where_i[index] = ocupado;};
 	bool getWhere_I (int index) {return where_i[index];};
