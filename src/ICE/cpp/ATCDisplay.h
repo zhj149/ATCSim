@@ -18,8 +18,8 @@
 // </auto-generated>
 //
 
-#ifndef ___home_mduran_git_ATCSim2_src_ICE_cpp_ATCDisplay_h__
-#define ___home_mduran_git_ATCSim2_src_ICE_cpp_ATCDisplay_h__
+#ifndef ___home_mduran_git_ATCSim_src_ICE_cpp_ATCDisplay_h__
+#define ___home_mduran_git_ATCSim_src_ICE_cpp_ATCDisplay_h__
 
 #include <Ice/ProxyF.h>
 #include <Ice/ObjectF.h>

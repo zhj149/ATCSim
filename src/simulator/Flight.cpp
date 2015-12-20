@@ -77,7 +77,7 @@ Flight::update(float delta_t)
 
 		if(routed())
 		{
-		float goal_bearing,goal_bearing2,inclination2, diff_bearing,diff_bearing2, new_w, new_inc;
+		float goal_bearing,goal_bearing2,inclination1,inclination2, diff_bearing,diff_bearing2, new_w, new_inc,diff_inclination1,diff_inclination2;
 		float goal_speed,goal_speed2, diff_speed, acc;
 
 		it = route.begin();
@@ -86,18 +86,25 @@ Flight::update(float delta_t)
 		it++;
 		CPpos2 = it->pos;
 		goal_speed2 = it->speed;
-		pos.angles(CPpos, goal_bearing, inclination);
+		pos.angles(CPpos, goal_bearing, inclination1);
 		CPpos.angles(CPpos2, goal_bearing2,inclination2);
 
 		goal_bearing = normalizePi(goal_bearing + M_PI);
-		diff_bearing = normalizePi(goal_bearing - bearing);
 		goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
+
+		diff_bearing = normalizePi(goal_bearing - bearing);
 		diff_bearing2 = normalizePi(goal_bearing2 - bearing);
 
+  	diff_inclination1 = normalizePi(inclination1 - inclination);
+		diff_inclination2 = normalizePi(inclination2 - inclination);
+
 		new_w = diff_bearing/delta_t;
-		new_inc = normalizePi(inclination2-inclination);
+		new_inc = diff_inclination1/delta_t;
 
 		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
+
+		if(fabs(new_inc)> MAX_FLIGHT_INC) new_inc = (fabs(new_inc)/new_inc) * MAX_FLIFGT_W;
+
 
 		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
 
@@ -116,12 +123,14 @@ Flight::update(float delta_t)
 	//	std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
 
 	float	diff_bear = diff_bearing - diff_bearing2;
+	float diff_inc  = diff_inclination1 - diff_inclination2;
 
 		s = getS(speed,diff_bear,MAX_FLIFGT_W);
-		if(pos.distance(CPpos)< s){
-			route.pop_front();
+	float	sinc = getS(speed,diff_inc,MAX_FLIFGT_W);
+ 		if(pos.distance(CPpos)< s || pos.distance(CPpos)< sinc){
 			new_w = diff_bearing - diff_bearing2;
-			new_inc = inclination - inclination2;
+			new_inc = inclination1 - inclination2;
+			route.pop_front();
 		}
 
 	}else
@@ -138,9 +147,6 @@ Flight::update(float delta_t)
 
 //	if(pos.distance(last_pos) > pos.distance(CPpos))
 //		route.pop_front();
-
-	if(pos.distance(CPpos)<DIST_POINT)
-		route.pop_front();
 
 	if(inStorm)
 	{

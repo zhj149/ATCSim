@@ -27,6 +27,7 @@
  #define AIRCONTROLLER_H_
 
  #include "Singleton.h"
+ #include "Storm.h"
 
  class AirController: public Singleton<AirController> {
 
@@ -34,13 +35,16 @@
  	AirController();
  	virtual ~AirController();
 
- 	void AssignWaiting(Flight *f, Route r1, Route r2, Route r3, Route r4);
+ 	void AssignWaiting(Flight *f, Route r1, Route r2, Route r3, Route r4,bool wait);
    void AssignLanding(Flight *f, Route p1, Route p2, Route p3, Route p4);
  	void doWork();
+
 
  private:
 
  	bool busy_route;
+  bool busy_wait_route;
+  Storm *storm;
 
  };
 

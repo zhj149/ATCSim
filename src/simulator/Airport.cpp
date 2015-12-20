@@ -226,7 +226,6 @@ Airport::step()
 	else
 	{
 		storm->update(SimTimeMod * delta_t);
-		std::cout<<"Radio tormenta = "<<storm->getRadious()<<std::endl;
 		checkFlightsInStorm();
 		checkFinishStorm();
 	}

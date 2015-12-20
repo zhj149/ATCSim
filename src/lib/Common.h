@@ -20,9 +20,10 @@
 #define CRASH_Z 20.0f
 #define CRASH_INC 25.0f
 #define CRASH_SPEED 10.0f
-#define INIT_MAX_FLIGHTS 1
+#define INIT_MAX_FLIGHTS 2
 
 #define MAX_FLIFGT_W	0.2f //12 grados/sec
+#define MAX_FLIGHT_INC 0.2
 #define DIST_POINT 	200.0 //15 grados/sec
 #define MAX_ACELERATION 	50.0 //50 m/sec2
 
@@ -40,7 +41,7 @@
 #define STORM_MIN_ELEVATION				500.0f
 #define STORM_MAX_SPEED				500.0f
 #define STORM_MIN_SPEED				30.0f
-
+#define DISTANCE_STORM      6000.0f
 
 //Conditions for landing
 
@@ -61,8 +62,9 @@
 #define CRASH_HEIGHT_POINTS	(-25)
 #define CRASH_INC_POINTS	(-25)
 #define CRASH_SPEED_POINTS 	(-25)
+#define STORM_POINTS (-25)
 
-#define INC_DIFF		30000000//30 sec 
+#define INC_DIFF		30000000//30 sec
 #define INC_PEN			1 	 	//fligts/inc
 
 #define INC_SIMTIME			0.1
