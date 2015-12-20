@@ -50,7 +50,7 @@ public:
 	Storm* getStorm() {return storm;};
     Flight* getFocused(){return (*focus);};
     void UpdateSimTime(float inc);
-	Storm* getStorm(){return storm;};
+	//Storm* getStorm(){return storm;};
 
 	virtual ATCDisplay::ATCDFlights getFlights(const Ice::Current&);
 	virtual ATCDisplay::ATCDStorm getStorm(const Ice::Current&);

@@ -31,9 +31,11 @@
 #include <math.h>
 #include <stdio.h>
 
+#define DISTALERT 4000
+
+
 AirController::AirController() {
 	// TODO Auto-generated constructor stub
-	//setLanding(false);
 }
 
 AirController::~AirController() {
@@ -70,17 +72,41 @@ void AirController::Waiting(Flight *flight, Route a, Route b, Route c, Route d, 
 
 }
 
+void AirController::Emergency(Flight *flight, Route a, Route b, Route c, Route d, Route e, Route f, Route g, Route h)
+{
+	flight->getRoute()->clear();
+	flight->getRoute()->push_front(h);
+	flight->getRoute()->push_front(g);
+	flight->getRoute()->push_front(f);
+	flight->getRoute()->push_front(e);
+	flight->getRoute()->push_front(d);
+	flight->getRoute()->push_front(c);
+	flight->getRoute()->push_front(b);
+	flight->getRoute()->push_front(a);
+}
+
+float AirController::getDistancia(float x1, float x2, float y1, float y2)
+{
+	float distancia;
+	distancia = sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+	return distancia;
+}
+
+float AirController::getDifAngulo(float x1, float x2, float y1, float y2)
+{
+	float difang;
+	difang = atan2(y2-y1, x2-x1)*180/M_PI;
+	return difang;
+}
+
 void
 AirController::doWork()
 {
 			std::list<Flight*> flights = Airport::getInstance()->getFlights();
 			std::list<Flight*>::iterator it;
-			//Storm* storm;
-			//float diferenciangulartorav;
-			//float distanciatorav;
-			//float radio;
-
+			Storm *storm = Airport::getInstance()->getStorm();
 			bool vacia = true;
+			float dis;
 
 			Position pos0(3500.0, 0.0, 100.0);
 			Position pos1(1500.0, 0.0, 50.0);
@@ -90,57 +116,88 @@ AirController::doWork()
 			//Rutas nuevas
 
 			//Puntos de entrada
-			Position pos18(3500.0, -1000.0, 50.0); //izq
-			Position pos19(3500.0, 1000.0, 50.0); //derecha
-			Position pos20(3500.0, 0.0, 50.0); //centro
+			Position pos18(3500.0, -1000.0, 150.0); //izq
+			Position pos19(3500.0, 1000.0, 150.0); //derecha
+			Position pos20(3500.0, 0.0, 150.0); //centro
 
 			//Ruta de espera izquierda
-			Position pos21(4000.0, -8000.0, 75.0);
-			Position pos22(3000.0, -7000.0, 75.0);
-			Position pos23(4000.0, -6000.0, 75.0);
-			Position pos24(5000.0, -6000.0, 75.0);
-			Position pos25(7500.0, -6000.0, 75.0);
-			Position pos26(9000.0, -6000.0, 75.0);
-			Position pos27(10500.0, -7000.0, 75.0);
-			Position pos28(9000.0, -8000.0, 75.0);
-			Position pos29(7500.0, -8000.0, 75.0);
-			Position pos54(6000.0, -9000.0, 75.0);
-			Position pos30(5000.0, -8000.0, 75.0);
-			Position pos31(4500.0, -8000.0, 75.0);
+			Position pos21(4000.0, -8000.0, 900.0);
+			Position pos22(3000.0, -7000.0, 900.0);
+			Position pos23(4000.0, -6000.0, 900.0);
+			Position pos24(5000.0, -6000.0, 900.0);
+			Position pos25(7500.0, -6000.0, 900.0);
+			Position pos26(9000.0, -6000.0, 900.0);
+			Position pos27(10500.0, -7000.0, 900.0);
+			Position pos28(9000.0, -8000.0, 900.0);
+			Position pos29(7500.0, -8000.0, 900.0);
+			Position pos54(6000.0, -9000.0, 900.0);
+			Position pos30(5000.0, -8000.0, 900.0);
+			Position pos31(4500.0, -8000.0, 900.0);
 
 			//Ruta de espera derecha
-			Position pos32(4000.0, 8000.0, 75.0);
-			Position pos33(3000.0, 7000.0, 75.0);
-			Position pos34(4000.0, 6000.0, 75.0);
-			Position pos35(5000.0, 6000.0, 75.0);
-			Position pos36(7500.0, 6000.0, 75.0);
-			Position pos37(9000.0, 6000.0, 75.0);
-			Position pos38(10500.0, 7000.0, 75.0);
-			Position pos39(9000.0, 8000.0, 75.0);
-			Position pos40(7500.0, 8000.0, 75.0);
-			Position pos55(6000.0, 9000.0, 75.0);
-			Position pos41(5000.0, 8000.0, 75.0);
-			Position pos42(4500.0, 8000.0, 75.0);
+			Position pos32(4000.0, 8000.0, 900.0);
+			Position pos33(3000.0, 7000.0, 900.0);
+			Position pos34(4000.0, 6000.0, 900.0);
+			Position pos35(5000.0, 6000.0, 900.0);
+			Position pos36(7500.0, 6000.0, 900.0);
+			Position pos37(9000.0, 6000.0, 900.0);
+			Position pos38(10500.0, 7000.0, 900.0);
+			Position pos39(9000.0, 8000.0, 900.0);
+			Position pos40(7500.0, 8000.0, 900.0);
+			Position pos55(6000.0, 9000.0, 900.0);
+			Position pos41(5000.0, 8000.0, 900.0);
+			Position pos42(4500.0, 8000.0, 900.0);
 
 			//Ruta de espera centro
-			Position pos56(11000.0, 1450.0, 75.0);
-			Position pos43(4000.0, -1400.0, 75.0);
-			Position pos44(3000.0, 0.0, 75.0);
-			Position pos45(4000.0, 1400.0, 75.0);
-			Position pos46(5000.0, 1400.0, 75.0);
-			Position pos47(7500.0, 1400.0, 75.0);
-			Position pos48(9000.0, 1400.0, 75.0);
-			Position pos49(10500.0, 0.0, 75.0);
-			Position pos50(9000.0, -1400.0, 75.0);
-			Position pos51(7500.0, -1400.0, 75.0);
-			Position pos52(5000.0, -1400.0, 75.0);
-			Position pos53(4500.0, -1400.0, 75.0);
+			Position pos56(11000.0, 1450.0, 600.0);
+			Position pos43(4000.0, -1400.0, 600.0);
+			Position pos44(3000.0, 0.0, 600.0);
+			Position pos45(4000.0, 1400.0, 600.0);
+			Position pos46(5000.0, 1400.0, 600.0);
+			Position pos47(7500.0, 1400.0, 600.0);
+			Position pos48(9000.0, 1400.0, 600.0);
+			Position pos49(10500.0, 0.0, 600.0);
+			Position pos50(9000.0, -1400.0, 600.0);
+			Position pos51(7500.0, -1400.0, 600.0);
+			Position pos52(5000.0, -1400.0, 600.0);
+			Position pos53(4500.0, -1400.0, 600.0);
+
+			//Ruta emergencia izquierda
+			Position pos57(0.0, -8000.0, 1000.0);
+			Position pos58(-1000.0, -8000.0, 1000.0);
+			Position pos59(-2000.0, -7000.0, 1000.0);
+			Position pos60(-1000.0, -6000.0, 1000.0);
+			Position pos61(0.0, -6000.0, 1000.0);
+			Position pos62(2000.0, -6000.0, 1000.0);
+			Position pos63(3000.0, -7000.0, 1000.0);
+			Position pos64(2000.0, -8000.0, 1000.0);
+
+			//Ruta emergencia derecha
+			Position pos65(0.0, 8000.0, 1000.0);
+			Position pos66(-1000.0, 8000.0, 1000.0);
+			Position pos67(-2000.0, 7000.0, 1000.0);
+			Position pos68(-1000.0, 6000.0, 1000.0);
+			Position pos69(0.0, 6000.0, 1000.0);
+			Position pos70(2000.0, 6000.0, 1000.0);
+			Position pos71(3000.0, 7000.0, 1000.0);
+			Position pos72(2000.0, 8000.0, 1000.0);
+
+			//Ruta emergencia centro
+
+			Position pos73(-1000.0, -1000.0, 1000.0);
+			Position pos74(-2500.0, -1000.0, 1000.0);
+			Position pos75(-4000.0, -1000.0, 1000.0);
+			Position pos76(-5500.0, -1000.0, 1000.0);
+			Position pos77(-7000.0, 0.0, 1000.0);
+			Position pos78(-5500.0, 1000.0, 1000.0);
+			Position pos79(-4000.0, 1000.0, 1000.0);
+			Position pos80(-2500.0, 2000.0, 1000.0);
 
 
 
 
-			Route r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17;
-			Route r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, r32, r33, r34, r35, r36, r37, r38, r39, r40, r41, r42, r43, r44, r45, r46, r47, r48, r49, r50, r51, r52, r53, r54, r55, r56;
+			Route r0, r1, r2, r3;
+			Route r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, r32, r33, r34, r35, r36, r37, r38, r39, r40, r41, r42, r43, r44, r45, r46, r47, r48, r49, r50, r51, r52, r53, r54, r55, r56, r57, r58, r59, r60, r61, r62, r63, r64, r65, r66, r67, r68, r69, r70, r71, r72, r73, r74, r75, r76, r77, r78, r79, r80;
 
 			r0.pos = pos0;
 			r0.speed = 500.0;
@@ -239,17 +296,94 @@ AirController::doWork()
 			r55.speed = 200;
 			r56.pos = pos56;
 			r56.speed = 200;
-/*
+
+			//Rutas emergencia
+			r57.pos = pos57;
+			r57.speed = 300;
+			r58.pos = pos58;
+			r58.speed = 300;
+			r59.pos = pos59;
+			r59.speed = 300;
+			r60.pos = pos60;
+			r60.speed = 300;
+			r61.pos = pos61;
+			r61.speed = 300;
+			r62.pos = pos62;
+			r62.speed = 300;
+			r63.pos = pos63;
+			r63.speed = 300;
+			r64.pos = pos64;
+			r64.speed = 300;
+			r65.pos = pos65;
+			r65.speed = 300;
+			r66.pos = pos66;
+			r66.speed = 300;
+			r67.pos = pos67;
+			r67.speed = 300;
+			r68.pos = pos68;
+			r68.speed = 300;
+			r69.pos = pos69;
+			r69.speed = 300;
+			r70.pos = pos70;
+			r70.speed = 300;
+			r71.pos = pos71;
+			r71.speed = 300;
+			r72.pos = pos72;
+			r72.speed = 300;
+			r73.pos = pos73;
+			r73.speed = 300;
+			r74.pos = pos74;
+			r74.speed = 300;
+			r75.pos = pos75;
+			r75.speed = 300;
+			r76.pos = pos76;
+			r76.speed = 300;
+			r77.pos = pos77;
+			r77.speed = 300;
+			r78.pos = pos78;
+			r78.speed = 300;
+			r79.pos = pos79;
+			r79.speed = 300;
+			r80.pos = pos80;
+			r80.speed = 300;
+
+
+				if(storm != NULL){
+					for(it = flights.begin(); it!=flights.end(); ++it){
+						dis = getDistancia(storm->getPosition().get_x(), (*it)->getPosition().get_x(), storm->getPosition().get_y() , (*it)->getPosition().get_y());
+							if(dis - storm->getRadious()< DISTALERT){
+								if(storm->getPosition().get_y()<-1500 && (*it)->getRoute()->empty()) {
+									Emergency(*it, r73, r74, r75, r76, r77, r78, r79, r80);
+								}
+								else if(storm->getPosition().get_y()>1500 && (*it)->getRoute()->empty()){
+									Emergency(*it, r73, r74, r75, r76, r77, r78, r79, r80);
+								}
+								else if(storm->getPosition().get_y()<1500 && storm->getPosition().get_x()>-1500 && (*it)->getRoute()->empty()){
+									Emergency(*it, r59, r58, r57, r64, r63, r62, r61, r60);
+								}
+							}
+						}
+					}
+
 				for(it = flights.begin(); it!=flights.end(); ++it)
 				{
 						if((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty()) {
 							Waiting(*it, r54, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31);
+								if(storm != NULL && dis - storm->getRadious()< DISTALERT){
+									Emergency(*it, r73, r74, r75, r76, r77, r78, r79, r80);
+								}
 						}
 						else if((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty()){
 							Waiting(*it, r55, r32, r33, r34, r35, r36, r37, r38, r39, r40, r41, r42);
+								if(storm != NULL && dis - storm->getRadious()< DISTALERT){
+									Emergency(*it, r73, r74, r75, r76, r77, r78, r79, r80);
+								}
 						}
 						else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500 && (*it)->getRoute()->empty()){
 							Waiting(*it, r56, r43, r44, r45, r46, r47, r48, r49, r50, r51, r52, r53);
+								if(storm != NULL && dis - storm->getRadious()< DISTALERT){
+									Emergency(*it, r59, r58, r57, r64, r63, r62, r61, r60);
+								}
 						}
 				}
 
@@ -259,49 +393,28 @@ AirController::doWork()
 						vacia = false;
 				}
 
-				for(it = flights.begin(); it!=flights.end(); ++it)
+
+				if(storm != NULL)
 				{
-					if(vacia)
-					{
-						if((*it)->getPosition().get_y()<-1500)
-						{
-							Land(*it, r18, r1, r2, r3);
+					for(it = flights.begin(); it!=flights.end(); ++it){
+						if(storm->getBearing()>=0.19*M_PI && storm->getBearing()<=0.3*M_PI && dis - storm->getRadious()< DISTALERT){
+							vacia = false;
+							std::cout<<"Aeropuerto Cerrado"<<std::endl;
 						}
-						else if((*it)->getPosition().get_y()>1500)
-						{
-							Land(*it, r19, r1, r2, r3);
+						else if(storm->getBearing()>=1.66*M_PI && storm->getBearing()<=1.83*M_PI && dis - storm->getRadious()< DISTALERT){
+							vacia = false;
+							std::cout<<"Aeropuerto Cerrado"<<std::endl;
 						}
-						else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500)
-						{
-							Land(*it, r20, r1, r2, r3);
+						else if(storm->getBearing()>=0.66*M_PI && storm->getBearing()<=0.8*M_PI && dis - storm->getRadious()< DISTALERT){
+							vacia = false;
+							std::cout<<"Aeropuerto Cerrado"<<std::endl;
 						}
-						vacia = false;
+						else if(storm->getBearing()>=1.16*M_PI && storm->getBearing()<=1.33*M_PI && dis - storm->getRadious()< DISTALERT){
+							vacia = false;
+							std::cout<<"Aeropuerto Cerrado"<<std::endl;
+						}
 					}
 				}
-*/
-				//Prueba tormenta
-
-				//diferenciangulartorav = atan((storm->getPosition().get_y()-(*it)->getPosition().get_y())/(storm->getPosition().get_x()-(*it)->getPosition().get_x()));
-				//distanciatorav = sqrt((storm->getPosition().get_y()-(*it)->getPosition().get_y())*(storm->getPosition().get_y()-(*it)->getPosition().get_y())+(storm->getPosition().get_x()-(*it)->getPosition().get_x())*(storm->getPosition().get_x()-(*it)->getPosition().get_x()));
-
-				for(it = flights.begin(); it!=flights.end(); ++it)
-				{
-						if((*it)->getPosition().get_y()<-1500 && (*it)->getRoute()->empty()) {
-							Waiting(*it, r54, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31);
-						}
-						else if((*it)->getPosition().get_y()>1500 && (*it)->getRoute()->empty()){
-							Waiting(*it, r55, r32, r33, r34, r35, r36, r37, r38, r39, r40, r41, r42);
-						}
-						else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500 && (*it)->getRoute()->empty()){
-							Waiting(*it, r56, r43, r44, r45, r46, r47, r48, r49, r50, r51, r52, r53);
-						}
-				}
-
-				for(it = flights.begin(); it!=flights.end(); ++it)
-				{
-					if((*it)->getLanding())
-						vacia = false;
-				}
 
 				for(it = flights.begin(); it!=flights.end(); ++it)
 				{
@@ -310,14 +423,23 @@ AirController::doWork()
 						if((*it)->getPosition().get_y()<-1500)
 						{
 							Land(*it, r18, r1, r2, r3);
+								if(storm != NULL && dis - storm->getRadious()< DISTALERT){
+									Emergency(*it, r73, r74, r75, r76, r77, r78, r79, r80);
+								}
 						}
 						else if((*it)->getPosition().get_y()>1500)
 						{
 							Land(*it, r19, r1, r2, r3);
+								if(storm != NULL && dis - storm->getRadious()< DISTALERT){
+									Emergency(*it, r73, r74, r75, r76, r77, r78, r79, r80);
+								}
 						}
 						else if((*it)->getPosition().get_y()<1500 && (*it)->getPosition().get_x()>-1500)
 						{
 							Land(*it, r20, r1, r2, r3);
+								if(storm != NULL && dis - storm->getRadious()< DISTALERT){
+									Emergency(*it, r59, r58, r57, r64, r63, r62, r61, r60);
+								}
 						}
 						vacia = false;
 					}
