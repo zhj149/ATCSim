@@ -63,6 +63,11 @@ Storm::update(float delta_t)
 	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(0.0));
 	pos.set_z(pos.get_z() + ( trans * sin(0.0)));
 
+	//std::cout<<"bearing tormenta    "<<bearing<<std::endl;
+
+	//std::cout<<"posicion x tormenta "<<pos.get_x()<<std::endl;
+	//std::cout<<"posicion z tormenta "<<pos.get_z()<<std::endl;
+
 }
 //
 //void

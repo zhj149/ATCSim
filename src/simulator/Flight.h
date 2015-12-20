@@ -53,17 +53,20 @@ public:
 
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
+
+	void setFocused(bool state) { focused = state;};
+	
 	float getSpeed() { return speed;};
 	float getPoints() {return points;};
 	std::string getId(){return id;};
 
-	void setFocused(bool state) { focused = state;};
+	void setBearing(float bearing_) { bearing = bearing_;};
 
 	bool getFocused() { return focused;};
 	float getS(float v, float theta0, float theta1, float w_max);
 
 	bool getInStorm() {return inStorm;};
-	void setInStorm(bool in) {inStorm=in;};
+	bool setInStorm(bool in) {inStorm=in;};
 
 private:
 	std::string id;

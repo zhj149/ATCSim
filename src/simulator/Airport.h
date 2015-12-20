@@ -47,9 +47,12 @@ public:
     void NextFocus();
     
 	std::list<Flight*> getFlights() {return flights;};
-    Flight* getFocused(){return (*focus);};
-    void UpdateSimTime(float inc);
 
+	Storm* getStorm() {return storm;};
+
+        Flight* getFocused(){return (*focus);};
+        void UpdateSimTime(float inc);
+	
 	virtual ATCDisplay::ATCDFlights getFlights(const Ice::Current&);
 	virtual ATCDisplay::ATCDStorm getStorm(const Ice::Current&);
 	virtual ATCDisplay::ATCDAirport getAirportInfo(const Ice::Current&);

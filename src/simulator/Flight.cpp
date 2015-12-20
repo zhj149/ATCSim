@@ -137,6 +137,8 @@ Flight::update(float delta_t)
 			route.pop_front();				
 		}
 
+
+		
 	}else
 	
 		inclination = 0.0;
@@ -155,6 +157,8 @@ Flight::update(float delta_t)
 
 	if(pos.distance(CPpos0)<DIST_POINT)
 		route.pop_front();
+
+        
 
 	if(inStorm)
 	{

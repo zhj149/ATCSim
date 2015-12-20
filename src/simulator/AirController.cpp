@@ -93,6 +93,7 @@ AirController::assignWaiting(Flight *f, Route r0, Route r3, Route r2, Route r1, 
 	
 }
 
+
 void
 AirController::doWork()
 {
@@ -101,46 +102,46 @@ AirController::doWork()
 
 			//zona 1 izq arriba RUTA ESPERA 1
 	
-			Position pos0(-2000.0, -12000.0, 500.0);
-			Position pos1(-2000.0, -3500.0, 500.0);
-			Position pos2(-9000.0, -3500.0, 500.0);
-			Position pos3(-9000.0, -12000.0, 500.0);
+			Position pos0(-2000.0, -12000.0, 800.0);
+			Position pos1(-2000.0, -3500.0, 800.0);
+			Position pos2(-9000.0, -3500.0, 800.0);
+			Position pos3(-9000.0, -12000.0, 800.0);
 			
 			//zona 2 der arriba RUTA ESPERA 2
 
-			Position pos4(-9000.0, 3500.0, 500.0);
-			Position pos5(-2000.0, 12000.0, 500.0);
-			Position pos6(-9000.0, 12000.0, 500.0);
-			Position pos7(-2000.0, 3500.0, 500.0);
+			Position pos4(-9000.0, 3500.0, 800.0);
+			Position pos5(-2000.0, 12000.0, 800.0);
+			Position pos6(-9000.0, 12000.0, 800.0);
+			Position pos7(-2000.0, 3500.0, 800.0);
 			
 			//RUTAS ESPERA SEGUNDA ALTURA
 
 			//zona 1 izq arriba RUTA ESPERA 1
 	
-			Position pos16(-2000.0, -12000.0, 1000.0);
-			Position pos18(-2000.0, -3500.0, 1000.0);
-			Position pos19(-9000.0, -3500.0, 1000.0);
-			Position pos20(-9000.0, -12000.0, 1000.0);
+			Position pos16(-2000.0, -12000.0, 700.0);
+			Position pos18(-2000.0, -3500.0, 700.0);
+			Position pos19(-9000.0, -3500.0, 700.0);
+			Position pos20(-9000.0, -12000.0, 700.0);
 			
 			//zona 2 der arriba RUTA ESPERA 2
 
-			Position pos21(-9000.0, 3500.0, 1000.0);
-			Position pos22(-2000.0, 12000.0, 1000.0);
-			Position pos23(-9000.0, 12000.0, 1000.0);
-			Position pos24(-2000.0, 3500.0, 1000.0);
+			Position pos21(-9000.0, 3500.0, 700.0);
+			Position pos22(-2000.0, 12000.0, 700.0);
+			Position pos23(-9000.0, 12000.0, 700.0);
+			Position pos24(-2000.0, 3500.0, 700.0);
 
 
 			//zona izq 
 
-			Position pos13(9000.0, -12000.0, 100.0);
-			Position pos14(9000.0, -3500.0, 50.0);
-			Position pos15(2000.0, -12000.0, 100.0);
+			Position pos13(9000.0, -12000.0, 300.0);
+			Position pos14(9000.0, -3500.0, 300.0);
+			Position pos15(2000.0, -12000.0, 300.0);
 			
 			//zona der
 
-			Position pos8(9000.0, 12000.0, 100.0);
-			Position pos9(9000.0, 3500.0, 50.0);
-			Position pos17(2000.0, 12000.0, 100.0);
+			Position pos8(9000.0, 12000.0, 300.0);
+			Position pos9(9000.0, 3500.0, 300.0);
+			Position pos17(2000.0, 12000.0, 300.0);
 
 			//pista
 			Position pos10(1500.0, 0.0, 50.0);
@@ -206,16 +207,21 @@ AirController::doWork()
 
 			//pista
 			r10.pos = pos10;
-			r10.speed = 40.0;
+			r10.speed = 300.0;
 			r11.pos = pos11;
 			r11.speed = 19.0;
 			r12.pos = pos12;
 			r12.speed = 15.0;
+
+
+			Storm *st = Airport::getInstance()->getStorm();
+ 
 			
 			for(it = flights.begin(); it!=flights.end(); ++it)
 			{
-				if((*it)->getRoute()->empty())
+			        if((*it)->getRoute()->empty())
 				{
+
 					if(getLanding()==false)
 					{  
 						assignLanding((*it), r12, r11, r10);
@@ -225,7 +231,48 @@ AirController::doWork()
 					}else if(getLanding() == true){
 					    	assignWaiting((*it),r0,r3,r2,r1,r5,r6,r4,r7,r18,r19,r20,r16,r24,r21,r23,r22);
 						
-					}		        
-			      	 }    
-			}			
+					}
+			
+			      	 }
+			   
+
+			      if(st!=NULL){
+			
+		                      if(st->getPosition().distance((*it)->getPosition())<= (COLLISION_DISTANCE*2 + st->getRadious()))
+				      {
+ 				  	     float bearingTor, bearingAvion;
+  
+					     bearingTor = st->getBearing();
+					     bearingAvion = (*it)->getBearing();
+
+					     (*it)->setBearing(((fabs(bearingAvion)/bearingAvion)*(M_PI/2)) + ((fabs(bearingTor)/bearingTor)*bearingTor));
+				       }
+		               }
+		          }
+
 }
+
+
+//PARA QUE ATERRIZEN POR ORDEN
+		/*for(it = flights.begin(); it!=flights.end(); ++it)
+			{
+			   if (it == flights.begin()){
+
+			      if((*it)->getRoute()->empty())
+				{
+						assignLanding((*it), r12, r11, r10);
+						assignRoute((*it), r14, r13, r15, r9,r8, r17);
+
+				}
+
+			     }else{
+
+					if(((*it)->getRoute()->empty()))
+					{
+					    	assignWaiting((*it),r0,r3,r2,r1,r5,r6,r4,r7,r18,r19,r20,r16,r24,r21,r23,r22);
+					}
+						
+			           }
+			
+			     }  */
+

@@ -27,6 +27,7 @@
 
 #include "Singleton.h"
 #include "Flight.h"
+#include "Storm.h"
 
 class AirController: public Singleton<AirController> {
 public:
@@ -40,6 +41,11 @@ public:
 	bool setLanding(bool state) { landing = state;};
 	bool getLanding() {return landing;};
         void assignRoute(Flight *f, Route r14, Route r13, Route r15, Route r9, Route r8, Route r17);
+
+	void cercaTormenta(Flight *f, Storm *st); 
+        void dentroTormenta(Flight *f, Storm *st);
+
+	//void assigTormenta(Storm *s, Flight *f);
 
 
 private:
