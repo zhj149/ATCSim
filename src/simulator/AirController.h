@@ -28,6 +28,7 @@
 #include "Singleton.h"
 
 #include "Flight.h"
+#include "Storm.h"
 
 class AirController: public Singleton<AirController> {
 public:
@@ -36,13 +37,16 @@ public:
 
 		
 
-	void assignWaiting1(Flight* f);
-	void assignWaiting2(Flight* f);
-	void assignWaiting3(Flight* f);
-	void assignWaiting4(Flight* f);
+	void assignWaiting(Flight* f);
 	void assignLanding(Flight* f);
+	void assignDescend(Flight* f);
+	void reRute(Storm*, Flight* f);
 
+
+	bool stormInLanding(Storm* s);
+	bool stormInView(Storm* s, Flight* f);
 	
+
 	void doWork();
 };
 

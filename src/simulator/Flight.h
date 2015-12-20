@@ -66,6 +66,11 @@ public:
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
 
+	bool getReRuted() {return reRuted;};
+	void setReRuted(bool in) {reRuted=in;};
+
+	int getwaitRoute() {return waitRoute;};
+	void setwaitRoute(int num) {waitRoute=num;};
 
 private:
 	std::string id;
@@ -78,6 +83,9 @@ private:
 	bool landing;
 
 	bool inStorm;
+	bool reRuted;
+
+	int waitRoute;
 
 	float points;
 };

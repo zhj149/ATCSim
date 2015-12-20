@@ -42,6 +42,7 @@ void
 AirController::assignLanding(Flight* f)
 {
 	f->setLanding(true);
+	f->setReRuted(false);
 	f->getRoute()->clear();
 
 	Position pos0(3500.0, 0.0, 100.0);
@@ -52,11 +53,11 @@ AirController::assignLanding(Flight* f)
 	Route r0, r1, r2, r3;
 
 	r0.pos = pos0;
-	r0.speed = 500.0;
+	r0.speed = 600.0;
 	r1.pos = pos1;
-	r1.speed = 100.0;
+	r1.speed = 300.0;
 	r2.pos = pos2;
-	r2.speed = 19.0;
+	r2.speed = 25.0;
 	r3.pos = pos3;
 	r3.speed = 15.0;
 
@@ -68,25 +69,156 @@ AirController::assignLanding(Flight* f)
 }
 
 void
-AirController::assignWaiting4(Flight* f)
+AirController::assignDescend(Flight* f)
 {
-	f->setLanding(false);
+	f->setLanding(false);	
+	f->setReRuted(false);
 	f->getRoute()->clear();
 
-	Position pos0(7700.0,700.0 , 2500.0);
-	Position pos1(3700.0, 700.0, 2500.0);
-	Position pos2(3700.0, 4000.0, 2500.0);
-	Position pos3(7700.0, 4000.0, 2500.0);
+	Position pos0(6500.0, 0.0, 150.0);
+	Position pos1(4000.0, 0.0, 100.0);
+
+	Route r0, r1;
+
+	r0.pos = pos0;
+	r0.speed = 200.0;
+	r1.pos = pos1;
+	r1.speed = 100.0;
+
+	f->getRoute()->push_back(r1);
+	f->getRoute()->push_front(r0);
+}
+
+
+
+void
+AirController::assignWaiting(Flight* f)
+{
+	
+	f->setLanding(false);
+	f->setReRuted(false);
+	f->getRoute()->clear();
+
+	Position pos1_3(13000.0, -700.0, 1300.0);
+	Position pos1_0(13000.0, -10000.0, 1300.0);
+	Position pos1_1(10000.0, -10000.0, 1300.0);
+	Position pos1_2(10000.0, -700.0, 1300.0);
+
+
+	Position pos2_3(10000.0, -700.0 , 1100.0);
+	Position pos2_2(7000.0, -700.0, 1100.0);
+	Position pos2_1(7000.0, -11000.0,1100.0);
+	Position pos2_0(10000.0, -11000.0, 1100.0);
+
+
+	Position pos3_3(7000.0, -700.0, 1000.0);
+	Position pos3_0(7000.0, -12000.0, 1000.0);
+	Position pos3_1(5000.0, -12000.0, 1000.0);
+	Position pos3_2(5000.0, -700.0, 1000.0);
+
+	Position pos4_3(13000.0, 10000.0, 1300.0);
+	Position pos4_0(13000.0, 700.0, 1300.0);
+	Position pos4_1(10000.0, 700.0, 1300.0);
+	Position pos4_2(10000.0, 10000.0, 1300.0);
+
+
+	Position pos5_3(10000.0, 11000.0 , 1100.0);
+	Position pos5_2(7000.0, 11000.0, 1100.0);
+	Position pos5_1(7000.0, 700.0, 1100.0);
+	Position pos5_0(10000.0, 700.0, 1100.0);
+
+
+	Position pos6_3(7000.0, 12000.0, 1000.0);
+	Position pos6_0(7000.0, 700.0, 1000.0);
+	Position pos6_1(5000.0, 700.0, 1000.0);
+	Position pos6_2(5000.0, 12000.0, 1000.0);
+
 
 	Route r0, r1, r2, r3;
 
-	r0.pos = pos0;
+	if(f->getwaitRoute()==0){
+	   if(f->getPosition().get_x()<=12000){
+
+		if(f->getPosition().get_y()<=0)
+			{f->setwaitRoute(1);}
+		else
+			{f->setwaitRoute(2);}
+	   }else{
+
+		if( f->getPosition().get_y()<-16000)
+			{f->setwaitRoute(3);}
+
+		else if(f->getPosition().get_y()>16000)
+			{f->setwaitRoute(4);}
+			
+	 	else if(f->getPosition().get_y()<16000 && f->getPosition().get_y()>0)
+			{f->setwaitRoute(5);}
+		
+		else
+			{f->setwaitRoute(6);}
+	   }
+	}
+	
+
+	if(f->getwaitRoute()==1)
+		{
+			r0.pos = pos3_1;
+			r1.pos = pos3_0;
+			r2.pos = pos3_3;
+			r3.pos = pos3_2;
+			
+			if(f->getPosition().get_z()>=2000)
+				{r0.pos.set_z(2000);}
+		}	
+		else if(f->getwaitRoute()==2)
+		{
+			r0.pos = pos6_2;
+			r1.pos = pos6_1;
+			r2.pos = pos6_0;
+			r3.pos = pos6_3;
+			if(f->getPosition().get_z()>=2000)
+				{r0.pos.set_z(2000);}
+		}	
+		else if(f->getwaitRoute()==3)
+		{
+			r0.pos = pos2_1;
+			r1.pos = pos2_0;
+			r2.pos = pos2_3;
+			r3.pos = pos2_2;
+			if(f->getPosition().get_z()>=2000)
+				{r0.pos.set_z(2100);}
+		}	
+		else if(f->getwaitRoute()==4)
+		{
+			r0.pos = pos5_2;
+			r1.pos = pos5_1;
+			r2.pos = pos5_0;
+			r3.pos = pos5_3;
+			if(f->getPosition().get_z()>=2000)
+				{r0.pos.set_z(2100);}
+		}	
+		else if(f->getwaitRoute()==5)
+		{
+			r0.pos = pos4_3;
+			r1.pos = pos4_2;
+			r2.pos = pos4_1;
+			r3.pos = pos4_0;
+			if(f->getPosition().get_z()>=2000)
+				{r0.pos.set_z(2200);}
+		}	
+		else if(f->getwaitRoute()==6)
+		{
+			r0.pos = pos1_0;
+			r1.pos = pos1_3;
+			r2.pos = pos1_2;
+			r3.pos = pos1_1;
+			if(f->getPosition().get_z()>=2000)
+				{r0.pos.set_z(2200);}
+		}else {std::cerr<<"error:ruta no asignada"<<std::endl;}
+	
 	r0.speed = 300.0;
-	r1.pos = pos1;
 	r1.speed = 300.0;
-	r2.pos = pos2;
 	r2.speed = 300.0;
-	r3.pos = pos3;
 	r3.speed = 300.0;
 
 
@@ -97,166 +229,156 @@ AirController::assignWaiting4(Flight* f)
 }
 
 void
-AirController::assignWaiting3(Flight* f)
+AirController::reRute(Storm* s, Flight* f)
 {
-	f->setLanding(false);
+		
 	f->getRoute()->clear();
+	f->setReRuted(true);
+	
+	float p_x, p_y, p_z, bearing;
 
-	Position pos0(7700.0, 2000.0, 500.0);
-	Position pos1(3700.0, 2000.0, 500.0);
-	Position pos2(3700.0, 8000.0, 500.0);
-	Position pos3(7700.0, 8000.0, 500.0);
+	if (f->getBearing()<=pi || f->getBearing()>(0*pi))
+		{bearing= f->getBearing() + s->getBearing();}
+	else	
+		{bearing= f->getBearing() - s->getBearing();} 
+		
+	bearing=normalizePi(bearing + M_PI);
 
-	Route r0, r1, r2, r3;
+	p_x=(f->getPosition().get_x() + 2*s->getRadious()* cos(bearing) );
+	p_y=(f->getPosition().get_y() + 2*s->getRadious()* sin(bearing)) ;
+	p_z=f->getPosition().get_z();
+	
+	Position p(p_x, p_y , p_z);
+	Route r;
 
-	r0.pos = pos0;
-	r0.speed = 200.0;
-	r1.pos = pos1;
-	r1.speed = 200.0;
-	r2.pos = pos2;
-	r2.speed = 200.0;
-	r3.pos = pos3;
-	r3.speed = 200.0;
+	r.pos = p;
+	r.speed = 300.0;
 
-
-	f->getRoute()->push_back(r3);
-	f->getRoute()->push_front(r2);
-	f->getRoute()->push_front(r1);
-	f->getRoute()->push_front(r0);
+	
+	f->getRoute()->push_front(r);
+	std::cout<<"reruted"<<std::endl;
+	
 }
 
-
-void
-AirController::assignWaiting2(Flight* f)
+bool
+AirController::stormInLanding(Storm* s)
 {
-	f->setLanding(false);
-	f->getRoute()->clear();
+	float pos0_x=3500.0, pos0_y=0.0, pos0_z=100.0;
+	float pos1_x=1500.0, pos1_y=0.0, pos1_z=50.0;
+	float pos2_x=200.0, pos2_y=0.0, pos2_z=25.0;
+	float pos3_x=-750.0, pos3_y=0.0, pos3_z=25.0;
+	
+	float dist0, dist1, dist2, dist3, xs, ys, zs;
 
-	Position pos0(7700.0,-700.0 , 2500.0);
-	Position pos1(3700.0, -700.0, 2500.0);
-	Position pos2(3700.0, -4000.0, 2500.0);
-	Position pos3(7700.0, -4000.0, 2500.0);
+	xs = s->getPosition().get_x();
+	ys = s->getPosition().get_y();
+	zs = s->getPosition().get_z();
 
-	Route r0, r1, r2, r3;
+	dist0 = sqrt((pos0_x-xs)*(pos0_x-xs)+(pos0_y-ys)*(pos0_y-ys));
+	dist1 = sqrt((pos1_x-xs)*(pos1_x-xs)+(pos1_y-ys)*(pos1_y-ys));
+	dist2 = sqrt((pos2_x-xs)*(pos2_x-xs)+(pos2_y-ys)*(pos2_y-ys));		
+	dist3 = sqrt((pos3_x-xs)*(pos3_x-xs)+(pos3_y-ys)*(pos3_y-ys));
 
-	r0.pos = pos0;
-	r0.speed = 300.0;
-	r1.pos = pos1;
-	r1.speed = 300.0;
-	r2.pos = pos2;
-	r2.speed = 300.0;
-	r3.pos = pos3;
-	r3.speed = 300.0;
+	if (dist0 < s->getRadious() && fabs(zs-pos0_z)<s->getHeight())
+		{return true;}
+	else if(dist1 < s->getRadious() && fabs(zs-pos1_z)<s->getHeight())
+		{return true;}
+	else if(dist2 < s->getRadious() && fabs(zs-pos2_z)<s->getHeight())
+		{return true;}
+	else if(dist3 < s->getRadious() && fabs(zs-pos3_z)<s->getHeight())
+		{return true;}
+	else{return false;}
 
-
-	f->getRoute()->push_back(r3);
-	f->getRoute()->push_front(r2);
-	f->getRoute()->push_front(r1);
-	f->getRoute()->push_front(r0);
 }
 
-void
-AirController::assignWaiting1(Flight* f)
+bool
+AirController::stormInView(Storm* s, Flight* f)
 {
-	f->setLanding(false);
-	f->getRoute()->clear();
+		
+		float xf,yf, zf, xs, ys, zs;
+		float dist;
 
-	Position pos0(7700.0, -2000.0, 500.0);
-	Position pos1(3700.0, -2000.0, 500.0);
-	Position pos2(3700.0, -8000.0, 500.0);
-	Position pos3(7700.0, -8000.0, 500.0);
+		xf = f->getPosition().get_x();
+		yf = f->getPosition().get_y();
+		zf = f->getPosition().get_z();
+		xs = s->getPosition().get_x();
+		ys = s->getPosition().get_y();
+		zs = s->getPosition().get_z();
 
-	Route r0, r1, r2, r3;
-
-	r0.pos = pos0;
-	r0.speed = 200.0;
-	r1.pos = pos1;
-	r1.speed = 200.0;
-	r2.pos = pos2;
-	r2.speed = 200.0;
-	r3.pos=pos3;
-	r3.speed=200.0;
+		dist = sqrt((xf-xs)*(xf-xs)+(yf-ys)*(yf-ys));
 
 
-	f->getRoute()->push_back(r3);
-	f->getRoute()->push_front(r2);
-	f->getRoute()->push_front(r1);
-	f->getRoute()->push_front(r0);
+		if(dist< 2500+s->getRadious() )//&& fabs(zs-zf)<s->getHeight())
+			{return true; std::cout<<"tormenta en vista"<<std::endl;}
+		else 
+			{return false;}
+		
+
 }
 
 void
 AirController::doWork()
 {
-			std::list<Flight*> flights = Airport::getInstance()->getFlights();
-			std::list<Flight*>::iterator it;
 			
+	std::list<Flight*> flights = Airport::getInstance()->getFlights();
+	std::list<Flight*>::iterator it;
+			
+	Storm* storm= Airport::getInstance()->getStorm();
+		
 
-			int counter;
-			   counter=0;
+	int counter;
+	counter=0;
 
-			for(it = flights.begin(); it!=flights.end(); ++it)
 
-			{
-  
-			std::list<Flight*>::iterator it2;
-			   
+		for(it = flights.begin(); it!=flights.end(); ++it)
 
-				for(it2 = flights.begin(); it2!=flights.end(); ++it2)
+		{
+  			
+			   std::list<Flight*>::iterator it2;
+
+
+			   if ((*it)->getRoute()->empty())
+			     {
+				assignWaiting(*it);
+			     }
+	
+
+			   for(it2 = flights.begin(); it2!=flights.end(); ++it2)
 				{
-				if((*it2)->getLanding()) 
+				   if((*it2)->getLanding()) 
 					counter=counter+1;
 				}
-
-				if(counter==0){
-					
-					assignLanding(flights.front());
-				
-				 if ((*it)->getRoute()->size()!=0)
-				 {
-
-	 			  Position posbase2(4700.0,-700.0 , 2500.0);
-				  Position posbase4(4700.0,700.0 , 2500.0);
-
-				  Route r;
-				  Position p;
 			
-				  std::list<Route>::iterator itr;
-				  itr=(*it)->getRoute()->begin();
-
-				  r=*itr;
-
-				  p=r.pos;
-
-				  if(p.get_x()==posbase2.get_x() &&
-				     p.get_y()==posbase2.get_y() &&
-				     p.get_z()==posbase2.get_z()){assignWaiting1(*it);}
-
-				  if(p.get_x()==posbase4.get_x() &&
-				     p.get_y()==posbase4.get_y() &&
-				     p.get_z()==posbase4.get_z()){assignWaiting3(*it);}
-				 }  
-				}
-				else if ( counter!=0 && (*it)->getRoute()->empty()){				
-				 	
-					if((*it)->getPosition().get_y()<=0){
 		
-					   if((*it)->getPosition().get_z()<=2000)
-						{assignWaiting1(*it);}
-					
-					   else {assignWaiting2(*it);}
+		//std::list<Flight*>::iterator it3;
 
-					}else{
-
-					   if((*it)->getPosition().get_z()<=2000)
-						{assignWaiting3(*it);}
+		//it3=flights.begin();
+		
+			   if(counter==0)
+			   {
+				  if(storm==NULL || (storm!=NULL && stormInLanding(storm)==false))
+					assignLanding(flights.front());
 					
-					   else {assignWaiting4(*it);}
+			  }
+
+		//it3++;
+		//	   if(flights.size()>1 && counter==1)
+		//		assignDescend(*it3);
+
+				
+			  
+
+				
+			   if(storm!=NULL)
+			   {
+ 				   if(stormInView(storm , *it) && (*it)->getReRuted()==false)
+					{if (not (*it)->getLanding())
+				              reRute(storm , *it);
 					}
-				}		
-			    
+			   }
+
+
 		} 
 }
-					
 
-		
 

@@ -51,9 +51,10 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	speed = _speed;
 	route.clear();
 	landing=0;
-	
+	waitRoute=0;
 
 	inStorm = false;
+	reRuted= false; 
 
 	focused = false;
 	points = INIT_FLIGHT_POINTS;
@@ -82,26 +83,33 @@ Flight::getS(float v, float diffbearing, float w_max)
 void
 Flight::update(float delta_t)
 {
-	float trans,s_turn;
-	Position CPpos, CPpos2;
+	float trans, s;
+	Position CPpos;
 
 
 	if(routed())
 	{
 		float goal_bearing, diff_bearing, new_w;
+		float goal_inclination, diff_inclination, new_w_in;
 		
+
 		CPpos = route.front().pos;
-		pos.angles(CPpos, goal_bearing, inclination);
+		pos.angles(CPpos, goal_bearing, goal_inclination);
 
 		goal_bearing = normalizePi(goal_bearing + M_PI);
 		diff_bearing = normalizePi(goal_bearing - bearing);
+		diff_inclination = normalizePi( goal_inclination- inclination);
+
 		new_w = diff_bearing;
-		
+		new_w_in=diff_inclination;
+
 		if(fabs(new_w)>MAX_FLIFGT_W) new_w = (fabs(new_w)/new_w) * MAX_FLIFGT_W;
+		if(fabs(new_w_in)>MAX_FLIFGT_W) new_w_in = (fabs(new_w_in)/new_w_in) * MAX_FLIFGT_W;
 
 		//std::cout<<"["<<id<<"]angle = "<<bearing<<"\tnew = "<<goal_bearing<<"\t["<<diff_bearing<<"]\tideal w = "<<new_w<<" -> "<<new_w_b<<std::endl;
 
 		bearing = bearing + new_w*delta_t;
+		inclination = inclination + new_w_in*delta_t;
 
 		float goal_speed, diff_speed, acc;
 
@@ -114,7 +122,8 @@ Flight::update(float delta_t)
 
 		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
 
-		float goal_bearing2, diff_bearing2, inclination2, diff_inclination;
+		Position CPpos2;
+		float goal_bearing2, diff_bearing2, inclination2;
 		Route r1, r2;
 
 		std::list<Route>::iterator it;
@@ -122,17 +131,17 @@ Flight::update(float delta_t)
 		r1=*it;
 		it++;
 		r2=*it; 
-		
+
 		CPpos2=r2.pos;
 		pos.angles(CPpos2, goal_bearing2, inclination2);
 
 		goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
 		diff_bearing2 = normalizePi(goal_bearing2 - goal_bearing);
-		new_w = diff_bearing2;
-
 		
-		s_turn=getS(speed,diff_bearing2, MAX_FLIFGT_W);
+		s=getS(speed,diff_bearing2, MAX_FLIFGT_W);
 
+		if(pos.distance(CPpos)<s)
+			route.pop_front();
 		}else
 
 		inclination = 0.0;
@@ -141,6 +150,7 @@ Flight::update(float delta_t)
 
 	trans = speed * delta_t;
 
+	//std::cout<<bearing<<std::endl;
 
 	pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
 	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
@@ -151,8 +161,7 @@ Flight::update(float delta_t)
 
 	
 
-		if(pos.distance(CPpos)<s_turn)
-		route.pop_front();
+		
 
 	if(inStorm)
 	{
