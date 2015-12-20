@@ -26,8 +26,15 @@
 #define AIRCONTROLLER_H_
 
 #include "Singleton.h"
+#include "Airport.h"
 #include "Flight.h"
 #include <list>
+
+typedef struct {
+	float selectedHeight;
+	bool occuped;
+
+} WaitRouteHeight;
 
 class AirController: public Singleton<AirController> {
 public:
@@ -37,12 +44,19 @@ public:
 	void doWork();
 	void assignLanding(Flight *f, Route r0, Route r1, Route r2, Route r3, Route r4, Route r5);
 	void assignWaiting(Flight *f, Route r0, Route r1, Route r2, Route r3);
-	bool getLanding(){return landing;};
-	void setLanding(bool landing_){landing = landing_;};
+
+	void checkFreeRunway(Flight *f, bool *routeState);
+	float selectedHeight(WaitRouteHeight h[]);
+	void HeightInizialitation(WaitRouteHeight h[]);
+	bool releaseHeight(WaitRouteHeight h[],float z);
+
+	void avoidStorm(Flight* f, Storm* s);
 
 private:
-	bool landing;
 
+	
+
+	bool routeState; //It will be false if Runway is free
 	
 };
 

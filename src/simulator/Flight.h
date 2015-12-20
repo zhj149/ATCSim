@@ -45,7 +45,6 @@ public:
 
 
 	std::list<Route> *getRoute() { return &route;};
-
 	bool routed() { return !route.empty();};
 	Position getPosition() { return pos;};
 	float getInclination() { return inclination;};
@@ -55,6 +54,9 @@ public:
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
+
+	void setBearing(float bearing_){bearing = bearing_;};
+
 	float getS(float v, float theta1, float theta2, float w_max);
 	float getSInclination(float v, float theta1, float theta2, float w_max);
 	float updateV(float acc_ideal,float speed, float delta_t);
@@ -62,8 +64,12 @@ public:
 	float diffBearing(float goal_bearing,float bearing);
 	float diffInclination(float goal_inclination1, float inclination);
 
-	bool getInStorm() {return inStorm;};
-	void setInStorm(bool in) {inStorm=in;};
+	int getSector(){return sector;};
+	void setSector(int sector_){sector = sector_;};
+	
+	bool getLanding() {return landing;};
+	void setLanding(bool landing_) {landing=landing_;};
+
 
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
@@ -77,6 +83,10 @@ private:
 	std::list<Route> route;
 	std::list<Route>::iterator it;
 	bool focused;
+
+	int sector;
+
+	bool landing;
 
 	bool inStorm;
 

@@ -49,14 +49,12 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	bearing = _bearing;
 	inclination = _inclination;
 	speed = _speed;
-	
 	route.clear();
 	inStorm = false;
 
+	landing = false;
+
 	focused = false;
-
-	
-
 	points = INIT_FLIGHT_POINTS;
 
 	w_speed = 0.0f;
@@ -78,7 +76,6 @@ Flight:: getSInclination(float v, float alpha1, float alpha2, float w_max)
 	return s;
 }
 
-
 float
 Flight::updateV(float acc_ideal,float speed, float delta_t)
 {
@@ -94,6 +91,8 @@ Flight::updateV(float acc_ideal,float speed, float delta_t)
 	return new_speed = speed + acc*delta_t;
 		   	
 }
+
+
 float
 Flight::updateW(float ideal_w,float w_max )
 {
@@ -108,6 +107,7 @@ Flight::updateW(float ideal_w,float w_max )
 			
 		return new_w;	
 }
+
 
 float
 Flight::diffBearing(float goal_bearing,float bearing)
@@ -126,16 +126,18 @@ Flight::diffInclination(float goal_inclination, float inclination)
 	return diff_inclination;
 }
 
+
 void
 Flight::update(float delta_t)
 {
 	float trans;
 	Position CPpos1;
+	
+	
 
 	if(routed())
 	{
-
-			it = route.begin();  // cambie el route.front()
+		it = route.begin();  // cambie el route.front()
 			
 			CPpos1 = (*it).pos;	//Creamos la posicion del waypoint 1
 			float goal_speed1 = (*it).speed;
@@ -155,18 +157,23 @@ Flight::update(float delta_t)
 			goal_bearing1 = normalizePi(goal_bearing1 + M_PI);
 			goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
 						
-			float theta1 = diffBearing(goal_bearing1, bearing);
+			
 			float theta2 = diffBearing(goal_bearing2, bearing);
 			
-			float ideal_w = theta1; //w ideal para girar todo el rumbo de golpe
-			float w_max = MAX_FLIFGT_W;
-			float new_w = updateW(ideal_w, w_max);
+			//float ideal_w = theta1; //w ideal para girar todo el rumbo de golpe
+			//float w_max = MAX_FLIFGT_W;
+			//float new_w = updateW(ideal_w, w_max);
 
 			float ideal_w_inclination = alpha1; //w ideal para girar todo el rumbo de golpe
 			float w_max_inclination = 0.2;//maxima w que podemos tener en descenso
 			float new_w_inclination = updateW(ideal_w_inclination,w_max_inclination);
-
 			
+			
+			float theta1 = diffBearing(goal_bearing1, bearing);
+
+			float ideal_w = theta1; //w ideal para girar todo el rumbo de golpe
+			float w_max = MAX_FLIFGT_W;
+			float new_w = updateW(ideal_w, w_max);
 
 			bearing = bearing + new_w*delta_t;
 			inclination = inclination + new_w_inclination*delta_t;
@@ -187,17 +194,19 @@ Flight::update(float delta_t)
 			//std::cout<<"INCLINACION="<<goal_inclination1<<"	S inclinacion="<<s_inclination<<"		z=   "<<pos.get_z()<<std::endl;
 			
 			//std::cout<<"x: "<<pos.get_x() <<"  y= "<<pos.get_y()<<"   z=   "<<pos.get_z()<<std::endl;		
+
 *****************************************************************************************************/
-
-
+			
 			if((pos.distance(CPpos1)<s)||(pos.distance(CPpos1)<s_inclination))
 			{
-				new_w = fabs(theta1-theta2)/delta_t;			
-				new_w_inclination = fabs(alpha2-alpha1)/delta_t;
+				new_w = fabs(theta1-theta2);			
+				new_w_inclination = fabs(alpha2-alpha1);
 				route.pop_front();				
 			}
+			
+	
 
-	}else
+	}else	
 		inclination = 0.0;
 
 	last_pos = pos;
@@ -208,8 +217,9 @@ Flight::update(float delta_t)
 	pos.set_y(pos.get_y() + trans * sin(bearing)* cos(inclination));
 	pos.set_z(pos.get_z() + ( trans * sin(inclination)));
 
-        if(pos.distance(CPpos1)<DIST_POINT)
+        if(pos.distance(CPpos1)<DIST_POINT+300)
         {
+		//std::cout<<pos.distance(CPpos1)<<std::endl;
 		route.pop_front();
 	}
 
@@ -218,9 +228,15 @@ Flight::update(float delta_t)
 		//std::cout<<"["<<id<<"]In Storm"<<std::endl;
 		points = points - 2*delta_t;
 	}
+
 	else
 		points = points - delta_t;
+
 }
+
+
+
+
 
 //
 //void
