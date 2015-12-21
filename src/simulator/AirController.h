@@ -27,6 +27,8 @@
 
 #include "Singleton.h"
 #include "Flight.h"
+#include "Airport.h"
+
 
 
 class AirController: public Singleton<AirController> {
@@ -37,12 +39,17 @@ public:
 	void doWork();
 	void asignarLanding(Flight *f, Route a, Route b, Route c, Route d);
 	void asignarWaiting(Flight *f, Route a, Route b, Route c, Route d);
-	bool setLanding(bool indicador) {landing = indicador;};
-	bool getLanding() {return landing;};
+	void asignarRutaStorm(Flight *f, Route a, Route b, Route c, Route d);
+
+	float Distancia(float x1, float x2,float y1, float y2);//,float z1, float z2 );
+
+	//bool setLanding(bool indicador) {landing = indicador;};
+	//bool getLanding() {return landing;};
+
 
 
 private:
-	bool landing;
+	//bool landing;
 
 };
 

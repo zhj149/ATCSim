@@ -80,7 +80,7 @@ Flight::updateVel(float acc_inst,float speed, float delta_t)
 	float new_speed,acceleration;
 	if(fabs(acc_inst)>MAX_ACELERATION)
   {
-		acceleration = (fabs(acc_inst)/acc_inst)*MAX_ACELERATION;
+		acceleration = ((fabs(acc_inst))/acc_inst)*MAX_ACELERATION;
 	}
 	else
 	{
@@ -99,21 +99,36 @@ Flight::getS(float V0, float Diferencia)
 return A;
 };
 
+float
+Flight::subtractionPI(float resta1, float resta2)
+{
+	float res_resta;
+	res_resta=normalizePi(resta1-resta2);
+return res_resta;
+};
+
+float
+Flight::subtraction(float resta1, float resta2)
+{
+	float res_resta;
+	res_resta=(resta1-resta2);
+return res_resta;
+};
+
 void
 Flight::update(float delta_t)
 {
 	float trans;
 	Position CPpos, CPpos1;
 
+	float goal_bearing,goal_bearing1, diff_bearing,diff_bearing1, diff_diff_bearing, new_w;
+	float goal_inclination,goal_inclination1, diff_inclination,diff_inclination1, diff_diff_inclination, new_wi;
+	float S;
+	float Si;
+	float goal_speed, goal_speed1,diff_speed, acc_ideal;
+
 	if(routed())
 	{
-		float goal_bearing,goal_bearing1, diff_bearing,diff_bearing1, diff_diff_bearing, new_w;
-		float goal_inclination,goal_inclination1, diff_inclination,diff_inclination1, diff_diff_inclination, new_wi;
-		float S;
-		float Si;
-		float goal_speed, goal_speed1,diff_speed, acc_ideal;
-
-
 
 		it=route.begin();
 		CPpos = it->pos;
@@ -129,15 +144,13 @@ Flight::update(float delta_t)
 		goal_bearing = normalizePi(goal_bearing + M_PI);
 		goal_bearing1 = normalizePi(goal_bearing1 + M_PI);
 
-		diff_bearing = normalizePi(goal_bearing - bearing);
-		diff_bearing1 = normalizePi(goal_bearing1 - bearing);
+		diff_bearing = subtractionPI(goal_bearing,bearing);
+		diff_bearing1 = subtractionPI(goal_bearing1,bearing);
+		diff_inclination = subtractionPI(goal_inclination,inclination);
+		diff_inclination1 = subtractionPI(goal_inclination1,inclination);
 
-		diff_diff_bearing= fabs(diff_bearing1-diff_bearing);
-
-		diff_inclination = normalizePi(goal_inclination - inclination);
-		diff_inclination1 = normalizePi(goal_inclination1 - inclination);
-
-		diff_diff_inclination= fabs(diff_inclination1-diff_inclination);
+		diff_diff_bearing= fabs(subtraction(diff_bearing1,diff_bearing));
+		diff_diff_inclination= fabs(subtraction(diff_inclination1,diff_inclination));
 
 
     float w = diff_bearing/delta_t;
@@ -148,10 +161,10 @@ Flight::update(float delta_t)
 		new_wi = updateW(wi);
 		inclination = inclination + new_wi*delta_t;
 
-		acc_ideal = (goal_speed - speed)*delta_t;
+		acc_ideal = (goal_speed - speed);
 		speed = updateVel(acc_ideal,speed, delta_t);
 
-
+		//////////////////////////////// TRAZAS /////////////////////////////////////////////////////////
 		//std::cout << "\nAvión ["<<id<<"]" << std::endl;
 		//std::cout<<"\nBEARING ACTUAL = "<<bearing*180/pi<<std::endl;
 		//std::cout<<"BEARING A SEGUIR = "<<goal_bearing*180/pi<<std::endl;
@@ -159,7 +172,7 @@ Flight::update(float delta_t)
 		//std::cout<<"DIFERENCIA ENTRE BEARING QUE TENEMOS Y BEARING QUE SEGUIMOS = "<<diff_bearing*180/pi<<std::endl;///IDEAL ES QUE SEA 0
 		//std::cout<<"DIFERENCIA ENTRE BEARING QUE TENEMOS Y BEARING QUE QUEREMOS CAMBIAR = "<<diff_bearing1*180/pi<<std::endl;
 		//std::cout<<"Diferencia BEARINGS = "<<diff_diff_bearing*180/pi<<std::endl;
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 		S = getS(speed, diff_diff_bearing);
@@ -173,19 +186,17 @@ Flight::update(float delta_t)
 				route.pop_front();
 		}
 
+//////////////////////////////// TRAZAS /////////////////////////////////////////////////////////
 		//std::cout<<"Distancia S = "<<S<<" metros"<<std::endl;
-
-		std::cout<<"VELOCIDAD ACTUAL = "<<speed<<std::endl;
+		//std::cout<<"VELOCIDAD ACTUAL = "<<speed<<std::endl;
 		//std::cout<<"VELOCIDAD EN EL WAYPOINT = "<<goal_speed<<std::endl;
 		//std::cout<<"VELOCIDAD EN EL WAYPOINT+1 = "<<goal_speed1<<std::endl;
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }else{inclination = 0.0;}
 
 
 		last_pos = pos;
-
-
 		trans = speed * delta_t;
 
 	if(inStorm)
@@ -201,7 +212,6 @@ Flight::update(float delta_t)
 		pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
 		pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
 		pos.set_z(pos.get_z() + ( trans * sin(inclination)));
-
 
 		if(pos.distance(CPpos) < DIST_POINT){
 	  	route.pop_front();
