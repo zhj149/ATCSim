@@ -395,6 +395,7 @@ Airport::checkLandings()
 
 
 
+
 			it = removeFlight((*it)->getId());
 
 			std::cerr<<"*";

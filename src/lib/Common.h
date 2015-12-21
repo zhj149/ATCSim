@@ -22,7 +22,9 @@
 #define CRASH_INC 25.0f
 #define CRASH_SPEED 10.0f
 
+
 #define INIT_MAX_FLIGHTS 1//2
+
 
 
 #define MAX_FLIFGT_W	0.2f //12 grados/sec
