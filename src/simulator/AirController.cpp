@@ -246,14 +246,20 @@ AirController::ClosedRunway(Storm *s)
 	float altura_storm = s->getHeight();
 	float x_storm = s->getPosition().get_x();
 	float y_storm = s->getPosition().get_y();
+	bool closed;
 
-
-	float pos1_A_x = 4000.0;	float pos1_A_y = 0.0;
-	float pos1_B_x = 4000.0;	float pos1_B_y = -1500.0;
-	float pos1_C_x = 4000.0;	float pos1_C_y = 1500.0;
-	float pos2_x = 1500.0;		float pos2_y = 0.0;
-	float pos3_x = 100.0;			float pos3_y = 0.0;
-	float pos4_x = -750.0;		float pos4_y = 0.0;
+	float pos1_A_x = 4000.0;
+	float pos1_A_y = 0.0;
+	float pos1_B_x = 4000.0;
+	float pos1_B_y = -1500.0;
+	float pos1_C_x = 4000.0;
+	float pos1_C_y = 1500.0;
+	float pos2_x = 1500.0;
+	float pos2_y = 0.0;
+	float pos3_x = 100.0;
+	float pos3_y = 0.0;
+	float pos4_x = -750.0;
+	float pos4_y = 0.0;
 
 	float distancia1_A = CalcularDistancia(pos1_A_x, pos1_A_y, x_storm, y_storm);
 	float distancia1_B = CalcularDistancia(pos1_B_x, pos1_B_y, x_storm, y_storm);
@@ -263,20 +269,21 @@ AirController::ClosedRunway(Storm *s)
 	float distancia4= CalcularDistancia(pos4_x, pos4_y, x_storm, y_storm);
 
 	if(distancia1_A <= radio_storm+MARGENSEGURIDAD_AIRPORT){
-		return true;
+		closed =  true;
 	}else if(distancia1_B <= radio_storm+MARGENSEGURIDAD_AIRPORT){
-		return true;
+		closed =  true;
 	}else if(distancia1_C <= radio_storm+MARGENSEGURIDAD_AIRPORT){
-		return true;
+		closed =  true;
 	}else if(distancia2 <= radio_storm+MARGENSEGURIDAD_AIRPORT){
-		return true;
+		closed =  true;
 	}else if(distancia3 <= radio_storm+MARGENSEGURIDAD_AIRPORT){
-		return true;
+		closed =  true;
 	}else if(distancia4 <= radio_storm+MARGENSEGURIDAD_AIRPORT){
-		return true;
+		closed =  true;
 	}else{
-		return false;
+		closed = false;
 	}
+	return closed;
 }
 
 void
