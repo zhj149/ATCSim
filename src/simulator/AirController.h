@@ -26,7 +26,6 @@
 #define AIRCONTROLLER_H_
 
 #include "Singleton.h"
-#include "Singleton.h"
 #include "Flight.h"
 #include "Storm.h"
 
@@ -35,8 +34,8 @@ public:
 	AirController();
 	virtual ~AirController();
 	void Land(Flight *flight, Route a, Route b, Route c, Route d);
-	void Waiting(Flight *flight, Route a, Route b, Route c, Route d, Route e, Route f, Route g, Route h, Route k, Route l, Route m, Route n);
-	void Emergency(Flight *flight, Route a, Route b, Route c, Route d, Route e, Route f, Route g, Route h);
+	void Waiting(Flight *flight, Route a, Route b, Route c, Route d, Route e, Route f, Route g, Route h, Route k, Route l, Route m, Route n, Route o, Route p);
+	void Emergency(Flight *flight, Route a, Route b, Route c, Route d, Route e, Route f, Route g, Route h, Route k, Route l);
 	void doWork();
 	float getDistancia(float x1, float x2, float y1, float y2);
 	float getDifAngulo(float x1, float x2, float y1, float y2);

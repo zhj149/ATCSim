@@ -50,6 +50,7 @@ public:
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
+	float setSpeed(float vel) {speed = vel;}; 
 	float getPoints() {return points;};
 	std::string getId(){return id;};
 	float getS(float velocidad, float difangular)
