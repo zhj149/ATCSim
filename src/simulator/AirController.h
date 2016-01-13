@@ -27,14 +27,22 @@
 
 #include "Singleton.h"
 #include "Flight.h"
+#include "Storm.h"
 
 class AirController: public Singleton<AirController> {
 public:
 	AirController();
 	virtual ~AirController();
 	void doWork();
+	void AssignLanding(Flight *f);
+	void AssignAntiStormRoute(Flight *f);
+	void AssignWaiting(Flight *f);
+	bool CheckStorm(Flight *f, Storm *s);
+	bool ClosedRunway(Storm *s);
 private:
 	bool ruta_ocupada;
 };
+
+
 
 #endif /* AIRCONTROLLER_H_ */

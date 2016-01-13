@@ -53,6 +53,7 @@ public:
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
+	float setSpeed(float v){speed = v;};
 	float getPoints() {return points;};
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
@@ -60,6 +61,8 @@ public:
 	float getS(float v_0, float ang1, float ang2);
 	void setLanding(bool state){landing = state;};
 	bool getLanding(){return landing;};
+	void setAvoidingStorm(bool state){avoiding= state;};
+	bool getAvoidingStorm(){return avoiding;};
 
 
 
@@ -82,6 +85,7 @@ private:
 
 	float points;
 	bool landing;
+	bool avoiding;
 
 };
 
