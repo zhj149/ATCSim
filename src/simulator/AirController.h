@@ -30,33 +30,26 @@
 #include "Flight.h"
 #include <list>
 
-typedef struct {
-	float selectedHeight;
-	bool occuped;
-
-} WaitRouteHeight;
-
 class AirController: public Singleton<AirController> {
 public:
 	AirController();
 	virtual ~AirController();
 
 	void doWork();
-	void assignLanding(Flight *f, Route r0, Route r1, Route r2, Route r3, Route r4, Route r5);
-	void assignWaiting(Flight *f, Route r0, Route r1, Route r2, Route r3);
+	void assignLanding(Flight *f);
+	void assignWaiting(Flight *f);
 
 	void checkFreeRunway(Flight *f, bool *routeState);
-	float selectedHeight(WaitRouteHeight h[]);
-	void HeightInizialitation(WaitRouteHeight h[]);
-	bool releaseHeight(WaitRouteHeight h[],float z);
+	float giveFreeHeight (int sector);
+	void releaseHeight (int sector, float height);
 
 	void avoidStorm(Flight* f, Storm* s);
+	void avoidFlightsCollisions (Flight* f1, Flight* f2);
 
-private:
-
-	
+private:	
 
 	bool routeState; //It will be false if Runway is free
+	bool free_Height [NUMBER_OF_SECTORS][MAX_NUMBER_OF_HEIGHTS_BY_SECTOR];
 	
 };
 

@@ -51,13 +51,15 @@ public:
 	float getBearing() { return bearing;};
 	float getSpeed() { return speed;};
 	float getPoints() {return points;};
+	float getAssignedHeight () {return assigned_Height;};
+	void setAssignedHeight (float height) { assigned_Height = height;};
 	std::string getId(){return id;};
 	void setFocused(bool state) { focused = state;};
 	bool getFocused() { return focused;};
 
 	void setBearing(float bearing_){bearing = bearing_;};
 
-	float getS(float v, float theta1, float theta2, float w_max);
+	float getS(float v, float theta1, float theta2, float w_max); //get the minimun distance to bear 
 	float getSInclination(float v, float theta1, float theta2, float w_max);
 	float updateV(float acc_ideal,float speed, float delta_t);
 	float updateW(float ideal_w,float w_max );
@@ -70,16 +72,23 @@ public:
 	bool getLanding() {return landing;};
 	void setLanding(bool landing_) {landing=landing_;};
 
+	bool getStormAvoided(){return storm_avoided;};
+	void setStormAvoided(bool sA){storm_avoided = sA;};
 
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
+	void setStormWarning(bool warning) {storm_warning = warning;};
+	bool getStormWarning() {return storm_warning;};
 
 private:
 	std::string id;
 	Position pos, last_pos;
 	float bearing, inclination;
 	float speed, w_speed;
-	float s;
+	float assigned_Height;
+	bool storm_avoided;
+	bool storm_warning;
+	float s;	//distance
 	std::list<Route> route;
 	std::list<Route>::iterator it;
 	bool focused;

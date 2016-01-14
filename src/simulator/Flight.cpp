@@ -49,6 +49,9 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	bearing = _bearing;
 	inclination = _inclination;
 	speed = _speed;
+	assigned_Height = 0.0f;
+	storm_avoided = false;
+	storm_warning = false;
 	route.clear();
 	inStorm = false;
 
@@ -65,10 +68,10 @@ Flight::getS(float v, float theta1, float theta2, float w_max)
 {
 	double t = fabs((theta2-theta1)) /w_max;
   	s = v*t;
-	return s;	
+	return s;
 }
 
-float 
+float
 Flight:: getSInclination(float v, float alpha1, float alpha2, float w_max)
 {
 	double t = fabs((alpha2-alpha1)) /w_max;
@@ -80,7 +83,7 @@ float
 Flight::updateV(float acc_ideal,float speed, float delta_t)
 {
 	float new_speed,acc;
-	
+
 	if(fabs(acc_ideal)>MAX_ACELERATION)
         {
 		acc = (acc_ideal/fabs(acc_ideal))*MAX_ACELERATION;
@@ -89,7 +92,7 @@ Flight::updateV(float acc_ideal,float speed, float delta_t)
 	}
 
 	return new_speed = speed + acc*delta_t;
-		   	
+
 }
 
 
@@ -97,15 +100,15 @@ float
 Flight::updateW(float ideal_w,float w_max )
 {
 	float new_w;
-	
+
 		if(fabs(ideal_w)>w_max)
 			{
 				 new_w = (fabs(ideal_w)/ideal_w) * MAX_FLIFGT_W; //limitaciones de velocidad angular
 			}else{
 				 new_w = ideal_w;
 			}
-			
-		return new_w;	
+
+		return new_w;
 }
 
 
@@ -131,35 +134,32 @@ void
 Flight::update(float delta_t)
 {
 	float trans;
-	Position CPpos1;
-	
-	
+	Position CPpos1, CPpos2;  /* Store the two waypoints */
 
 	if(routed())
 	{
 		it = route.begin();  // cambie el route.front()
-			
-			CPpos1 = (*it).pos;	//Creamos la posicion del waypoint 1
-			float goal_speed1 = (*it).speed;
+
+			CPpos1 = it->pos;	//Creamos la posicion del waypoint 1
+			float goal_speed1 = it->speed;
 			it++;
-			Position CPpos2 = it->pos;	//Creamos la posicion del waypoint 2
-			float goal_speed2 = it->speed;
-			
+			CPpos2 = it->pos;	//Creamos la posicion del waypoint 2
+
 			float goal_bearing1, goal_bearing2;
 			float goal_inclination1, goal_inclination2;
 
 			pos.angles(CPpos1, goal_bearing1, goal_inclination1);
-			pos.angles(CPpos2, goal_bearing2, goal_inclination2);	
-						
+			pos.angles(CPpos2, goal_bearing2, goal_inclination2);
+
 			float alpha1 = diffInclination(goal_inclination1, inclination);
 			float alpha2 = diffInclination(goal_inclination2, inclination);
-			
+
 			goal_bearing1 = normalizePi(goal_bearing1 + M_PI);
 			goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
-						
-			
+
+
 			float theta2 = diffBearing(goal_bearing2, bearing);
-			
+
 			//float ideal_w = theta1; //w ideal para girar todo el rumbo de golpe
 			//float w_max = MAX_FLIFGT_W;
 			//float new_w = updateW(ideal_w, w_max);
@@ -167,8 +167,8 @@ Flight::update(float delta_t)
 			float ideal_w_inclination = alpha1; //w ideal para girar todo el rumbo de golpe
 			float w_max_inclination = 0.2;//maxima w que podemos tener en descenso
 			float new_w_inclination = updateW(ideal_w_inclination,w_max_inclination);
-			
-			
+
+
 			float theta1 = diffBearing(goal_bearing1, bearing);
 
 			float ideal_w = theta1; //w ideal para girar todo el rumbo de golpe
@@ -177,14 +177,14 @@ Flight::update(float delta_t)
 
 			bearing = bearing + new_w*delta_t;
 			inclination = inclination + new_w_inclination*delta_t;
-		
+
 			float acc_ideal = (goal_speed1 - speed);
 
-			speed = updateV(acc_ideal,speed, delta_t); 
-				
+			speed = updateV(acc_ideal,speed, delta_t);
+
 
 			float s = getS(speed, theta1,theta2,w_max);
-			float s_inclination = getSInclination(speed, alpha1,alpha2,w_max_inclination);  
+			float s_inclination = getSInclination(speed, alpha1,alpha2,w_max_inclination);
 
 /********************************TRAZAS PARA COMPROBAR RESULTADOS*************************************
 			//std::cout<<"inclinacion = "<<inclination<<"\tnew = "<<goal_inclination1<<"\t["<<goal_inclination2<<"\talpha1=  " <<alpha1<<"\talpha2=  " <<alpha2<<"]\tideal w = "<<new_w_inclination<<std::endl;
@@ -192,21 +192,21 @@ Flight::update(float delta_t)
 			//std::cout<<"S="<<s<<"   wmax="<<w_max<<"  speed="<<speed<<"  tetha1: "<<theta1<<"  tetha2: "<<theta2<<std::endl;
 
 			//std::cout<<"INCLINACION="<<goal_inclination1<<"	S inclinacion="<<s_inclination<<"		z=   "<<pos.get_z()<<std::endl;
-			
-			//std::cout<<"x: "<<pos.get_x() <<"  y= "<<pos.get_y()<<"   z=   "<<pos.get_z()<<std::endl;		
+
+			//std::cout<<"x: "<<pos.get_x() <<"  y= "<<pos.get_y()<<"   z=   "<<pos.get_z()<<std::endl;
 
 *****************************************************************************************************/
-			
+
 			if((pos.distance(CPpos1)<s)||(pos.distance(CPpos1)<s_inclination))
 			{
-				new_w = fabs(theta1-theta2);			
-				new_w_inclination = fabs(alpha2-alpha1);
-				route.pop_front();				
+//				new_w = fabs(theta1-theta2);
+//				new_w_inclination = fabs(alpha2-alpha1);
+				route.pop_front();
 			}
-			
-	
 
-	}else	
+
+
+	}else
 		inclination = 0.0;
 
 	last_pos = pos;
@@ -217,7 +217,7 @@ Flight::update(float delta_t)
 	pos.set_y(pos.get_y() + trans * sin(bearing)* cos(inclination));
 	pos.set_z(pos.get_z() + ( trans * sin(inclination)));
 
-        if(pos.distance(CPpos1)<DIST_POINT+300)
+        if(pos.distance(CPpos1)<DIST_POINT)
         {
 		//std::cout<<pos.distance(CPpos1)<<std::endl;
 		route.pop_front();

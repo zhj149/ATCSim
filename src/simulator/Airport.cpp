@@ -210,14 +210,14 @@ Airport::step()
 			//(*it)->draw();
 		}
 
-		pthread_mutex_lock (&mutex);
+		//pthread_mutex_lock (&mutex);
 		checkLandings();
 		checkCollisions();
 		checkCrashes();
-		pthread_mutex_unlock (&mutex);
+		//pthread_mutex_unlock (&mutex);
 	}
 
-	pthread_mutex_lock (&mutex);
+	//pthread_mutex_lock (&mutex);
 
 	if(storm==NULL)
 	{
@@ -229,17 +229,17 @@ Airport::step()
 		checkFlightsInStorm();
 		checkFinishStorm();
 	}
-	pthread_mutex_unlock (&mutex);
+	//pthread_mutex_unlock (&mutex);
 
 	if(flights.size()<max_flights)
 	{
-		pthread_mutex_lock (&mutex);
+		//pthread_mutex_lock (&mutex);
 		generate_flight();
-		pthread_mutex_unlock (&mutex);
+		//pthread_mutex_unlock (&mutex);
 	}
 
 
-
+//pthread_mutex_unlock (&mutex);
 
 }
 
@@ -317,7 +317,6 @@ Airport::checkFlightsInStorm()
 	for(it = flights.begin(); it != flights.end(); ++it)
 	{
 		bool in=false;
-
 		float xf,yf, zf, xs, ys, zs;
 		float dist;
 
@@ -353,17 +352,17 @@ Airport::checkCrashes()
 	{
 		if((*it)->getPosition().get_z()<CRASH_Z)
 		{
-			std::cerr<<"[PoZ]Crash of por altura"<<(*it)->getId()<<std::endl;
+			std::cerr<<"[PoZ]Crash of "<<(*it)->getId()<<std::endl;
 			it=removeFlight((*it)->getId());
 			points += CRASH_HEIGHT_POINTS;
 		}else if(toDegrees(fabs((*it)->getInclination())) > CRASH_INC)
 		{
-			std::cerr<<"[Inc] Crash of  inclinacion"<<(*it)->getId()<<std::endl;
+			std::cerr<<"[Inc] Crash of "<<(*it)->getId()<<std::endl;
 			it = removeFlight((*it)->getId());
 			points += CRASH_INC_POINTS;
 		}else if( (*it)->getSpeed()<CRASH_SPEED)
 		{
-			std::cerr<<"[Spd] Crash of velocidad"<<(*it)->getId()<<std::endl;
+			std::cerr<<"[Spd] Crash of "<<(*it)->getId()<<std::endl;
 			it = removeFlight((*it)->getId());
 			points += CRASH_SPEED_POINTS;
 		}else
@@ -415,7 +414,7 @@ Airport::UpdateSimTime(float inc)
 ATCDisplay::ATCDStorm
 Airport::getStorm(const Ice::Current&)
 {
-	pthread_mutex_lock (&mutex);
+	//pthread_mutex_lock (&mutex);
 	ATCDisplay::ATCDStorm ret;
 
 	if(storm==NULL)
@@ -436,7 +435,7 @@ Airport::getStorm(const Ice::Current&)
 	ret.radious = storm->getRadious();
 	ret.speed = storm->getSpeed();
 
-	pthread_mutex_unlock (&mutex);
+	//pthread_mutex_unlock (&mutex);
 	return ret;
 }
 
@@ -444,7 +443,7 @@ ATCDisplay::ATCDFlights
 Airport::getFlights(const Ice::Current&)
 {
 
-	pthread_mutex_lock (&mutex);
+	//pthread_mutex_lock (&mutex);
 
 	//std::cerr<<"["<<flights.size()<<": ";
 	ATCDisplay::ATCDFlights ret;
@@ -496,7 +495,7 @@ Airport::getFlights(const Ice::Current&)
 	}
 
 	//std::cerr<<"]"<<std::endl;
-	pthread_mutex_unlock (&mutex);
+	//pthread_mutex_unlock (&mutex);
 	return ret;
 }
 

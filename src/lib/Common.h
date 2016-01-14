@@ -16,9 +16,48 @@
 #include <string>
 #include <stdlib.h>
 
-#define MAX_NUM_WAIT_HEIGHT 3	//maximum number of allowed heights
-#define MIN_WAIT_HEIGHT     1000.0f
+#define MAX_WAIT_ROUTE_LENGTH    7000.0f
+#define MAX_WAIT_ROUTE_WIDE      3000.0f
+#define INTERMEDIAN_WAIT_ROUTE_LENGTH    5000.0f
 
+/* Identifying the sectors */
+#define SECTOR_1    1
+#define SECTOR_2    2
+#define SECTOR_3    3
+#define SECTOR_4    4
+
+/* Lines delimiting the sectors */
+#define LINE1_2    -10000 
+#define LINE2_3        0
+#define LINE3_4     10000
+
+/* Defining the starting coordinates of each sector */
+#define NUMBER_OF_SECTORS      4
+#define X_INIT_SECTOR1   -10000.0f
+#define Y_INIT_SECTOR1   -15000.0f
+#define X_INIT_SECTOR2   -10000.0f
+#define Y_INIT_SECTOR2   -5000.0f
+#define X_INIT_SECTOR3   -10000.0f
+#define Y_INIT_SECTOR3    5000.0f
+#define X_INIT_SECTOR4   -10000.0f
+#define Y_INIT_SECTOR4    15000.0f
+
+/* Defining heights */
+#define MAX_NUMBER_OF_HEIGHTS_BY_SECTOR   3
+#define TOTAL_ALLOWED_HEIGHTS   12
+#define MIN_WAIT_HEIGHT      1000.0f
+#define HEIGHT_FOR_LANDING   1000.0f
+#define HEIGHT_ID_1       0
+#define HEIGHT_ID_2       1
+#define HEIGHT_ID_3       2
+#define HEIGHT_1             1000
+#define HEIGHT_2             2000
+#define HEIGHT_3             3000
+#define HEIGHT_BY_DEFAULT    1500
+
+#define SECURITY_DISTANCE  2000.0f
+#define SECURITY_DISTANCE_STORM  4000.0f
+#define APERIODOFTIME      1.0f
 
 #define COLLISION_DISTANCE 1000.0f
 #define CRASH_Z 20.0f
@@ -65,6 +104,7 @@
 #define CRASH_HEIGHT_POINTS	(-25)
 #define CRASH_INC_POINTS	(-25)
 #define CRASH_SPEED_POINTS 	(-25)
+#define BEARING_VARIATION       pi_2   // Change the bearing to avoid collision
 
 #define INC_DIFF		30000000//30 sec 
 #define INC_PEN			1 	 	//fligts/inc
