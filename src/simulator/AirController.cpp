@@ -276,17 +276,17 @@ AirController::avoidStorm(Flight* theFlight, Storm* theStorm)
 	float new_x, new_y;
 	float timing;
 	Route avoid_storm_point;
-	
-	
+
+
 	/* If the flight is currently landing, we suppose the storm wiil not affect this landing */
 	if (theFlight->getLanding())
 		return;
-	
+
 	/* If the distance between the flight and the storm is larger than the security distance, thers nothing to do */
 	d_Now = theFlight->getPosition().distance(theStorm->getPosition());
 	if (d_Now > (COLLISION_DISTANCE + SECURITY_DISTANCE_STORM + theStorm->getRadious()))
-		return;	
-	
+		return;
+
 	/* It gets the current positions */
 	x_Flight_Now = theFlight->getPosition().get_x();
 	y_Flight_Now = theFlight->getPosition().get_y();
@@ -306,8 +306,8 @@ AirController::avoidStorm(Flight* theFlight, Storm* theStorm)
 
 	if (d_Further > d_Now)    // The distance between the flight and the storm is increasing
 		return;
- 
-	else      // We increase the flight bearing to detect if the distance will be larger or shorter 
+
+	else      // We increase the flight bearing to detect if the distance will be larger or shorter
 	{
 		new_Bearing = normalizePi (theFlight->getBearing() + BEARING_VARIATION);
 		x_Flight_Further = x_Flight_Now + theFlight->getSpeed() * APERIODOFTIME * cos(new_Bearing);
@@ -316,7 +316,7 @@ AirController::avoidStorm(Flight* theFlight, Storm* theStorm)
 		/* It calculates the further distance between the flight and the storm */
 		d_Further = sqrt (pow((x_Storm_Further - x_Flight_Further),2) + pow((y_Storm_Further - y_Flight_Further),2));
 
-		if (d_Further <= d_Now)    // This new bearing decreases the distance so we must select the opposite 
+		if (d_Further <= d_Now)    // This new bearing decreases the distance so we must select the opposite
 			new_Bearing = normalizePi (theFlight->getBearing() - BEARING_VARIATION);
 
 		/* In order to calculate the new waypoints, we will consider the time to collision */
@@ -326,7 +326,7 @@ AirController::avoidStorm(Flight* theFlight, Storm* theStorm)
 		new_x = x_Flight_Now + theFlight->getSpeed() * timing * cos(new_Bearing);
 		new_y = y_Flight_Now + theFlight->getSpeed() * timing * sin(new_Bearing);
 
-		/* It sets the new route */	
+		/* It sets the new route */
 		Position pos_avoid_storm(new_x, new_y, theFlight->getPosition().get_z());
 		avoid_storm_point.pos = pos_avoid_storm;
 		avoid_storm_point.speed = theFlight->getSpeed();
@@ -353,17 +353,17 @@ AirController::avoidFlightsCollisions (Flight* theFlight, Flight* theOtherFlight
 	float new_x, new_y;
 	float timing;
 	Route avoid_F2_point;
-	
-	
-	/* If the flight is currently landing, we suppose the F2 wiil not affect this landing 
+
+
+	/* If the flight is currently landing, we suppose the F2 wiil not affect this landing
 	if (theFlight->getLanding())
 		return;
-	
+
 	/* If the distance between the flight and the F2 is larger than the security distance, thers nothing to do *
 	d_Now = theFlight->getPosition().distance(theOtherFlight->getPosition());
 	if (d_Now > (COLLISION_DISTANCE + SECURITY_DISTANCE))
-		return;	
-	
+		return;
+
 	/* It gets the current positions *
 	x_Flight_Now = theFlight->getPosition().get_x();
 	y_Flight_Now = theFlight->getPosition().get_y();
@@ -383,8 +383,8 @@ AirController::avoidFlightsCollisions (Flight* theFlight, Flight* theOtherFlight
 
 	if (d_Further > d_Now)    // The distance between the flight and the F2 is increasing
 		return;
- 
-	else      // We increase the flight bearing to detect if the distance will be larger or shorter 
+
+	else      // We increase the flight bearing to detect if the distance will be larger or shorter
 	{
 		new_Bearing = normalizePi (theFlight->getBearing() + BEARING_VARIATION);
 		x_Flight_Further = x_Flight_Now + theFlight->getSpeed() * APERIODOFTIME * cos(new_Bearing);
@@ -393,7 +393,7 @@ AirController::avoidFlightsCollisions (Flight* theFlight, Flight* theOtherFlight
 		/* It calculates the further distance between the flight and the F2 *
 		d_Further = sqrt (pow((x_F2_Further - x_Flight_Further),2) + pow((y_F2_Further - y_Flight_Further),2));
 
-		if (d_Further <= d_Now)    // This new bearing decreases the distance so we must select the opposite 
+		if (d_Further <= d_Now)    // This new bearing decreases the distance so we must select the opposite
 			new_Bearing = normalizePi (theFlight->getBearing() - BEARING_VARIATION);
 
 		/* In order to calculate the new waypoints, we will consider the time to collision *
@@ -403,7 +403,7 @@ AirController::avoidFlightsCollisions (Flight* theFlight, Flight* theOtherFlight
 		new_x = x_Flight_Now + theFlight->getSpeed() * timing * cos(new_Bearing);
 		new_y = y_Flight_Now + theFlight->getSpeed() * timing * sin(new_Bearing);
 
-		/* It sets the new route *	
+		/* It sets the new route *
 		Position pos_avoid_F2(new_x, new_y, theFlight->getPosition().get_z());
 		avoid_F2_point.pos = pos_avoid_F2;
 		avoid_F2_point.speed = theFlight->getSpeed();
@@ -414,7 +414,7 @@ AirController::avoidFlightsCollisions (Flight* theFlight, Flight* theOtherFlight
 		theFlight->setBearing(new_Bearing);
 	}
 
-	
+
 	return;
 */
 
@@ -425,7 +425,7 @@ AirController::avoidFlightsCollisions (Flight* theFlight, Flight* theOtherFlight
 		return;
 
 	/* It works if these flights are not landing */
-	
+
 	if ((theFlight->getLanding()==false) && (theOtherFlight->getLanding()==false))
 		{
 		if (theFlight->getPosition().distance(theOtherFlight->getPosition()) < COLLISION_DISTANCE+ SECURITY_DISTANCE)
@@ -471,7 +471,7 @@ AirController::doWork()
 		{
 			if ((*it)->getStormAvoided())
 			{
-				
+
 				if((*it)->getPosition().distance(storm->getPosition()) >= (COLLISION_DISTANCE + SECURITY_DISTANCE_STORM + storm->getRadious()))
 				{
 					(*it)->setStormAvoided(false);
@@ -482,12 +482,12 @@ AirController::doWork()
 			{
 				if((*it)->getPosition().distance(storm->getPosition()) <= (COLLISION_DISTANCE + SECURITY_DISTANCE_STORM + storm->getRadious()))
 				{
-					
+
 					avoidStorm((*it), storm);
 					(*it)->setStormAvoided(true);
 				}
 			}
-		}	
+		}
 	}
 
 	// To avoid no flights landing
@@ -506,19 +506,32 @@ AirController::doWork()
 
 
 	/*It avoids the collision between two aircrafts */
-	
+
+/*
+	for(it = flights.begin(); it!=flights.end(); it++)
+	{
+		for (it2 = flights.begin(); it2!=flights.end(); it2++)
+		{
+				if (!(*it)->getLanding())
+			//	avoidFlightsCollisions (*it, *it2);
+		}
+	}
+*/
+
+/*
 	for(it = flights.begin(); it!=flights.end(); it++)
 	{
 		if (!(*it)->getLanding())
 		{
 			it2=it;
 			do
-			{	
+			{
 				it2++;
 				avoidFlightsCollisions (*it, *it2);
 			}while(it2!=flights.end());
-				
+
 		}
-	}
+	}*/
+
 
 }
