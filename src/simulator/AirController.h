@@ -35,17 +35,14 @@ public:
 	AirController();
 	virtual ~AirController();
 
-		
 
 	void assignWaiting(Flight* f);
+	void assignAdap(Flight* f);
 	void assignLanding(Flight* f);
-	void assignDescend(Flight* f);
 	void reRute(Storm*, Flight* f);
-
 
 	bool stormInLanding(Storm* s);
 	bool stormInView(Storm* s, Flight* f);
-	
 
 	void doWork();
 };

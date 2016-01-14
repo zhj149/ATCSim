@@ -54,7 +54,7 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 	waitRoute=0;
 
 	inStorm = false;
-	reRuted= false; 
+	reRuted= false;
 
 	focused = false;
 	points = INIT_FLIGHT_POINTS;
@@ -64,7 +64,7 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 }
 
 
-float 
+float
 Flight::getS(float v, float diffbearing, float w_max)
 {
 	float s, time, diferencia;
@@ -91,7 +91,7 @@ Flight::update(float delta_t)
 	{
 		float goal_bearing, diff_bearing, new_w;
 		float goal_inclination, diff_inclination, new_w_in;
-		
+
 
 		CPpos = route.front().pos;
 		pos.angles(CPpos, goal_bearing, goal_inclination);
@@ -123,25 +123,33 @@ Flight::update(float delta_t)
 		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
 
 		Position CPpos2;
-		float goal_bearing2, diff_bearing2, inclination2;
+		float goal_bearing2, diff_bearing2, inclination2, diff_inclination2;
 		Route r1, r2;
 
 		std::list<Route>::iterator it;
 		it=route.begin();
 		r1=*it;
 		it++;
-		r2=*it; 
+		r2=*it;
 
 		CPpos2=r2.pos;
 		pos.angles(CPpos2, goal_bearing2, inclination2);
 
 		goal_bearing2 = normalizePi(goal_bearing2 + M_PI);
 		diff_bearing2 = normalizePi(goal_bearing2 - goal_bearing);
-		
+		diff_inclination = normalizePi( goal_inclination- inclination);
+
 		s=getS(speed,diff_bearing2, MAX_FLIFGT_W);
 
 		if(pos.distance(CPpos)<s)
-			route.pop_front();
+			{
+				route.pop_front();
+				new_w=diff_bearing2;
+				new_w_in=diff_inclination2;
+			}
+
+
+
 		}else
 
 		inclination = 0.0;
@@ -159,9 +167,10 @@ Flight::update(float delta_t)
 //	if(pos.distance(last_pos) > pos.distance(CPpos))
 //		route.pop_front();
 
-	
+if(pos.distance(CPpos)<DIST_POINT)
+	route.pop_front();
 
-		
+
 
 	if(inStorm)
 	{
