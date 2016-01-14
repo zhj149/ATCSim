@@ -233,13 +233,6 @@ AirController::reRute(Storm* s, Flight* f)
  std::cout << s->getRadious()<< std::endl;
  std::cout << s->getBearing()<< std::endl;
 
-
-	Position p(p_x, p_y , p_z);
-	Route r;
-
-	r.pos = p;
-	r.speed = 400;
-
 	 Position p(p_x, p_y , p_z);
 	 Route r;
 
