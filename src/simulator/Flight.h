@@ -49,7 +49,10 @@ public:
 	Position getPosition() { return pos;};
 	float getInclination() { return inclination;};
 	float getBearing() { return bearing;};
+	void setBearing(float Setbearing) { bearing=Setbearing;};
+	void setInclination(float setinclination) { inclination=setinclination;};
 	float getSpeed() { return speed;};
+	void setSpeed(float Setspeed) { speed=Setspeed;};
 	float getPoints() {return points;};
 	float getS(float V0, float Diferencia);
 	std::string getId(){return id;};
@@ -58,7 +61,9 @@ public:
 
 
 ////new
-	float updateVel(float acc_ideal,float speed, float delta_t);
+	float updateVel(float acc_ideal,float speed,float delta_t);
+	//float updateChoque(float alpha,float bearing);
+
 	float updateW(float ideal_w);
 	float subtractionPI(float resta1, float resta2);
 	float subtraction(float resta1, float resta2);
@@ -66,6 +71,12 @@ public:
 
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
+
+	bool getisLanding() {return isLanding;};
+	void setisLanding(bool landing) {isLanding=landing;};
+
+	bool getisWaiting() {return isWaiting;};
+	void setisWaiting(bool landing) {isWaiting=landing;};
 
 
 private:
@@ -80,6 +91,10 @@ private:
 	bool inStorm;
 
 	float points;
+
+	//bool land;
+	bool isLanding, isWaiting;
+
 };
 
 #endif /* FLIGHT_H_ */

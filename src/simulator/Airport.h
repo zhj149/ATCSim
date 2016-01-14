@@ -62,7 +62,7 @@ public:
 
 
 private:
-
+	
 	void checkLandings();
 	void checkCollisions();
 	void checkCrashes();

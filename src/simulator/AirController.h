@@ -30,26 +30,31 @@
 #include "Airport.h"
 
 
-
 class AirController: public Singleton<AirController> {
 public:
 	AirController();
 	virtual ~AirController();
 
 	void doWork();
-	void asignarLanding(Flight *f, Route a, Route b, Route c, Route d);
-	void asignarWaiting(Flight *f, Route a, Route b, Route c, Route d);
-	void asignarRutaStorm(Flight *f, Route a, Route b, Route c, Route d);
+	void asignarLanding(Flight *f);
 
-	float Distancia(float x1, float x2,float y1, float y2);//,float z1, float z2 );
+	void asignarWaitingR(Flight *f);
+	void asignarWaitingL(Flight *f);
+	void asignarWaitingCenter1(Flight *f);
+	void asignarWaitingCenter2(Flight *f);
+	void asignarWaiting(Flight *f);
 
-	//bool setLanding(bool indicador) {landing = indicador;};
-	//bool getLanding() {return landing;};
+	float DistanciaAv_Punto(Flight *f,float x2,float y2, float z2 );
+	float DistanciaAv_Av(Flight *f1,Flight *f2 );
+	float DistanciaStorm_Aeropuerto(Storm *s);
+	float DistanciaStorm_Av(Storm *s,Flight *f);
+	float DistanciaAvion_WayPoint(Flight *f);
+	float GetAnguloGiro(Storm *s,Flight *f);
 
-
+	void TCAS_System(Flight *f1, Flight *f2 );
+	void EvitarStorm(Storm *s,Flight *f);
 
 private:
-	//bool landing;
 
 };
 

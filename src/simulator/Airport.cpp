@@ -390,9 +390,8 @@ Airport::checkLandings()
 
 
 			std::cerr<<"Flight "<<(*it)->getId()<<" LANDEEEEEEEEEEEEEEED"<<std::endl;
-			std::cout<<"	FELIZ NAVIDAD VUELO: "<<"["<<(*it)->getId()<<"]"<<std::endl;
-			points += (int)(*it)->getPoints();
-
+			std::cout<<"	FELIZ AÑO VUELO: "<<"["<<(*it)->getId()<<"]"<<std::endl;
+			points -= (int)(*it)->getPoints();
 
 
 

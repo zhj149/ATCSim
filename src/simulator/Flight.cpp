@@ -75,7 +75,7 @@ return new_w;
 }
 
 float
-Flight::updateVel(float acc_inst,float speed, float delta_t)
+Flight::updateVel(float acc_inst,float speed,float delta_t)
 {
 	float new_speed,acceleration;
 	if(fabs(acc_inst)>MAX_ACELERATION)
@@ -88,7 +88,6 @@ Flight::updateVel(float acc_inst,float speed, float delta_t)
 	}
 return new_speed = speed + acceleration*delta_t;
 }
-
 
 float
 Flight::getS(float V0, float Diferencia)
@@ -125,18 +124,16 @@ Flight::update(float delta_t)
 	float goal_inclination,goal_inclination1, diff_inclination,diff_inclination1, diff_diff_inclination, new_wi;
 	float S;
 	float Si;
-	float goal_speed, goal_speed1,diff_speed, acc_ideal;
+	float goal_speed, acc_ideal;
 
 	if(routed())
 	{
-
 		it=route.begin();
 		CPpos = it->pos;
 		goal_speed = it->speed;
 
 		it++;
 		CPpos1 = it->pos;
-		goal_speed1 = it->speed;
 
 		pos.angles(CPpos, goal_bearing, goal_inclination);//Rumbo que queremos mantener
 		pos.angles(CPpos1, goal_bearing1, goal_inclination1);//Rumbo objetivo
@@ -162,7 +159,7 @@ Flight::update(float delta_t)
 		inclination = inclination + new_wi*delta_t;
 
 		acc_ideal = (goal_speed - speed);
-		speed = updateVel(acc_ideal,speed, delta_t);
+		speed = updateVel(acc_ideal,speed,delta_t);
 
 		//////////////////////////////// TRAZAS /////////////////////////////////////////////////////////
 		//std::cout << "\nAvión ["<<id<<"]" << std::endl;
@@ -213,9 +210,9 @@ Flight::update(float delta_t)
 		pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));
 		pos.set_z(pos.get_z() + ( trans * sin(inclination)));
 
-		if(pos.distance(CPpos) < DIST_POINT){
-	  	route.pop_front();
-		}
+		//if(pos.distance(CPpos) < DIST_POINT){
+	  //	route.pop_front();
+		//}
 
 		//if(pos.distance(last_pos) > pos.distance(CPpos))
 			//route.pop_front();

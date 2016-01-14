@@ -18,7 +18,7 @@ find_package(Threads REQUIRED)
 FIND_LIBRARY(ice_lib Ice)
 FIND_LIBRARY(iceutil_lib IceUtil)
 
-set(CMAKE_CXX_FLAGS "-g -Wno-deprecated-declarations")
+set(CMAKE_CXX_FLAGS "-g -Wall -Wno-deprecated-declarations")
 
 # add the executable
 add_executable(ATCSim
