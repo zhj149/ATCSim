@@ -357,6 +357,7 @@ Airport::checkCrashes()
 			points += CRASH_HEIGHT_POINTS;
 		}else if(toDegrees(fabs((*it)->getInclination())) > CRASH_INC)
 		{
+			std::cerr<<(*it)->getInclination()<<std::endl;
 			std::cerr<<"[Inc] Crash of "<<(*it)->getId()<<std::endl;
 			it = removeFlight((*it)->getId());
 			points += CRASH_INC_POINTS;

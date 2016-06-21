@@ -54,7 +54,9 @@ Flight::Flight(std::string _id, Position _pos, float _bearing, float _inclinatio
 
 	focused = false;
 	landing = false;
+	girando = false;
 	points = INIT_FLIGHT_POINTS;
+	ord = 0;
 
 	w_speed = 0.0f;
 }
@@ -64,14 +66,255 @@ Flight::getS(float v, float theta0, float theta1, float wmax)
 {
 	float thetad, t, S;
 
+	//theta0 = normalizePi(theta0 + M_PI);
+	//theta1 = normalizePi(theta1 + M_PI);
+
 	thetad = fabs(theta1-theta0);
 
 	t = thetad/wmax;
 
 	S = t * v;
 
-
 	return S;
+}
+
+void
+Flight::proceedLanding()
+{
+		Route r0, r1, r2, r3, r4;
+
+		Position pos0(5000.0, 0.0, 400.0);
+		Position pos1(3500.0, 0.0, 200.0);
+		Position pos2(1500.0, 0.0, 50.0);
+		Position pos3(200.0, 0.0, 25.0);
+		Position pos4(-750.0, 0.0, 25.0);
+
+		r0.pos = pos0;
+		r0.speed = 500.0;
+		r1.pos = pos1;
+		r1.speed = 400.0;
+		r2.pos = pos2;
+		r2.speed = 200.0;
+		r3.pos = pos3;
+		r3.speed = 100.0;
+		r4.pos = pos4;
+		r4.speed = 15.0;
+
+		if(getRoute()->empty()){
+				getRoute()->clear();
+				getRoute()->push_front(r0);
+				getRoute()->push_back(r1);
+				getRoute()->push_back(r2);
+				getRoute()->push_back(r3);
+				getRoute()->push_back(r4);
+		}
+}
+
+void
+Flight::avoidFromEast()
+{
+		Route r0, r1, r2, r3, r4, r5, r6, r7;
+		Position pos0(10000.0, 0.0, 400.0);
+		Position pos1(8000.0, 3000.0, 400.0);
+		Position pos2(6000.0, 6000.0, 400.0);
+		Position pos3(4000.0, 3000.0, 200.0);
+		Position pos4(2000.0, 0.0, 200.0);
+		Position pos5(1500.0, 0.0, 50.0);
+		Position pos6(200.0, 0.0, 25.0);
+		Position pos7(-750.0, 0.0, 25.0);
+
+		r0.pos = pos0;
+		r0.speed = 400.0;
+		r1.pos = pos1;
+		r1.speed = 400.0;
+		r2.pos = pos2;
+		r2.speed = 400.0;
+		r3.pos = pos3;
+		r3.speed = 400.0;
+		r4.pos = pos4;
+		r4.speed = 300.0;
+		r5.pos = pos5;
+		r5.speed = 200.0;
+		r6.pos = pos6;
+		r6.speed = 25.0;
+		r7.pos = pos7;
+		r7.speed = 15.0;
+
+		if(getRoute()->empty()){
+			getRoute()->clear();
+			getRoute()->push_back(r2);
+			getRoute()->push_back(r3);
+			getRoute()->push_back(r4);
+			getRoute()->push_back(r5);
+			getRoute()->push_back(r6);
+			getRoute()->push_back(r7);
+		}
+}
+
+void
+Flight::avoidFromWest()
+{
+	Route r0, r1, r2, r3, r4, r5, r6, r7;
+
+	Position pos0(10000.0, 0.0, 400.0);
+	Position pos1(8000.0, -3000.0, 400.0);
+	Position pos2(6000.0, -6000.0, 400.0);
+	Position pos3(4000.0, -3000.0, 200.0);
+	Position pos4(2000.0, 0.0, 200.0);
+	Position pos5(1500.0, 0.0, 50.0);
+	Position pos6(200.0, 0.0, 25.0);
+	Position pos7(-750.0, 0.0, 25.0);
+
+	r0.pos = pos0;
+	r0.speed = 400.0;
+	r1.pos = pos1;
+	r1.speed = 400.0;
+	r2.pos = pos2;
+	r2.speed = 400.0;
+	r3.pos = pos3;
+	r3.speed = 400.0;
+	r4.pos = pos4;
+	r4.speed = 300.0;
+	r5.pos = pos5;
+	r5.speed = 200.0;
+	r6.pos = pos6;
+	r6.speed = 25.0;
+	r7.pos = pos7;
+	r7.speed = 15.0;
+
+	if(getRoute()->empty()){
+			getRoute()->clear();
+			getRoute()->push_front(r0);
+			getRoute()->push_back(r1);
+			getRoute()->push_back(r2);
+			getRoute()->push_back(r3);
+			getRoute()->push_back(r4);
+			getRoute()->push_back(r5);
+			getRoute()->push_back(r6);
+			getRoute()->push_back(r7);
+	}
+}
+
+void
+Flight::proceedWaitingEast()
+{
+	Route rwe1, rwe2, rwe3, rwe4;
+	float speed = 300.0;
+
+	Position poswe1(14000.0, -10000.0, 400.0);
+	Position poswe2(10000.0, -14000.0, 400.0);
+	Position poswe3(6000.0, -10000.0, 400.0);
+	Position poswe4(10000.0, -6000.0, 400.0);
+
+	rwe1.pos = poswe1;
+	rwe1.speed = speed;
+	rwe2.pos = poswe2;
+	rwe2.speed = speed;
+	rwe3.pos = poswe3;
+	rwe3.speed = speed;
+	rwe4.pos = poswe4;
+	rwe4.speed = speed;
+
+	if(getRoute()->empty()){
+		if(getPosition().get_x() > 10000.0){
+			if(ord > 0){
+				rwe1.pos.set_z(rwe1.pos.get_z()+1000.0*ord);
+				rwe2.pos.set_z(rwe2.pos.get_z()+1000.0*ord);
+				rwe3.pos.set_z(rwe3.pos.get_z()+1000.0*ord);
+				rwe4.pos.set_z(rwe4.pos.get_z()+1000.0*ord);
+				getRoute()->clear();
+				getRoute()->push_back(rwe1);
+				getRoute()->push_back(rwe2);
+				getRoute()->push_back(rwe3);
+				getRoute()->push_back(rwe4);
+			}else{
+				getRoute()->clear();
+				getRoute()->push_front(rwe1);
+				getRoute()->push_back(rwe2);
+				getRoute()->push_back(rwe3);
+				getRoute()->push_back(rwe4);
+			}
+		}else{
+			if(ord > 0){
+				rwe1.pos.set_z(rwe1.pos.get_z()+1000.0*ord);
+				rwe2.pos.set_z(rwe2.pos.get_z()+1000.0*ord);
+				rwe3.pos.set_z(rwe3.pos.get_z()+1000.0*ord);
+				rwe4.pos.set_z(rwe4.pos.get_z()+1000.0*ord);
+				getRoute()->clear();
+				getRoute()->push_back(rwe3);
+				getRoute()->push_back(rwe4);
+				getRoute()->push_back(rwe1);
+				getRoute()->push_back(rwe2);
+			}else{
+				getRoute()->clear();
+				getRoute()->push_front(rwe3);
+				getRoute()->push_back(rwe4);
+				getRoute()->push_back(rwe1);
+				getRoute()->push_back(rwe2);
+			}
+		}
+	}
+}
+
+void
+Flight::proceedWaitingWest()
+{
+	Route rwo1, rwo2, rwo3, rwo4;
+	float speed = 300.0;
+
+	Position poswo1(14000.0, 10000.0, 400.0);
+	Position poswo2(10000.0, 14000.0, 400.0);
+	Position poswo3(6000.0, 10000.0, 400.0);
+	Position poswo4(10000.0, 6000.0, 400.0);
+
+	rwo1.pos = poswo1;
+	rwo1.speed = speed;
+	rwo2.pos = poswo2;
+	rwo2.speed = speed;
+	rwo3.pos = poswo3;
+	rwo3.speed = speed;
+	rwo4.pos = poswo4;
+	rwo4.speed = speed;
+
+	if(getRoute()->empty()){
+		if(getPosition().get_x() > 10000.0){
+			if(ord > 0){
+				rwo1.pos.set_z(rwo1.pos.get_z()+1000.0*ord);
+				rwo2.pos.set_z(rwo2.pos.get_z()+1000.0*ord);
+				rwo3.pos.set_z(rwo3.pos.get_z()+1000.0*ord);
+				rwo4.pos.set_z(rwo4.pos.get_z()+1000.0*ord);
+				getRoute()->clear();
+				getRoute()->push_front(rwo1);
+				getRoute()->push_back(rwo2);
+				getRoute()->push_back(rwo3);
+				getRoute()->push_back(rwo4);
+			}else{
+				getRoute()->clear();
+				getRoute()->push_front(rwo1);
+				getRoute()->push_back(rwo2);
+				getRoute()->push_back(rwo3);
+				getRoute()->push_back(rwo4);
+			}
+		}else{
+			if(ord > 0){
+				rwo1.pos.set_z(rwo1.pos.get_z()+1000.0*ord);
+				rwo2.pos.set_z(rwo2.pos.get_z()+1000.0*ord);
+				rwo3.pos.set_z(rwo3.pos.get_z()+1000.0*ord);
+				rwo4.pos.set_z(rwo4.pos.get_z()+1000.0*ord);
+				getRoute()->clear();
+				getRoute()->push_front(rwo3);
+				getRoute()->push_back(rwo4);
+				getRoute()->push_back(rwo1);
+				getRoute()->push_back(rwo2);
+			}else{
+				getRoute()->clear();
+				getRoute()->push_front(rwo3);
+				getRoute()->push_back(rwo4);
+				getRoute()->push_back(rwo1);
+				getRoute()->push_back(rwo2);
+			}
+		}
+  }
 }
 
 
@@ -83,7 +326,8 @@ Flight::update(float delta_t)
 
 	if(routed())
 	{
-		float theta0, theta1, goal_bearing, diff_bearing, new_w, S;
+		float theta_goal, theta0, theta1, goal_bearing, diff_bearing, new_w, S, inclination2;
+		int gir;
 		Route r,s;
 
 		S = 0.0;
@@ -96,12 +340,41 @@ Flight::update(float delta_t)
 		CPpos = route.front().pos;
 		pos.angles(CPpos, theta0, inclination);
 		CPpos2 = r.pos;
-		pos.angles(CPpos2, theta1, inclination);
+		pos.angles(CPpos2, theta1, inclination2);
+		////////////////////////////////////////////////----v
 
-		pos.angles(CPpos, goal_bearing, inclination);
+		S = getS(speed, theta0, theta1, MAX_FLIFGT_W);
 
-		goal_bearing = normalizePi(goal_bearing + M_PI);
-		diff_bearing = normalizePi(goal_bearing - bearing);
+		if(pos.distance(CPpos)<S && (fabs(theta1-theta0)>0.01) ){
+				setGirando(true);
+				theta_goal = theta1;
+				route.pop_front();
+		}
+
+		if(getGirando()){
+			if(toDegrees(fabs(inclination)) > CRASH_INC ){
+				inclination = (fabs(inclination)/inclination) * toRadians(CRASH_INC-0.5);
+			}
+			if(theta1-theta0 >=0)
+			{
+				new_w = MAX_FLIFGT_W;
+			}else{
+				new_w = -MAX_FLIFGT_W;
+			}
+//			std::cout<<theta0<<std::endl;
+	//		std::cout<<theta1<<std::endl;
+			bearing = bearing + new_w*delta_t;
+			if(fabs(theta0) < (fabs(theta_goal) + 0.01) || fabs(theta0) > (fabs(theta_goal) - 0.01) ){
+				setGirando(false);
+			}
+		}else{
+
+		if(toDegrees(fabs(inclination)) > CRASH_INC ){
+			inclination = (fabs(inclination)/inclination) * toRadians(CRASH_INC);
+		}
+
+		theta0 = normalizePi(theta0 + M_PI);
+		diff_bearing = normalizePi(theta0 - bearing);
 		new_w = diff_bearing;
 
 		//std::cout<<new_w<<std::endl;
@@ -125,25 +398,22 @@ Flight::update(float delta_t)
 		if(fabs(acc)>MAX_ACELERATION) acc = (acc/fabs(acc))*MAX_ACELERATION;
 
 		speed = speed + acc*delta_t;
+	}
 
-		theta0 = normalizePi(theta0 + M_PI);
-		theta1 = normalizePi(theta1 + M_PI);
-
-		S = getS(speed, theta0, theta1, MAX_FLIFGT_W);
-
-		if(pos.distance(CPpos)<S){
-				route.pop_front();
-		}
 
 		//std::cout<<"["<<id<<"]speed = "<<speed<<"\tnew = "<<goal_speed<<"\t["<<acc<<"]\t"<<std::endl;
 
 	}else
+
 		inclination = 0.0;
 
 	last_pos = pos;
 
 	trans = speed * delta_t;
 
+	if(toDegrees(fabs(inclination)) > CRASH_INC ){
+		inclination = (fabs(inclination)/inclination) * toRadians(CRASH_INC-0.5);
+	}
 
 	pos.set_x(pos.get_x() + trans * cos(bearing) * cos(inclination));
 	pos.set_y(pos.get_y() + trans * sin(bearing) * cos(inclination));

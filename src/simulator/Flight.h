@@ -59,6 +59,15 @@ public:
 	bool getLanding() { return landing;};
 	bool getInStorm() {return inStorm;};
 	void setInStorm(bool in) {inStorm=in;};
+	bool getGirando() {return girando;};
+	void setGirando(bool state) {girando = state;};
+	void proceedLanding();
+	void avoidFromEast();
+	void avoidFromWest();
+	void proceedWaitingEast();
+	void proceedWaitingWest();
+	int getOrd() {return ord;};
+	void setOrd(int num) {ord = num;};
 
 
 private:
@@ -70,6 +79,8 @@ private:
 	bool focused;
 	bool landing;
 	bool inStorm;
+	bool girando;
+	int ord;
 
 	float points;
 };
